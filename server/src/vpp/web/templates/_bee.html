@@ -2,13 +2,17 @@
 {% macro bee(size=56, mood="happy", cls="") -%}
 <svg class="bee {{ cls }}" width="{{ size }}" height="{{ (size * 0.84)|round|int }}" viewBox="0 0 120 100" role="img" aria-label="{{ brand() }} bee" focusable="false">
   <g stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M58 30 C 50 4, 22 6, 26 26 C 29 38, 46 38, 58 34 Z" fill="var(--wing)"/>
-    <path d="M66 31 C 72 2, 104 4, 98 26 C 94 38, 78 38, 66 35 Z" fill="var(--wing)"/>
-    <ellipse cx="66" cy="62" rx="36" ry="26" fill="var(--honey)"/>
-    <path d="M58 37 C 52 50, 52 74, 58 87" fill="none"/>
-    <path d="M76 37 C 82 50, 82 74, 76 87" fill="none" stroke-width="9"/>
-    <path d="M94 47 C 98 56, 98 68, 94 77" fill="none" stroke-width="7"/>
-    <path d="M101 58 L 113 62 L 101 66" fill="var(--ink)"/>
+    <path d="M58 38 C 50 4, 22 6, 26 26 C 29 38, 46 38, 58 38 Z" fill="var(--wing)"/>
+    <path d="M66 38 C 72 2, 104 4, 98 26 C 94 38, 78 38, 66 38 Z" fill="var(--wing)"/>
+    <path d="M96 56 L 113 62 L 96 68 Z" fill="var(--ink)"/>
+    <ellipse cx="66" cy="62" rx="36" ry="26" fill="var(--honey)" stroke="none"/>
+    {# Stripes follow the body's own arcs, so nothing pokes past the outline. #}
+    <g fill="var(--ink)" stroke="none">
+      <path d="M62 36.2 A36 26 0 0 1 70 36.2 Q 74 62 70 87.8 A36 26 0 0 1 62 87.8 Q 66 62 62 36.2Z"/>
+      <path d="M82 38.7 A36 26 0 0 1 90 42.6 Q 94 62 90 81.4 A36 26 0 0 1 82 85.3 Q 86 62 82 38.7Z"/>
+      <path d="M98 50.1 A36 26 0 0 1 102 62 A36 26 0 0 1 98 73.9 Q 102 62 98 50.1Z"/>
+    </g>
+    <ellipse cx="66" cy="62" rx="36" ry="26" fill="none"/>
     <circle cx="32" cy="60" r="19" fill="var(--honey)"/>
     <path d="M24 42 C 20 30, 12 28, 8 32" fill="none"/>
     <path d="M34 41 C 36 28, 44 24, 48 27" fill="none"/>
