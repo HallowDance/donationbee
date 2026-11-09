@@ -2,7 +2,7 @@
 # Reverse SSH tunnel: the server's port 18090 -> this machine's 127.0.0.1:8090 (beta.sh).
 # (8090 is taken on the theorycorner server. Its sshd has GatewayPorts=yes, so the port binds
 # on all interfaces; ufw's default-deny keeps it unreachable from outside, and nginx proxies.)
-#   scripts/tunnel.sh user@45.63.41.192
+#   scripts/tunnel.sh user@your-server
 # Reconnects if the connection drops. Binds to the server's loopback only; nginx proxies to it.
 set -euo pipefail
 TARGET=${1:?usage: scripts/tunnel.sh user@host}

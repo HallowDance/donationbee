@@ -8,7 +8,7 @@ members = ["server", "verifier", "witness"]
 
 [tool.uv.sources]
 vpp = { workspace = true }
-vpp-verify = { workspace = true }
+donationbee-verify = { workspace = true }
 vpp-witness = { workspace = true }
 
 [dependency-groups]

@@ -1,0 +1,17 @@
+name: tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Put the runner's PostgreSQL binaries on PATH (tests start a throwaway cluster)
+        run: echo "$(ls -d /usr/lib/postgresql/*/bin | sort -V | tail -1)" >> "$GITHUB_PATH"
+      - run: uv sync --all-packages --all-extras
+      - run: uv run ruff check .
+      - run: uv run pytest -q

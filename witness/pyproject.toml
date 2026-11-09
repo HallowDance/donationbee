@@ -6,14 +6,14 @@ requires-python = ">=3.12"
 # Must never depend on `vpp` (the log it watches). Uses the independent verifier's primitives.
 dependencies = [
     "pynacl>=1.5",
-    "vpp-verify",
+    "donationbee-verify",
 ]
 
 [project.scripts]
 vpp-witness = "vpp_witness.server:main"
 
 [tool.uv.sources]
-vpp-verify = { workspace = true }
+donationbee-verify = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

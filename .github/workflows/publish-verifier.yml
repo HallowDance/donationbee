@@ -1,0 +1,32 @@
+name: publish donationbee-verify
+# Push a tag like `verify-v0.1.0` to publish. Uses PyPI Trusted Publishing: no API token is stored
+# anywhere; PyPI trusts this workflow in this repo, running in the `pypi` environment.
+on:
+  push:
+    tags: ["verify-v*"]
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --all-packages
+      - name: Verifier tests (spec vectors, Merkle/C2SP primitives)
+        run: uv run pytest -q verifier/tests
+      - name: Tag must match the package version
+        run: test "verify-v$(grep -m1 '^version' verifier/pyproject.toml | cut -d'"' -f2)" = "$GITHUB_REF_NAME"
+      - run: uv build --package donationbee-verify -o dist
+      - uses: actions/upload-artifact@v4
+        with: { name: dist, path: dist/ }
+  publish:
+    needs: test-and-build
+    runs-on: ubuntu-24.04
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: dist, path: dist/ }
+      - uses: pypa/gh-action-pypi-publish@release/v1

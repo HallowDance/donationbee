@@ -13,9 +13,16 @@ A public record of opt-in payments that you can check without trusting whoever r
 
 The normative format and the full trust model are in [`docs/LEDGER_SPEC.md`](docs/LEDGER_SPEC.md).
 
+Live beta: https://bee.theorycorner.com. Check it yourself:
+
+```sh
+pip install donationbee-verify
+vpp-verify --url https://bee.theorycorner.com
+```
+
 ```
 server/       vpp: FastAPI app, ledger, Stripe Connect, passkeys, anchoring, operator CLI
-verifier/     vpp-verify: standalone checker; never imports vpp
+verifier/     donationbee-verify (command: vpp-verify): standalone checker; never imports vpp
 witness/      vpp-witness: standalone C2SP tlog-witness; never imports vpp
 testvectors/  fixtures both implementations must pass (regenerate: server/scripts/gen_vectors.py)
 ```
@@ -127,3 +134,7 @@ uv run vpp ots-upgrade             # completes Bitcoin proofs a few hours after 
 
 The anchors repo should be public, hosted outside your control, with a protected branch that
 blocks force-pushes.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).

@@ -8,3 +8,6 @@ __pycache__/
 .pgdata/
 .beta/
 .stripe-whsec
+# Downloaded account-recovery codes never belong in the repo
+*backup_code*.txt
+*recovery*code*
