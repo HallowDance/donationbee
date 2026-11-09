@@ -1,10 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Recipient sign-in{% endblock %}
+{% from "_bee.html" import bee %}
+{% block title %}Recipient sign-in · {{ brand() }}{% endblock %}
 {% block content %}
-<h1>Recipient sign-in</h1>
-<p class="muted">Sign in with the passkey you published for your organisation.</p>
-<div id="status" hidden></div>
-<div class="card"><button data-action="login">Sign in with a passkey</button></div>
-<p class="muted">First time? Use the onboarding link you received when your profile was created.</p>
+<div class="card bold waiting" style="max-width:520px;margin:0 auto;width:100%">
+  {{ bee(110) }}
+  <h1 style="font-size:2rem">Welcome back to the hive</h1>
+  <p class="muted">Sign in with the passkey you published for your organisation. No password to remember.</p>
+  <div id="status" class="notice" hidden></div>
+  <button data-action="login">Sign in with a passkey</button>
+  <p class="muted" style="font-size:.9rem">First time? Use the onboarding link you got when your profile was created.</p>
+</div>
 <script src="/static/passkey.js"></script>
 {% endblock %}

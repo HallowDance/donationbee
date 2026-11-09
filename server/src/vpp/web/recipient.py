@@ -11,12 +11,10 @@ import hashlib
 import hmac
 import json
 import time
-from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -27,11 +25,10 @@ from ..db import get_session
 from ..db.models import Profile, RecipientCredential
 from ..deps import get_ledger_key
 from ..ledger.store import key_state
-from ..queries import format_money, profile_totals
+from ..queries import profile_totals
+from .templating import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
-templates.env.filters["money"] = lambda v, cur: format_money(v, cur)
 DB = Annotated[Session, Depends(get_session)]
 COOKIE = "vpp_rcpt"
 SESSION_TTL = 8 * 3600

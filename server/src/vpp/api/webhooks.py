@@ -18,6 +18,8 @@ DB = Annotated[Session, Depends(get_session)]
 
 @router.post("/stripe")
 async def stripe_snapshot(request: Request, db: DB) -> dict:
+    if not get_settings().stripe_webhook_secret:
+        raise HTTPException(503, "webhooks are not configured")
     client = get_stripe()
     payload = await request.body()
     try:
@@ -35,6 +37,8 @@ async def stripe_snapshot(request: Request, db: DB) -> dict:
 
 @router.post("/stripe/v2")
 async def stripe_thin(request: Request, db: DB) -> dict:
+    if not get_settings().stripe_thin_webhook_secret:
+        raise HTTPException(503, "webhooks are not configured")
     client = get_stripe()
     payload = await request.body()
     try:

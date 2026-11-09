@@ -163,3 +163,17 @@ def test_ceremony_rejects_single_root(cli_env):
         ],
     )
     assert r.exit_code != 0 and "threshold" in repr(r.exception)
+
+
+def test_demo_seed_builds_a_verifiable_ledger(engine, key):
+    from vpp import demo
+    from vpp.ledger.store import entries_after, to_entry
+    from vpp.ledger.wire import to_wire
+
+    with Session(engine) as s:
+        out = demo.seed(s, key)
+        state = verify_chain([to_wire(to_entry(r)) for r in entries_after(s, 0, 100)])
+    assert state.seq == out["entries"] and len(state.payments) == 7
+    assert len(state.confirmed) == 3  # Ada, Grace, Indie Hacker Co.
+    with Session(engine) as s, pytest.raises(RuntimeError, match="not empty"):
+        demo.seed(s, key)

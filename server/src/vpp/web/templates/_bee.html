@@ -1,0 +1,27 @@
+{# Barnaby, the DonationBee mascot. Inline so his outlines follow the theme's ink colour. #}
+{% macro bee(size=56, mood="happy", cls="") -%}
+<svg class="bee {{ cls }}" width="{{ size }}" height="{{ (size * 0.84)|round|int }}" viewBox="0 0 120 100" role="img" aria-label="{{ brand() }} bee" focusable="false">
+  <g stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58 30 C 50 4, 22 6, 26 26 C 29 38, 46 38, 58 34 Z" fill="var(--wing)"/>
+    <path d="M66 31 C 72 2, 104 4, 98 26 C 94 38, 78 38, 66 35 Z" fill="var(--wing)"/>
+    <ellipse cx="66" cy="62" rx="36" ry="26" fill="var(--honey)"/>
+    <path d="M58 37 C 52 50, 52 74, 58 87" fill="none"/>
+    <path d="M76 37 C 82 50, 82 74, 76 87" fill="none" stroke-width="9"/>
+    <path d="M94 47 C 98 56, 98 68, 94 77" fill="none" stroke-width="7"/>
+    <path d="M101 58 L 113 62 L 101 66" fill="var(--ink)"/>
+    <circle cx="32" cy="60" r="19" fill="var(--honey)"/>
+    <path d="M24 42 C 20 30, 12 28, 8 32" fill="none"/>
+    <path d="M34 41 C 36 28, 44 24, 48 27" fill="none"/>
+  </g>
+  <circle cx="8" cy="32" r="4" fill="var(--ink)"/>
+  <circle cx="48" cy="27" r="4" fill="var(--ink)"/>
+  {% if mood == "sleepy" %}
+  <path d="M19 58 q4 3 8 0 M33 58 q4 3 8 0" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  {% else %}
+  <circle cx="23" cy="57" r="3.6" fill="var(--ink)"/><circle cx="37" cy="57" r="3.6" fill="var(--ink)"/>
+  <circle cx="24.2" cy="55.8" r="1.1" fill="var(--wing)"/><circle cx="38.2" cy="55.8" r="1.1" fill="var(--wing)"/>
+  {% endif %}
+  <path d="M24 66 q6 6 12 0" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="18" cy="66" r="3" fill="var(--blush)"/><circle cx="42" cy="66" r="3" fill="var(--blush)"/>
+</svg>
+{%- endmacro %}

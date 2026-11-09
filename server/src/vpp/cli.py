@@ -283,3 +283,14 @@ def erase_pii(commitment: str) -> None:
         ok = pii.erase(s, commitment)
         s.commit()
         typer.echo("erased" if ok else "not found or already erased")
+
+
+@app.command("demo-seed")
+def demo_seed() -> None:
+    """Fill a FRESH database with the public-beta demo hives (example data only)."""
+    from . import demo
+
+    with session_factory()() as s:
+        out = demo.seed(s, get_ledger_key())
+    typer.echo(f"demo ledger: {out['entries']} entries, genesis {out['genesis']}")
+    typer.echo("Root keys were generated, used once and discarded: this ledger can never rotate.")

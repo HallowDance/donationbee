@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "_bee.html" import bee %}
+{% block title %}{{ brand() }} · proof the money left the hive{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="stack">
+    <span class="eyebrow">Donations · pledges · giveaway payouts</span>
+    <h1>Proof the money <em>left the hive.</em></h1>
+    <p class="lede">"We donated €5k." Cool. {{ brand() }} lets anyone check it. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.</p>
+    <div class="row">
+      {% if hives %}<a class="btn" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
+      <a class="btn ghost" href="#check">Check it yourself</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    {{ bee(260) }}
+    <span class="trail">bzz · signed · witnessed<br>anchored · confirmed</span>
+  </div>
+</section>
+
+<section id="how" class="stack">
+  <h2>How the buzz works</h2>
+  <ol class="steps">
+    <li class="card">
+      <h3>Pay straight to the recipient</h3>
+      <p class="muted">Checkout runs on Stripe, and the money goes into the recipient's own account. We never touch it.</p>
+    </li>
+    <li class="card">
+      <h3>Everyone sees the same ledger</h3>
+      <p class="muted">Each payment is chained and signed. Independent witnesses cosign every update, and it's timestamped into Bitcoin. You get a receipt to keep.</p>
+    </li>
+    <li class="card">
+      <h3>The recipient signs for it</h3>
+      <p class="muted">They tap a passkey tied to their own website. A payment with that mark is <strong>confirmed</strong>, not just <strong>recorded</strong>.</p>
+    </li>
+  </ol>
+</section>
+
+{% if hives %}
+<section class="stack">
+  <h2>Busy hives</h2>
+  <div class="hives">
+    {% for h in hives %}
+    <a class="card hive" href="/p/{{ h.profile.slug }}">
+      <div class="profile-head">
+        <span class="avatar" aria-hidden="true">{{ h.profile.display_name[:1] }}</span>
+        <div class="stack" style="gap:4px">
+          <h3>{{ h.profile.display_name }}</h3>
+          {% if h.profile.domain %}<span class="tag ok">{{ h.profile.domain }}</span>{% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
+        </div>
+      </div>
+      {% for cur, v in h.totals.net_by_currency.items() %}
+      <div><span class="total" style="font-size:1.9rem">{{ v|money(cur) }}</span> <span class="muted">recorded</span></div>
+      {% else %}<p class="muted">Nothing recorded yet.</p>{% endfor %}
+      {% for cur, v in h.totals.confirmed_by_currency.items() %}<span class="tag ok">{{ v|money(cur) }} confirmed</span>{% endfor %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section id="check" class="card bold">
+  <h2>Don't trust the bee</h2>
+  <p class="prose">The verifier is a separate program that shares no code with this site. It recomputes every hash and signature, and it checks witnesses, anchors and recipient signatures against sources we don't control.</p>
+  <pre>pip install vpp-verify
+vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
+  --witness &lt;witness vkey&gt; --min-witnesses 1 \
+  --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
+</section>
+
+<section class="stack">
+  <h2>What even a good bee can't prove</h2>
+  <ul class="limits">
+    <li>A payment the recipient hasn't confirmed is our word that Stripe reported it.</li>
+    <li>A payer and recipient who know each other look like strangers.</li>
+    <li>The operator and a recipient working together could invent one.</li>
+    <li>Money sent back outside Stripe is invisible to any ledger.</li>
+  </ul>
+</section>
+{% endblock %}

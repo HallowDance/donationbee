@@ -38,7 +38,7 @@ async function assert(optionsUrl, verifyUrl, body) {
 
 function status(msg, bad) {
   const el = document.getElementById("status");
-  if (el) { el.textContent = msg; el.className = "card " + (bad ? "bad" : "ok"); el.hidden = false; }
+  if (el) { el.textContent = msg; el.className = "notice " + (bad ? "bad" : "ok"); el.hidden = false; }
 }
 
 async function run(fn) {

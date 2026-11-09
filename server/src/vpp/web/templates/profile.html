@@ -1,43 +1,61 @@
 {% extends "base.html" %}
-{% block title %}{{ profile.display_name }} · payments recorded{% endblock %}
+{% from "_bee.html" import bee %}
+{% block title %}{{ profile.display_name }} · {{ brand() }}{% endblock %}
 {% block content %}
-<h1>{{ profile.display_name }}</h1>
-<p class="muted">
-  {% if profile.domain %}<span class="tag ok">identity: {{ profile.domain }}</span>
-  {% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
-</p>
+<div class="profile-head">
+  <span class="avatar" aria-hidden="true">{{ profile.display_name[:1] }}</span>
+  <div class="stack" style="gap:8px">
+    <h1>{{ profile.display_name }}</h1>
+    <div class="row">
+      {% if profile.domain %}<span class="tag ok">identity: {{ profile.domain }}</span>
+      {% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
+    </div>
+  </div>
+</div>
 
-<div class="card">
-  <div class="muted">Net recorded ({{ totals.count }} payment{{ '' if totals.count == 1 else 's' }}, after refunds and disputes)</div>
-  {% for cur, v in totals.net_by_currency.items() %}<div style="font-size:1.8rem;font-weight:700">{{ v|money(cur) }}</div>
-  {% else %}<div style="font-size:1.4rem">Nothing recorded yet</div>{% endfor %}
-  {% for cur, v in totals.confirmed_by_currency.items() %}<div class="ok">{{ v|money(cur) }} confirmed by the recipient's own passkey</div>{% endfor %}
-  {% if profile.card_payments_status == "active" %}<p><a href="/pay/{{ profile.slug }}">Make a recorded payment →</a></p>{% endif %}
+<div class="card bold">
+  {% for cur, v in totals.net_by_currency.items() %}
+  {% set confirmed = totals.confirmed_by_currency.get(cur, 0) %}
+  <div class="stack" style="gap:6px">
+    <span class="eyebrow">Recorded · {{ totals.count }} payment{{ '' if totals.count == 1 else 's' }}, after refunds</span>
+    <span class="total">{{ v|money(cur) }}</span>
+  </div>
+  <div class="meter" role="img" aria-label="{{ confirmed|money(cur) }} of {{ v|money(cur) }} confirmed"><span style="width: {{ (100 * confirmed / v)|round(1) if v else 0 }}%"></span></div>
+  <div class="legend">
+    <span><i style="background:var(--leaf)"></i>{{ confirmed|money(cur) }} confirmed by the recipient's own passkey</span>
+    <span><i style="background:var(--honey-soft)"></i>{{ (v - confirmed)|money(cur) }} recorded only</span>
+  </div>
+  {% else %}
+  <div class="row">{{ bee(64, "sleepy") }}<div class="stack" style="gap:4px"><strong>Quiet hive so far.</strong><span class="muted">Nothing recorded yet.</span></div></div>
+  {% endfor %}
+  {% if profile.card_payments_status == "active" %}<div><a class="btn" href="/pay/{{ profile.slug }}">Send a recorded payment</a></div>{% endif %}
 </div>
 
 {% if totals.payments %}
+<div class="table-wrap">
 <table>
-  <tr><th>#</th><th>When</th><th>From</th><th class="num">Amount</th></tr>
+  <tr><th>Entry</th><th>When</th><th>From</th><th class="num">Amount</th></tr>
   {% for v in totals.payments %}
   <tr>
-    <td><a href="/e/{{ v.entry.seq }}">{{ v.entry.seq }}</a></td>
+    <td><a class="seq" href="/e/{{ v.entry.seq }}">#{{ v.entry.seq }}</a></td>
     <td>{{ v.body.occurred_at[:10] }}</td>
     <td>{{ payers[v.entry.seq] or "anonymous" }}</td>
     <td class="num">
       {% if v.voided %}<s>{{ v.entry.amount_value|money(v.entry.currency) }}</s> <span class="tag bad">voided</span>
-      {% else %}{{ v.net|money(v.entry.currency) }}
-        {% if v.confirmed_by %} <span class="tag ok">confirmed</span>{% endif %}
-        {% if v.reversed %}<br><span class="muted">of {{ v.entry.amount_value|money(v.entry.currency) }}, {{ v.reversed|money(v.entry.currency) }} reversed</span>{% endif %}
+      {% else %}<strong>{{ v.net|money(v.entry.currency) }}</strong>
+        {% if v.confirmed_by %} <span class="tag ok">confirmed</span>{% else %} <span class="tag warn">recorded</span>{% endif %}
+        {% if v.reversed %}<br><span class="muted">of {{ v.entry.amount_value|money(v.entry.currency) }}, {{ v.reversed|money(v.entry.currency) }} refunded</span>{% endif %}
       {% endif %}
     </td>
   </tr>
   {% endfor %}
 </table>
+</div>
 {% endif %}
 
-<div class="card">
-  <strong>Embed</strong>
-  <p><img src="/badge/{{ profile.slug }}.svg" alt="badge"></p>
-  <pre>&lt;a href="{{ base }}/p/{{ profile.slug }}"&gt;&lt;img src="{{ base }}/badge/{{ profile.slug }}.svg" alt="payments recorded"&gt;&lt;/a&gt;</pre>
+<div class="card honey">
+  <h3>Show off your hive</h3>
+  <div class="row"><img class="badge" src="/badge/{{ profile.slug }}.svg" alt="{{ brand() }} badge"><span class="muted">Turns green once you've confirmed every payment.</span></div>
+  <pre>&lt;a href="{{ base }}/p/{{ profile.slug }}"&gt;&lt;img src="{{ base }}/badge/{{ profile.slug }}.svg" alt="{{ brand() }}"&gt;&lt;/a&gt;</pre>
 </div>
 {% endblock %}

@@ -9,6 +9,10 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://vpp@localhost/vpp"
     public_base_url: str = "http://localhost:8000"
+    # Shown in the UI and on badges. The ledger format itself never mentions it.
+    brand_name: str = "DonationBee"
+    # Optional site-wide notice, e.g. "Beta: demo data, test payments only."
+    banner: str = ""
     # C2SP log origin: also the checkpoint key name. Schema-less URL form, no spaces or '+'.
     origin: str = "localhost/vpp-dev"
 

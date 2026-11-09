@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from .api import public, webhooks
@@ -14,11 +13,6 @@ app.include_router(webhooks.router)
 app.include_router(web.router)
 app.include_router(recipient.router)
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "web" / "static"), name="static")
-
-
-@app.get("/", include_in_schema=False)
-def index():
-    return RedirectResponse("/api/docs")
 
 
 @app.middleware("http")

@@ -220,3 +220,18 @@ def test_entries_pagination(app_client):
     assert [e["seq"] for e in page["entries"]] == [3, 4] and page["next_after"] == 4
     page = app_client.get("/api/v1/entries", params={"after": 4, "limit": 2}).json()
     assert page["entries"] == [] and page["next_after"] is None
+
+
+def test_entry_page_shows_the_envelope_time_in_utc(app_client):
+    import json as _json
+
+    c = app_client
+    env = c.get("/api/v1/entries/1").json()
+    shown = _json.loads(base64_decode(env["envelope"]))["created_at"]  # e.g. 2026-11-09T13:51:35Z
+    assert shown.replace("T", " ").replace("Z", " UTC") in c.get("/e/1").text
+
+
+def base64_decode(s: str) -> bytes:
+    import base64
+
+    return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))

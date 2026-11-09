@@ -1,11 +1,9 @@
 import json
 from decimal import Decimal, InvalidOperation
-from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse, Response
-from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -20,12 +18,12 @@ from ..stripe_connect.checkout import NotReady, create_checkout
 from ..stripe_connect.onboarding import check_link_token, onboarding_url, refresh_status
 from ..witnessing import latest_cosigned_size
 from .recipient import recipient_session_redirect
+from .templating import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
-templates.env.filters["money"] = lambda v, cur: format_money(v, cur)
 DB = Annotated[Session, Depends(get_session)]
 
+PAYMENTS_OFF = "Payments aren't switched on in this beta yet. Check back soon!"
 MIN_AMOUNT, MAX_AMOUNT = 100, 10_000_000  # minor units: 1.00 .. 100,000.00
 
 
@@ -34,6 +32,19 @@ def _profile(db: Session, slug: str) -> Profile:
     if p is None:
         raise HTTPException(404, "no such profile")
     return p
+
+
+@router.get("/")
+def index(request: Request, db: DB):
+    hives = []
+    for p in db.scalars(select(Profile).order_by(Profile.created_at).limit(50)):
+        hives.append({"profile": p, "totals": profile_totals(db, p.id)})
+    hives.sort(key=lambda h: -sum(h["totals"].net_by_currency.values()))
+    return templates.TemplateResponse(
+        request,
+        "index.html",
+        {"hives": hives[:6], "base": get_settings().public_base_url.rstrip("/")},
+    )
 
 
 @router.get("/p/{slug}")
@@ -91,7 +102,8 @@ def entry_page(request: Request, db: DB, seq: int):
 @router.get("/pay/{slug}")
 def pay_form(request: Request, db: DB, slug: str):
     p = _profile(db, slug)
-    return templates.TemplateResponse(request, "pay.html", {"profile": p, "error": None})
+    error = None if get_settings().stripe_secret_key else PAYMENTS_OFF
+    return templates.TemplateResponse(request, "pay.html", {"profile": p, "error": error})
 
 
 def _parse_amount(raw: str) -> int | None:
@@ -127,6 +139,8 @@ def pay_submit(
         return fail("Enter an amount between 1.00 and 100,000.00 EUR.")
     if not consent:
         return fail("Please confirm that this payment will be published.")
+    if not get_settings().stripe_secret_key:
+        return fail(PAYMENTS_OFF)
     try:
         url = create_checkout(
             db,
@@ -173,7 +187,11 @@ def badge_svg(db: DB, slug: str):
         totals.confirmed_by_currency == totals.net_by_currency
     )
     return Response(
-        badge.render(value, confirmed_by=p.domain if all_confirmed else None),
+        badge.render(
+            value,
+            confirmed_by=p.domain if all_confirmed else None,
+            brand=get_settings().brand_name,
+        ),
         media_type="image/svg+xml",
         headers={"Cache-Control": "max-age=300"},
     )
