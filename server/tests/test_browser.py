@@ -264,3 +264,21 @@ def test_pay_chips_and_live_preview(live_app):
         assert "12.00 EUR" in page.inner_text("[data-p-tip]")  # €10 donation + €2 tip
         browser.close()
     assert problems == [], problems
+
+
+@pytest.mark.parametrize("width", [1280, 390])
+def test_landing_flair_works_and_never_scrolls_sideways(live_app, width):
+    base, _ = live_app
+    problems = []
+    with playwright.sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=CHROMIUM, headless=True)
+        page = browser.new_page(viewport={"width": width, "height": 900})
+        page.on("console", lambda m: m.type in ("error", "warning") and problems.append(m.text))
+        page.goto(base + "/")
+        assert "taken from donations" in page.inner_text(".ticker")
+        page.click("[data-bee]")
+        expect(page.locator("[data-bubble]")).to_be_visible()
+        assert page.inner_text("[data-bubble]").startswith("Bzz!")
+        assert page.evaluate("document.documentElement.scrollWidth") == width
+        browser.close()
+    assert problems == [], problems

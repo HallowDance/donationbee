@@ -11,6 +11,7 @@ from .. import badge, pii
 from ..config import get_settings
 from ..db import get_session
 from ..db.models import Anchor, Checkpoint, Cosignature, LedgerEntry, Profile
+from ..ledger.store import head
 from ..queries import format_money, ledger_rows, profile_totals
 from ..receipts import seq_for_session
 from ..stripe_connect import get_stripe
@@ -41,10 +42,21 @@ def index(request: Request, db: DB):
     for p in db.scalars(select(Profile).order_by(Profile.created_at).limit(50)):
         hives.append({"profile": p, "totals": profile_totals(db, p.id)})
     hives.sort(key=lambda h: -sum(h["totals"].net_by_currency.values()))
+    # Real numbers for the ticker (EUR only for now; that's all the beta takes).
+    recorded = sum(h["totals"].net_by_currency.get("EUR", 0) for h in hives)
+    confirmed = sum(h["totals"].confirmed_by_currency.get("EUR", 0) for h in hives)
+    last = head(db)
+    stats = {
+        "recorded": format_money(recorded, "EUR"),
+        "confirmed_pct": round(100 * confirmed / recorded) if recorded else 0,
+        "payments": sum(h["totals"].count for h in hives),
+        "entries": last.seq if last else 0,
+        "hives": len(hives),
+    }
     return templates.TemplateResponse(
         request,
         "index.html",
-        {"hives": hives[:6], "base": get_settings().public_base_url.rstrip("/")},
+        {"hives": hives[:6], "stats": stats, "base": get_settings().public_base_url.rstrip("/")},
     )
 
 

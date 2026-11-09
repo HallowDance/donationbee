@@ -311,3 +311,77 @@ table.ledger tr.row-ok .c-seq .seq::after { content: " ✓"; }
 .tip-chip:has(input:checked) { background: var(--honey); }
 .tip-chip:has(input:focus-visible) { outline: 3px solid var(--honey-deep); outline-offset: 2px; }
 .preview-total { font-size: .92rem; }
+
+/* ---------- Landing flair ---------- */
+html, body { overflow-x: clip; } /* full-bleed bands below use the 50vw trick */
+.hero h1 em {
+  background: linear-gradient(transparent 58%, var(--honey) 58%, var(--honey) 92%, transparent 92%) no-repeat 0 0 / 100% 100%;
+}
+.hero-art { position: relative; display: grid; place-items: center; min-height: 280px; }
+.flight { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.bee-button { all: unset; cursor: pointer; position: relative; z-index: 1; border-radius: 50%; }
+/* The bee is a <button>, so keep the chunky global button hover/press styles off it. */
+.bee-button:hover, .bee-button:active { box-shadow: none; transform: none; background: none; border: 0; }
+.bee-button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 6px; }
+.bee-button .bee { width: min(100%, 240px); height: auto; transform: rotate(-8deg); }
+.sticker {
+  position: absolute; top: 4%; right: 2%; z-index: 2; width: 92px; height: 92px; display: grid; place-content: center; text-align: center;
+  background: var(--ink); color: var(--honey); transform: rotate(14deg);
+  clip-path: polygon(50% 0, 61% 11%, 75% 6%, 79% 21%, 94% 25%, 89% 39%, 100% 50%, 89% 61%, 94% 75%, 79% 79%, 75% 94%, 61% 89%, 50% 100%, 39% 89%, 25% 94%, 21% 79%, 6% 75%, 11% 61%, 0 50%, 11% 39%, 6% 25%, 21% 21%, 25% 6%, 39% 11%);
+  font: 700 0.8rem/1 var(--font-display); text-transform: uppercase; letter-spacing: .06em;
+}
+.sticker b { display: block; font: 800 1.7rem/1 var(--font-display); letter-spacing: -0.02em; }
+.bubble {
+  position: absolute; z-index: 3; left: 0; bottom: -6px; max-width: 260px; margin: 0;
+  background: var(--surface); border: 2.5px solid var(--ink); border-radius: 16px; padding: 10px 14px;
+  box-shadow: 4px 4px 0 var(--ink); font-weight: 600; font-size: .95rem;
+}
+.bubble::after { content: ""; position: absolute; top: -12px; left: 46px; width: 18px; height: 18px; background: var(--surface); border-left: 2.5px solid var(--ink); border-top: 2.5px solid var(--ink); transform: rotate(45deg); }
+
+/* Clip sideways only, so the scrolling track can't widen the page but the drip can hang below. */
+.ticker { position: relative; margin-inline: calc(50% - 50vw); margin-block: 8px 34px; background: var(--honey); border-top: 3px solid var(--ink); overflow-x: clip; }
+.ticker-track { display: flex; width: max-content; padding-block: 14px 12px; }
+.ticker-list { display: flex; gap: 34px; margin: 0; padding: 0 17px; list-style: none; white-space: nowrap; color: #1b1408; font: 600 1rem/1.2 var(--font-display); }
+.ticker-list li { display: flex; align-items: center; gap: 8px; }
+.ticker-list li::before { content: ""; width: 10px; height: 11px; background: #1b1408; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); margin-right: 26px; }
+.ticker-list b { font-weight: 800; }
+.drip { position: absolute; left: 0; right: 0; top: 100%; width: 100%; height: 30px; margin-top: -3px; }
+.steps li { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.steps li:hover { transform: rotate(-1deg) translateY(-3px); border-color: var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+.steps li:nth-child(2):hover { transform: rotate(1deg) translateY(-3px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 em { animation: brush .9s .25s cubic-bezier(.2,.8,.2,1) backwards; }
+  @keyframes brush { from { background-size: 0% 100%; } }
+  .bee-button .bee { animation: hover 3.2s ease-in-out infinite; }
+  .bee-button.loop .bee { animation: loop .9s cubic-bezier(.4,0,.2,1); }
+  @keyframes loop {
+    0% { transform: rotate(-8deg); } 40% { transform: translate(-30px, -50px) rotate(-200deg) scale(.9); }
+    70% { transform: translate(20px, -20px) rotate(-330deg); } 100% { transform: rotate(-368deg); }
+  }
+  .sticker { animation: slap .5s .6s cubic-bezier(.3,1.6,.5,1) backwards; }
+  @keyframes slap { from { transform: rotate(40deg) scale(2.2); opacity: 0; } }
+  .bubble.pop { animation: pop .3s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
+  .flight .drop { animation: drop 3.2s ease-in infinite; transform-box: fill-box; transform-origin: center; }
+  .flight .d2 { animation-delay: 1.1s; } .flight .d3 { animation-delay: 2.2s; }
+  @keyframes drop { 0%, 60% { opacity: 0; transform: translateY(-14px) scale(.5); } 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(30px); } }
+  .ticker-track { animation: ticker 38s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+  .steps li:hover::before { animation: spin .6s ease; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { flex-wrap: wrap; width: auto; }
+  .ticker-list[aria-hidden="true"] { display: none; }
+  .ticker-list { flex-wrap: wrap; white-space: normal; row-gap: 8px; }
+}
+@media (max-width: 720px) {
+  .hero-art { min-height: 200px; }
+  .bee-button .bee { width: 150px; }
+  .sticker { width: 74px; height: 74px; top: 0; right: 8%; }
+  .sticker b { font-size: 1.35rem; }
+  .bubble { position: relative; left: auto; bottom: auto; max-width: none; margin-top: 18px; }
+  .hero-art { min-height: 0; }
+}

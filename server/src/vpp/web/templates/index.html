@@ -12,9 +12,36 @@
       {% if hives %}<a class="btn ghost" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
     </div>
   </div>
-  <div class="hero-art" aria-hidden="true">
-    {{ bee(260) }}
+  <div class="hero-art">
+    <svg class="flight" viewBox="0 0 300 220" aria-hidden="true" focusable="false">
+      <path d="M10 200 C 60 120, 120 210, 170 140 S 260 60, 290 30" fill="none" stroke="var(--honey-deep)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <path class="drop" d="M60 158l6 3.5v7l-6 3.5-6-3.5v-7z" fill="var(--honey)" stroke="var(--ink)" stroke-width="2"/>
+      <path class="drop d2" d="M150 158l6 3.5v7l-6 3.5-6-3.5v-7z" fill="var(--honey)" stroke="var(--ink)" stroke-width="2"/>
+      <path class="drop d3" d="M222 92l6 3.5v7l-6 3.5-6-3.5v-7z" fill="var(--honey)" stroke="var(--ink)" stroke-width="2"/>
+    </svg>
+    <span class="sticker" aria-hidden="true"><b>0%</b>cut</span>
+    <button type="button" class="bee-button" data-bee aria-label="Ask the bee something">{{ bee(240) }}</button>
+    <p class="bubble" data-bubble role="status" aria-live="polite" hidden></p>
   </div>
+</section>
+
+<section class="ticker" aria-label="The ledger right now">
+  <div class="ticker-track">
+    {% for copy in [0, 1] %}
+    <ul class="ticker-list"{% if copy %} aria-hidden="true"{% endif %}>
+      <li><b>{{ stats.recorded }}</b> recorded</li>
+      <li><b>{{ stats.payments }}</b> payment{{ '' if stats.payments == 1 else 's' }}</li>
+      <li><b>{{ stats.confirmed_pct }}%</b> confirmed by recipients</li>
+      <li><b>{{ stats.entries }}</b> ledger entries</li>
+      <li><b>{{ stats.hives }}</b> hive{{ '' if stats.hives == 1 else 's' }}</li>
+      <li><b>0%</b> taken from donations</li>
+      <li><b>100%</b> open source</li>
+    </ul>
+    {% endfor %}
+  </div>
+  <svg class="drip" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path d="M0 0 H1200 V8 C1150 8 1148 30 1120 30 C1092 30 1092 8 1040 8 C980 8 975 38 940 38 C905 38 905 8 840 8 C790 8 790 22 760 22 C730 22 730 8 660 8 C600 8 598 34 560 34 C522 34 522 8 460 8 C410 8 408 26 380 26 C352 26 352 8 280 8 C230 8 226 36 190 36 C154 36 154 8 100 8 C60 8 58 20 36 20 C14 20 14 8 0 8 Z" fill="var(--honey)" stroke="var(--ink)" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  </svg>
 </section>
 
 <section id="how" class="stack">
@@ -43,6 +70,7 @@
   </div>
 </section>
 <script type="module" src="/static/js/playground.js"></script>
+<script type="module" src="/static/js/landing.js"></script>
 
 {% if hives %}
 <section class="stack">
