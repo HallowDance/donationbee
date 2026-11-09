@@ -31,6 +31,13 @@
     <label for="note">Public note <span class="muted">(optional)</span></label>
     <input type="text" id="note" name="note" maxlength="280" placeholder="For the winter drive">
   </div>
+  <fieldset class="field tip-field">
+    <legend>Tip for {{ brand() }} <span class="muted">(optional)</span></legend>
+    <p class="muted" style="font-size:.9rem">{{ brand() }} takes nothing from your donation. A tip helps keep it running, and goes on top.</p>
+    <div class="chips" role="radiogroup">
+      {% for t in tips %}<label class="chip tip-chip"><input type="radio" name="tip" value="{{ t }}" id="tip-{{ t }}"{% if t == 0 %} checked{% endif %}>{{ "No tip" if t == 0 else "€" ~ (t // 100) }}</label>{% endfor %}
+    </div>
+  </fieldset>
   <label class="check"><input type="checkbox" id="consent" name="consent" value="1" required>
     <span>I understand this payment will be published. If I give a name or note, they'll be shown too. I can ask for them to be removed later, but the record of the payment stays.</span></label>
   <div><button type="submit">Continue to Stripe</button></div>
@@ -46,6 +53,7 @@
     </div>
     <span class="preview-amount" data-p-amount>…</span>
   </div>
+  <p class="preview-total" data-p-tip hidden>You'll pay <strong data-p-total></strong> in total: the donation above, plus a <span data-p-tip-amount></span> tip for {{ brand() }}. The tip isn't part of the donation and isn't recorded as one.</p>
   <p class="muted" style="font-size:.9rem">It's signed, linked to the entry before it, and shown to everyone. Your name and note can be erased later. The payment itself stays.</p>
 </aside>
 </div>

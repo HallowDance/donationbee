@@ -264,7 +264,7 @@ def test_recipient_guide_page(app_client):
         "Before you start",
         "Photo ID",
         "two-step verification",
-        "1% DonationBee fee",
+        "takes no cut",
         "/.well-known/vpp.json",
         'href="/recipient/login"',
     ):
@@ -281,3 +281,58 @@ def test_pay_page_shows_test_card_only_in_test_mode(app_client, monkeypatch):
     monkeypatch.setenv("VPP_STRIPE_LIVEMODE", "true")
     get_settings.cache_clear()
     assert "4242" not in app_client.get("/pay/charity").text
+
+
+def test_tip_is_not_recorded_as_part_of_the_donation(app_client):
+    c = app_client
+    obj = checkout(c, amount=5200, vpp_amount="5000")  # €50 donation + €2 tip
+    assert send(c, "checkout.session.completed", obj).json()["outcome"] == "recorded:payment"
+    assert c.get("/api/v1/profiles/charity").json()["net_by_currency"] == {"EUR": 5000}
+
+
+def test_donation_larger_than_charge_is_refused(app_client):
+    obj = checkout(app_client, amount=1000, vpp_amount="9999")
+    assert send(app_client, "checkout.session.completed", obj).json()["outcome"] == (
+        "ignored:amount_mismatch"
+    )
+
+
+def test_pay_form_rejects_made_up_tips(app_client):
+    r = app_client.post("/pay/charity", data={"amount": "10", "consent": "1", "tip": "123"})
+    assert r.status_code == 400 and "tip options" in r.text
+
+
+class _FakeCheckoutStripe:
+    def __init__(self):
+        self.calls = []
+        self.v1 = SimpleNamespace(
+            checkout=SimpleNamespace(sessions=SimpleNamespace(create=self._create))
+        )
+
+    def _create(self, params, options):
+        self.calls.append((params, options))
+        return SimpleNamespace(url="https://checkout.stripe.test/x")
+
+
+@pytest.mark.parametrize("tip", [0, 200])
+def test_checkout_takes_exactly_the_tip_and_nothing_else(ledger, monkeypatch, tip):
+    from sqlalchemy.orm import Session
+    from vpp.stripe_connect import checkout as co
+
+    monkeypatch.setattr(co, "refresh_status", lambda *a: "active")
+    fake = _FakeCheckoutStripe()
+    with Session(ledger) as s:
+        p = Profile(id="prof_t", slug="t", display_name="T", stripe_account_id="acct_t")
+        s.add(p)
+        s.flush()
+        co.create_checkout(
+            s, fake, p, amount=2500, currency="EUR", payer_name=None, note=None, tip=tip
+        )
+    params, options = fake.calls[0]
+    assert options == {"stripe_account": "acct_t"}
+    assert [li["price_data"]["unit_amount"] for li in params["line_items"]] == (
+        [2500, 200] if tip else [2500]
+    )
+    pid = params["payment_intent_data"]
+    assert pid.get("application_fee_amount") == (200 if tip else None)  # no fee without a tip
+    assert pid["metadata"]["vpp_amount"] == "2500"

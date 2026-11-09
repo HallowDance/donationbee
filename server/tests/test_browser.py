@@ -259,5 +259,8 @@ def test_pay_chips_and_live_preview(live_app):
         assert page.is_visible("[data-p-note]") and "for the bees" in page.inner_text(
             "[data-p-note]"
         )
+        assert not page.is_visible("[data-p-tip]")  # no tip is the default
+        page.check("#tip-200")
+        assert "12.00 EUR" in page.inner_text("[data-p-tip]")  # €10 donation + €2 tip
         browser.close()
     assert problems == [], problems

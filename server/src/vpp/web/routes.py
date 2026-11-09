@@ -14,7 +14,7 @@ from ..db.models import Anchor, Checkpoint, Cosignature, LedgerEntry, Profile
 from ..queries import format_money, ledger_rows, profile_totals
 from ..receipts import seq_for_session
 from ..stripe_connect import get_stripe
-from ..stripe_connect.checkout import NotReady, create_checkout
+from ..stripe_connect.checkout import TIP_CHOICES, NotReady, create_checkout
 from ..stripe_connect.onboarding import check_link_token, onboarding_url, refresh_status
 from ..witnessing import latest_cosigned_size
 from .recipient import recipient_session_redirect
@@ -50,11 +50,7 @@ def index(request: Request, db: DB):
 
 @router.get("/recipients")
 def recipients_guide(request: Request):
-    return templates.TemplateResponse(
-        request,
-        "recipients.html",
-        {"fee_pct": f"{get_settings().application_fee_bps / 100:g}"},
-    )
+    return templates.TemplateResponse(request, "recipients.html", {})
 
 
 @router.get("/ledger")
@@ -140,7 +136,9 @@ def entry_page(request: Request, db: DB, seq: int):
 def pay_form(request: Request, db: DB, slug: str):
     p = _profile(db, slug)
     error = None if get_settings().stripe_secret_key else PAYMENTS_OFF
-    return templates.TemplateResponse(request, "pay.html", {"profile": p, "error": error})
+    return templates.TemplateResponse(
+        request, "pay.html", {"profile": p, "error": error, "tips": TIP_CHOICES}
+    )
 
 
 def _parse_amount(raw: str) -> int | None:
@@ -163,17 +161,21 @@ def pay_submit(
     payer_name: Annotated[str, Form()] = "",
     note: Annotated[str, Form()] = "",
     consent: Annotated[str, Form()] = "",
+    tip: Annotated[str, Form()] = "0",
 ):
     p = _profile(db, slug)
 
     def fail(msg: str):
         return templates.TemplateResponse(
-            request, "pay.html", {"profile": p, "error": msg}, status_code=400
+            request, "pay.html", {"profile": p, "error": msg, "tips": TIP_CHOICES}, status_code=400
         )
 
     cents = _parse_amount(amount)
     if cents is None:
         return fail("Enter an amount between 1.00 and 100,000.00 EUR.")
+    tip_cents = int(tip) if tip.isdigit() else -1
+    if tip_cents not in TIP_CHOICES:
+        return fail("Choose one of the tip options.")
     if not consent:
         return fail("Please confirm that this payment will be published.")
     if not get_settings().stripe_secret_key:
@@ -187,6 +189,7 @@ def pay_submit(
             currency="EUR",
             payer_name=payer_name.strip()[:100] or None,
             note=note.strip()[:280] or None,
+            tip=tip_cents,
         )
     except NotReady as e:
         return fail(str(e))

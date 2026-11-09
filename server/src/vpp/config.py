@@ -40,7 +40,6 @@ class Settings(BaseSettings):
     stripe_account_country: str = "bg"
     # Events whose livemode differs are ignored, so test payments never reach a live ledger.
     stripe_livemode: bool = False
-    application_fee_bps: int = 100  # 1%
 
     anchors_repo_path: Path | None = None
     anchors_push: bool = True

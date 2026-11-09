@@ -100,12 +100,20 @@ def _on_checkout_paid(session, key, event, cs, account) -> str:
         return "ignored:profile_mismatch"
     if _recorded(session, cs.payment_intent):
         return "already_recorded"
+    # The donation is what the ledger records; any optional tip on top is DonationBee's, not the
+    # recipient's. Older sessions without vpp_amount were donation-only.
+    donation = int(md["vpp_amount"]) if str(md.get("vpp_amount", "")).isdigit() else cs.amount_total
+    if not 0 < donation <= cs.amount_total:
+        log.warning(
+            "checkout %s: donation %s doesn't fit total %s", cs.id, donation, cs.amount_total
+        )
+        return "ignored:amount_mismatch"
 
     append(
         session,
         Payment(
             recipient=profile.id,
-            amount=Money(value=cs.amount_total, currency=cs.currency.upper()),
+            amount=Money(value=donation, currency=cs.currency.upper()),
             occurred_at=format_ts(datetime.fromtimestamp(event.created, UTC)),
             payer=md.get("vpp_payer"),
             note=md.get("vpp_note"),
