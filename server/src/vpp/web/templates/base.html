@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Payment Proofs{% endblock %}</title>
+{% block head %}{% endblock %}
+<style>
+  :root { --bg:#fbfbfa; --fg:#1d1d1b; --muted:#6b6b66; --line:#e4e4e0; --ok:#2e7d32; --warn:#8d6e00; --bad:#b3261e; --card:#fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#151514; --fg:#ececea; --muted:#9a9a94; --line:#2c2c2a; --ok:#81c784; --warn:#e0c060; --bad:#f28b82; --card:#1c1c1b; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .muted { color: var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin:16px 0; }
+  .tag { display:inline-block; font-size:.8rem; padding:1px 8px; border-radius:99px; border:1px solid currentColor; }
+  .ok { color:var(--ok); } .warn { color:var(--warn); } .bad { color:var(--bad); }
+  table { width:100%; border-collapse: collapse; }
+  td, th { text-align:left; padding:8px 4px; border-bottom:1px solid var(--line); vertical-align: top; }
+  th { font-weight:600; font-size:.85rem; color:var(--muted); }
+  .num { text-align:right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  code, pre { font-family: ui-monospace, monospace; font-size:.85rem; }
+  .hash { word-break: break-all; }
+  pre { overflow-x:auto; background:var(--bg); padding:12px; border-radius:6px; border:1px solid var(--line); }
+  a { color: inherit; }
+  label { display:block; margin: 12px 0 4px; font-weight: 600; }
+  input[type=text] { width:100%; padding:8px; font:inherit; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); }
+  button { margin-top:16px; padding:10px 18px; font:inherit; border:0; border-radius:6px; background:var(--fg); color:var(--bg); cursor:pointer; }
+  .check { font-weight: 400; display:flex; gap:8px; align-items:flex-start; }
+  footer { margin-top:40px; font-size:.85rem; }
+</style>
+</head>
+<body><main>
+{% block content %}{% endblock %}
+<footer class="muted">Entries are hash-chained, signed, cosigned by independent witnesses and anchored to
+Bitcoin. Recipients confirm payments with their own passkeys. Check all of it yourself with <code>vpp-verify</code>.</footer>
+</main></body>
+</html>

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ profile.display_name }} · recipient{% endblock %}
+{% block content %}
+<h1>{{ profile.display_name }}</h1>
+<p class="muted">Recipient area · <a href="/p/{{ profile.slug }}">public profile</a></p>
+<div id="status" hidden></div>
+
+<div class="card">
+  <strong>1. Your passkeys</strong>
+  <p class="muted">Confirmations are signed by your passkey. The operator never holds it, and anyone can check the signatures.</p>
+  {% for c in creds %}
+    <div style="margin:12px 0">
+      <code class="hash">{{ c.fingerprint }}</code><br>
+      {% if c.key_seq %}<span class="tag ok">published · entry <a href="/e/{{ c.key_seq }}">#{{ c.key_seq }}</a></span>
+      {% else %}<span class="tag warn">pending domain proof</span>{% endif %}
+    </div>
+  {% else %}<p>No passkeys yet.</p>{% endfor %}
+  <button data-action="register">Add a passkey</button>
+</div>
+
+{% set pending = creds | rejectattr("key_seq") | list %}
+{% if pending %}
+<div class="card">
+  <strong>2. Prove your domain</strong>
+  <p>Publish this file at <code>https://&lt;your-domain&gt;/.well-known/vpp.json</code>:</p>
+  <pre>{{ well_known }}</pre>
+  {% if profile.domain %}<p class="muted">Your identity domain is <strong>{{ profile.domain }}</strong>.</p>{% endif %}
+  {% for c in pending %}
+    <label for="domain-{{ c.credential_id }}">Domain for <code>{{ c.fingerprint[:14] }}…</code></label>
+    <input type="text" id="domain-{{ c.credential_id }}" value="{{ profile.domain or '' }}" placeholder="example.org">
+    <button data-action="publish" data-cred="{{ c.credential_id }}">Check and publish</button>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="card">
+  <strong>3. Confirm payments you received</strong>
+  {% if not published %}<p class="muted">Publish a passkey first.</p>
+  {% elif not unconfirmed %}<p>Everything is confirmed.</p>
+  {% else %}
+  <table>
+    <tr><th></th><th>#</th><th>When</th><th class="num">Amount</th></tr>
+    {% for v in unconfirmed %}
+    <tr><td><input type="checkbox" name="ref" value="{{ v.entry.seq }}" checked></td>
+      <td><a href="/e/{{ v.entry.seq }}">{{ v.entry.seq }}</a></td><td>{{ v.body.occurred_at[:10] }}</td>
+      <td class="num">{{ v.net|money(v.entry.currency) }}</td></tr>
+    {% endfor %}
+  </table>
+  <p class="muted">Only confirm payments that actually reached your Stripe account.</p>
+  <button data-action="confirm">Confirm selected with passkey</button>
+  {% endif %}
+</div>
+<form method="post" action="/recipient/logout"><button type="submit">Sign out</button></form>
+<script src="/static/passkey.js"></script>
+{% endblock %}

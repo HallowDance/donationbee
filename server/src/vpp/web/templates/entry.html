@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Entry #{{ e.seq }}{% endblock %}
+{% block content %}
+<h1>Entry #{{ e.seq }} <span class="muted" style="font-weight:400">· {{ e.type }}</span></h1>
+{% if recipient %}<p>To <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>
+  {% if e.amount_value is not none %} · <strong>{{ e.amount_value|money(e.currency) }}</strong>{% endif %}</p>{% endif %}
+{% if revealed.payer %}<p>From {{ revealed.payer }}</p>{% endif %}
+{% if revealed.note %}<p class="muted">“{{ revealed.note }}”</p>{% endif %}
+
+<div class="card">
+  <table>
+    <tr><th>Recorded</th><td>{{ e.created_at.strftime("%Y-%m-%d %H:%M:%S UTC") }}</td></tr>
+    <tr><th>Hash</th><td><code class="hash">{{ e.hash.hex() }}</code></td></tr>
+    <tr><th>Previous</th><td><code class="hash">{% if e.seq > 1 %}<a href="/e/{{ e.seq - 1 }}">{{ e.prev_hash.hex() }}</a>{% else %}{{ e.prev_hash.hex() }}{% endif %}</code></td></tr>
+    <tr><th>Signed by</th><td><code>{{ e.key_id }}</code> (<a href="/api/v1/keys">keys</a>)</td></tr>
+    <tr><th>Anchor</th><td>
+      {% if anchor %}Covered by checkpoint {{ anchor.size }}
+        {% if anchor.ots_status == "complete" %}<span class="tag ok">in Bitcoin</span>
+        {% elif anchor.ots_status == "pending" %}<span class="tag warn">Bitcoin pending</span>{% endif %}
+        {% if anchor.git_path %}<br><span class="muted">anchors repo <code>{{ anchor.git_path }}</code></span>{% endif %}
+      {% else %}<span class="tag warn">not anchored yet</span> <span class="muted">(anchors are published hourly)</span>{% endif %}
+    </td></tr>
+    <tr><th>Witnesses</th><td>
+      {% if witnessed %}<span class="tag ok">cosigned</span> a witnessed checkpoint includes this entry
+      {% else %}<span class="tag warn">not yet witnessed</span>{% endif %}
+    </td></tr>
+  </table>
+</div>
+
+<details class="card"><summary>Signed envelope</summary><pre>{{ envelope_pretty }}</pre>
+<p class="muted">Names and notes appear only as salted commitments (<code>c1:…</code>). The readable text above comes from a store that can be erased. Erasing it doesn't break the chain.</p></details>
+
+<div class="card"><strong>Verify it yourself</strong>
+<pre>pip install vpp-verify
+vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
+  --witness &lt;witness vkey&gt; --min-witnesses 1 \
+  --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
+{% if e.type == "payment" %}<p class="muted">Paid this? <a href="/api/v1/receipts/{{ e.seq }}">Download a receipt</a>.</p>{% endif %}
+<p class="muted">Raw entry: <a href="/api/v1/entries/{{ e.seq }}">/api/v1/entries/{{ e.seq }}</a></p></div>
+{% endblock %}

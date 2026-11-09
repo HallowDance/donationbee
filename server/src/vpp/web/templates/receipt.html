@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Your receipt{% endblock %}
+{% block head %}{% if not e or not witnessed %}<meta http-equiv="refresh" content="5">{% endif %}{% endblock %}
+{% block content %}
+{% if not e %}
+<h1>Thanks! Recording your payment…</h1>
+<p class="muted">Stripe is confirming the payment. This page refreshes on its own.</p>
+{% else %}
+<h1>Payment recorded</h1>
+<p>{{ e.amount_value|money(e.currency) }} to <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>, entry <a href="/e/{{ e.seq }}">#{{ e.seq }}</a>.</p>
+<div class="card">
+  <strong>Keep your receipt</strong>
+  <p>The receipt is a file only you hold. It shows the ledger signed a checkpoint that includes your payment.
+  If the payment is ever removed or changed, the receipt is proof the operator cheated.</p>
+  {% if witnessed %}<p><span class="tag ok">witnessed</span> Independent witnesses have cosigned a checkpoint that includes it.</p>
+  {% else %}<p><span class="tag warn">waiting for witnesses</span> Download it once witnessed for the strongest receipt (this page refreshes).</p>{% endif %}
+  <p><a href="/api/v1/receipts/{{ e.seq }}">Download receipt.json</a></p>
+  <pre>vpp-verify --url {{ base }} --receipt vpp-receipt-{{ e.seq }}.json --witness &lt;witness vkey&gt; --min-witnesses 1</pre>
+</div>
+{% endif %}
+{% endblock %}

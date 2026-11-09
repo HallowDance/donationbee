@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ profile.display_name }} · payments recorded{% endblock %}
+{% block content %}
+<h1>{{ profile.display_name }}</h1>
+<p class="muted">
+  {% if profile.domain %}<span class="tag ok">identity: {{ profile.domain }}</span>
+  {% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
+</p>
+
+<div class="card">
+  <div class="muted">Net recorded ({{ totals.count }} payment{{ '' if totals.count == 1 else 's' }}, after refunds and disputes)</div>
+  {% for cur, v in totals.net_by_currency.items() %}<div style="font-size:1.8rem;font-weight:700">{{ v|money(cur) }}</div>
+  {% else %}<div style="font-size:1.4rem">Nothing recorded yet</div>{% endfor %}
+  {% for cur, v in totals.confirmed_by_currency.items() %}<div class="ok">{{ v|money(cur) }} confirmed by the recipient's own passkey</div>{% endfor %}
+  {% if profile.card_payments_status == "active" %}<p><a href="/pay/{{ profile.slug }}">Make a recorded payment →</a></p>{% endif %}
+</div>
+
+{% if totals.payments %}
+<table>
+  <tr><th>#</th><th>When</th><th>From</th><th class="num">Amount</th></tr>
+  {% for v in totals.payments %}
+  <tr>
+    <td><a href="/e/{{ v.entry.seq }}">{{ v.entry.seq }}</a></td>
+    <td>{{ v.body.occurred_at[:10] }}</td>
+    <td>{{ payers[v.entry.seq] or "anonymous" }}</td>
+    <td class="num">
+      {% if v.voided %}<s>{{ v.entry.amount_value|money(v.entry.currency) }}</s> <span class="tag bad">voided</span>
+      {% else %}{{ v.net|money(v.entry.currency) }}
+        {% if v.confirmed_by %} <span class="tag ok">confirmed</span>{% endif %}
+        {% if v.reversed %}<br><span class="muted">of {{ v.entry.amount_value|money(v.entry.currency) }}, {{ v.reversed|money(v.entry.currency) }} reversed</span>{% endif %}
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<div class="card">
+  <strong>Embed</strong>
+  <p><img src="/badge/{{ profile.slug }}.svg" alt="badge"></p>
+  <pre>&lt;a href="{{ base }}/p/{{ profile.slug }}"&gt;&lt;img src="{{ base }}/badge/{{ profile.slug }}.svg" alt="payments recorded"&gt;&lt;/a&gt;</pre>
+</div>
+{% endblock %}

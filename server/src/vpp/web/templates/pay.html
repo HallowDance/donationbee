@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Pay {{ profile.display_name }}{% endblock %}
+{% block content %}
+<h1>Pay {{ profile.display_name }}</h1>
+<p class="muted">The money goes straight to {{ profile.display_name }}'s Stripe account. The payment is then recorded publicly.</p>
+{% if error %}<div class="card bad">{{ error }}</div>{% endif %}
+<form method="post" class="card">
+  <label for="amount">Amount (EUR)</label>
+  <input type="text" id="amount" name="amount" inputmode="decimal" placeholder="25.00" required>
+  <label for="payer_name">Your name <span class="muted">(optional, shown publicly)</span></label>
+  <input type="text" id="payer_name" name="payer_name" maxlength="100">
+  <label for="note">Public note <span class="muted">(optional)</span></label>
+  <input type="text" id="note" name="note" maxlength="280">
+  <label class="check"><input type="checkbox" name="consent" value="1" required>
+    <span>I understand this payment will be published. If I give a name or note, they'll be shown too. I can ask for them to be removed later, but the record of the payment stays.</span></label>
+  <button type="submit">Continue to Stripe</button>
+</form>
+{% endblock %}

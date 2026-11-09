@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Recipient sign-in{% endblock %}
+{% block content %}
+<h1>Recipient sign-in</h1>
+<p class="muted">Sign in with the passkey you published for your organisation.</p>
+<div id="status" hidden></div>
+<div class="card"><button data-action="login">Sign in with a passkey</button></div>
+<p class="muted">First time? Use the onboarding link you received when your profile was created.</p>
+<script src="/static/passkey.js"></script>
+{% endblock %}

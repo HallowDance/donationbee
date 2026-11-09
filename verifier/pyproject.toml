@@ -1,0 +1,22 @@
+[project]
+name = "vpp-verify"
+version = "0.1.0"
+description = "Independent verifier for Verified Payment Proofs ledgers"
+requires-python = ">=3.12"
+# Deliberately minimal and must never depend on `vpp`: the verifier checks the spec, not our code.
+dependencies = [
+    "httpx>=0.27",
+    "pynacl>=1.5",
+    "rfc8785>=0.1.4",
+    "cryptography>=43",  # WebAuthn assertions (ES256 / EdDSA / RS256)
+]
+
+[project.scripts]
+vpp-verify = "vpp_verify.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vpp_verify"]
