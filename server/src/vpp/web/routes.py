@@ -48,6 +48,15 @@ def index(request: Request, db: DB):
     )
 
 
+@router.get("/recipients")
+def recipients_guide(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "recipients.html",
+        {"fee_pct": f"{get_settings().application_fee_bps / 100:g}"},
+    )
+
+
 @router.get("/ledger")
 def ledger_page(request: Request, db: DB, before: int | None = None):
     rows = ledger_rows(db, before, limit=PAGE)

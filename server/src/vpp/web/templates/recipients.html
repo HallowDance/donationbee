@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% from "_bee.html" import bee %}
+{% block title %}For recipients · {{ brand() }}{% endblock %}
+{% block content %}
+<section class="hero" style="padding-block:0">
+  <div class="stack">
+    <span class="eyebrow">For charities, creators and anyone receiving payments</span>
+    <h1>Before you start</h1>
+    <p class="lede">Setup takes about 15 minutes. Payments go straight into your own Stripe account, so Stripe needs to know who you are. Here's what to have ready, so nothing surprises you halfway through.</p>
+    <div class="row">
+      <a class="btn" href="/recipient/login">Sign in with a passkey</a>
+    </div>
+    <p class="muted" style="font-size:.92rem">During the beta, profiles are by invitation. You'll get a personal setup link from us.</p>
+  </div>
+  <div class="hero-art" aria-hidden="true">{{ bee(200) }}</div>
+</section>
+
+<section class="card bold">
+  <h2>Have these ready</h2>
+  <div class="table-wrap">
+    <table class="kv">
+      <tr><th>Email</th><td>One you can receive mail on. It becomes your Stripe login.</td></tr>
+      <tr><th>Phone</th><td>For Stripe's two-step verification. Keep the backup codes Stripe gives you somewhere safe, like a password manager.</td></tr>
+      <tr><th>Your details</th><td>Legal name, date of birth and address, exactly as they appear on your ID. Small typos are the most common reason the automatic identity check fails.</td></tr>
+      <tr><th>Photo ID</th><td>Sometimes. If the automatic check can't confirm you, Stripe asks for a photo of your ID and a selfie.</td></tr>
+      <tr><th>Bank account</th><td>The IBAN where Stripe should pay out what you receive.</td></tr>
+      <tr><th>Your website</th><td>A domain you control, like <code>yourcharity.org</code>. You'll put one small file on it to prove the profile is really yours.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="stack">
+  <h2>What happens, step by step</h2>
+  <ol class="steps">
+    <li class="card">
+      <h3>Set up Stripe</h3>
+      <p class="muted">Open the link we send you. You create a Stripe login with two-step verification, and Stripe checks your identity and bank details. We never see your ID or bank details.</p>
+    </li>
+    <li class="card">
+      <h3>Add a passkey</h3>
+      <p class="muted">Back on {{ brand() }}, add a passkey: your phone's or laptop's fingerprint or face unlock. That's how you sign in and sign for payments. No password to remember.</p>
+    </li>
+    <li class="card">
+      <h3>Prove your website</h3>
+      <p class="muted">Publish the small file we show you at <code>/.well-known/vpp.json</code> on your site. From then on, the payments you sign show as confirmed by your domain.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="stack">
+  <h2>Good to know</h2>
+  <div class="hives" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr))">
+    <div class="card">
+      <h3>Why Stripe asks so much</h3>
+      <p class="muted">Payments land in your own Stripe account, not ours, so Stripe treats you as the business receiving them. EU anti-money-laundering rules require it to verify you. In exchange, we can never hold, delay or lose your money.</p>
+    </div>
+    <div class="card">
+      <h3>What it costs</h3>
+      <p class="muted">Stripe's normal card fees, charged by Stripe, plus a {{ fee_pct }}% {{ brand() }} fee on each payment. There's no monthly fee.</p>
+    </div>
+    <div class="card">
+      <h3>If the identity check fails</h3>
+      <p class="muted">Usually it's a typo in your name or date of birth. Use the same setup link to correct it. If Stripe then asks for a photo ID and selfie, that's normal and only happens once.</p>
+    </div>
+    <div class="card">
+      <h3>What becomes public</h3>
+      <p class="muted">Your profile name, your domain, and the payments you received, with amounts and dates. Payers' names appear only if they choose to share them. Your ID and bank details stay with Stripe.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

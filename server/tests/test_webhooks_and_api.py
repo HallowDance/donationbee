@@ -256,3 +256,28 @@ def test_ledger_page_lists_every_entry(app_client):
         assert text in page, text
     assert page.index('href="/e/3"') < page.index('href="/e/1"')  # newest first
     assert 'href="/ledger"' in c.get("/").text
+
+
+def test_recipient_guide_page(app_client):
+    page = app_client.get("/recipients").text
+    for text in (
+        "Before you start",
+        "Photo ID",
+        "two-step verification",
+        "1% DonationBee fee",
+        "/.well-known/vpp.json",
+        'href="/recipient/login"',
+    ):
+        assert text in page, text
+    assert 'href="/recipients">For recipients' in app_client.get("/").text
+
+
+def test_pay_page_shows_test_card_only_in_test_mode(app_client, monkeypatch):
+    from vpp.config import get_settings
+
+    monkeypatch.setenv("VPP_STRIPE_SECRET_KEY", "sk_test_fake")
+    get_settings.cache_clear()
+    assert "4242 4242 4242 4242" in app_client.get("/pay/charity").text
+    monkeypatch.setenv("VPP_STRIPE_LIVEMODE", "true")
+    get_settings.cache_clear()
+    assert "4242" not in app_client.get("/pay/charity").text

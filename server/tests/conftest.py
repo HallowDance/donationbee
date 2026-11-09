@@ -86,6 +86,9 @@ def _origin(monkeypatch):
     from vpp.config import get_settings
 
     monkeypatch.setenv("VPP_ORIGIN", ORIGIN)
+    # Never let tests reach a real Stripe account through the developer's .env file.
+    monkeypatch.setenv("VPP_STRIPE_SECRET_KEY", "")
+    monkeypatch.setenv("VPP_STRIPE_WEBHOOK_SECRET", "")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()

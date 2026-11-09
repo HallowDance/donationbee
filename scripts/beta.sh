@@ -21,7 +21,9 @@ export VPP_PUBLIC_BASE_URL="https://$HOST"
 export VPP_RP_ID="$HOST"
 export VPP_SIGNING_KEY_PATH="$B/online.key"
 export VPP_OTS_ENABLED=false
-export VPP_BANNER="Beta: demo hives with example data. Payments are off for now, and the demo witness is run by us."
+export VPP_BANNER="Beta: test mode only, no real money moves. Demo hives use example data, and the demo witness is run by us."
+# Stripe sandbox: the key comes from ./.env (read by the app); the webhook secret lives in .beta.
+[ -f "$B/stripe-webhook-secret" ] && export VPP_STRIPE_WEBHOOK_SECRET="$(cat "$B/stripe-webhook-secret")"
 [ -f "$B/secret" ] || (umask 077; python3 -c "import secrets; print(secrets.token_hex(32))" > "$B/secret")
 export VPP_SECRET_KEY="$(cat "$B/secret")"
 
@@ -45,6 +47,9 @@ uv run vpp-witness serve --config "$B/witness.json" --port "$WPORT" 2>>"$B/witne
 PIDS=$!
 trap 'kill $PIDS 2>/dev/null || true' EXIT
 sleep 1 && uv run vpp witness-push
+# Keep asking the witness to cosign as new payments arrive (the README says: every minute).
+( while sleep 60; do uv run vpp witness-push >/dev/null 2>&1; done ) &
+PIDS="$PIDS $!"
 
 echo "Serving https://$HOST via 127.0.0.1:$PORT (point the tunnel there). Ctrl-C to stop."
 uv run uvicorn vpp.app:app --host 127.0.0.1 --port "$PORT" --proxy-headers --forwarded-allow-ips 127.0.0.1

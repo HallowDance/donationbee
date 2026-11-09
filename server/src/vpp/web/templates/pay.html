@@ -9,7 +9,11 @@
   </div>
 </div>
 <p class="prose muted">The money goes straight to {{ profile.display_name }}'s own Stripe account, so we never hold it. Then the payment goes into the public ledger, and you get a receipt to keep.</p>
-{% if error %}<div class="notice bad" role="alert">{{ error }}</div>{% endif %}
+{% if error %}<div class="notice bad" role="alert">{{ error }}</div>
+{% elif stripe_test_mode() %}<div class="card honey" style="max-width:560px">
+  <strong>Test mode: no real money moves.</strong>
+  <span>On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>, any future expiry date and any CVC.</span>
+</div>{% endif %}
 <form method="post" class="card bold" style="max-width:560px">
   <div class="field">
     <label for="amount">Amount</label>
