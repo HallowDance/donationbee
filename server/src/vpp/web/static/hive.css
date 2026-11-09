@@ -213,6 +213,10 @@ img.badge { height: 24px; width: auto; }
   table.payments .c-when { grid-area: when; color: var(--muted); font-size: 0.85rem; }
   table.payments .c-amt { grid-area: amt; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; white-space: normal; }
   table.payments .c-amt br { display: none; }
+  /* Ledger rows carry longer details than payments: give them their own line. */
+  table.ledger tr { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "seq from" "seq amt" "seq when"; }
+  table.ledger .c-amt { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 4px 8px; text-align: left; }
+  table.ledger .c-amt .muted { text-align: left; max-width: none; }
   table.payments .c-amt .muted { font-size: 0.8rem; text-align: right; max-width: 8.5rem; line-height: 1.3; }
 
   table.kv, table.kv tbody, table.kv tr, table.kv th, table.kv td { display: block; width: auto; }

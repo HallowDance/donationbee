@@ -4,14 +4,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse, Response
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .. import badge, pii
 from ..config import get_settings
 from ..db import get_session
-from ..db.models import Anchor, LedgerEntry, Profile
-from ..queries import format_money, profile_totals
+from ..db.models import Anchor, Checkpoint, Cosignature, LedgerEntry, Profile
+from ..queries import format_money, ledger_rows, profile_totals
 from ..receipts import seq_for_session
 from ..stripe_connect import get_stripe
 from ..stripe_connect.checkout import NotReady, create_checkout
@@ -24,6 +24,7 @@ router = APIRouter()
 DB = Annotated[Session, Depends(get_session)]
 
 PAYMENTS_OFF = "Payments are switched off in this beta. You can browse the demo hives."
+PAGE = 50
 MIN_AMOUNT, MAX_AMOUNT = 100, 10_000_000  # minor units: 1.00 .. 100,000.00
 
 
@@ -44,6 +45,33 @@ def index(request: Request, db: DB):
         request,
         "index.html",
         {"hives": hives[:6], "base": get_settings().public_base_url.rstrip("/")},
+    )
+
+
+@router.get("/ledger")
+def ledger_page(request: Request, db: DB, before: int | None = None):
+    rows = ledger_rows(db, before, limit=PAGE)
+    cp = db.scalars(select(Checkpoint).order_by(Checkpoint.size.desc()).limit(1)).first()
+    cosigs = (
+        db.scalar(select(func.count()).select_from(Cosignature).where(Cosignature.size == cp.size))
+        if cp
+        else 0
+    )
+    witnessed = latest_cosigned_size(db)
+    anchor = db.scalars(select(Anchor).order_by(Anchor.size.desc()).limit(1)).first()
+    return templates.TemplateResponse(
+        request,
+        "ledger.html",
+        {
+            "rows": rows,
+            "cp": cp,
+            "cosigs": cosigs,
+            "witnessed": witnessed,
+            "anchor": anchor,
+            "older": rows[-1].entry.seq if len(rows) == PAGE and rows[-1].entry.seq > 1 else None,
+            "newer": before is not None,
+            "base": get_settings().public_base_url.rstrip("/"),
+        },
     )
 
 

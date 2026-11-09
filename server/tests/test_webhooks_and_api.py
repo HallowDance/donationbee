@@ -235,3 +235,24 @@ def base64_decode(s: str) -> bytes:
     import base64
 
     return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
+
+
+def test_ledger_page_lists_every_entry(app_client):
+    c = app_client
+    send(c, "checkout.session.completed", checkout(c, amount=5000))
+    c.fake.refunds = [SimpleNamespace(id="re_1", amount=1000, status="succeeded", created=1)]
+    send(c, "charge.refunded", {"id": "ch_1", "object": "charge", "payment_intent": "pi_1"})
+    page = c.get("/ledger").text
+    for text in (
+        "3 entries",
+        "Ledger created",
+        "Payment",
+        "Refund",
+        "10.00 EUR of payment #2",
+        "Good Charity",
+        'href="/e/3"',
+        "recorded",
+    ):
+        assert text in page, text
+    assert page.index('href="/e/3"') < page.index('href="/e/1"')  # newest first
+    assert 'href="/ledger"' in c.get("/").text

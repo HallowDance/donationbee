@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}The ledger · {{ brand() }}{% endblock %}
+{% block content %}
+<div class="stack" style="gap:10px">
+  <span class="eyebrow">Public ledger</span>
+  <h1>Every entry, in order</h1>
+  <p class="prose muted">Everything {{ brand() }} has recorded, newest first. Each entry is signed and linked to the one before it, so none can be changed or removed without it showing.</p>
+</div>
+
+{% if cp %}
+<div class="card bold">
+  <div class="row" style="justify-content:space-between;align-items:flex-start">
+    <div class="stack" style="gap:6px">
+      <span class="eyebrow">Current state</span>
+      <span class="total">{{ cp.size }} entries</span>
+    </div>
+    <div class="row">
+      <a class="btn small ghost" href="/api/v1/checkpoint">Signed checkpoint</a>
+      <a class="btn small ghost" href="/api/v1/entries">All entries (JSON)</a>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="kv">
+      <tr><th>Tree root</th><td><code class="hash">{{ cp.root.hex() }}</code></td></tr>
+      <tr><th>Witnesses</th><td>
+        {% if cosigs %}<span class="tag ok">{{ cosigs }} cosignature{{ '' if cosigs == 1 else 's' }}</span> on this exact state
+        {% elif witnessed %}<span class="tag warn">witnessed up to #{{ witnessed }}</span> Newer entries get cosigned within minutes.
+        {% else %}<span class="tag warn">not witnessed yet</span>{% endif %}
+      </td></tr>
+      <tr><th>Anchored</th><td>
+        {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span> up to #{{ anchor.size }}
+        {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
+      </td></tr>
+    </table>
+  </div>
+  <p class="muted" style="font-size:.92rem">Check all of it yourself with <code>vpp-verify --url {{ base }}</code>.</p>
+</div>
+{% endif %}
+
+{% if rows %}
+<div class="table-wrap">
+<table class="payments ledger">
+  <tr><th>Entry</th><th>When</th><th>What</th><th class="num">Details</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td class="c-seq"><a class="seq" href="/e/{{ r.entry.seq }}">#{{ r.entry.seq }}</a></td>
+    <td class="c-when">{{ r.entry.created_at|utc|truncate(16, True, "") }}</td>
+    <td class="c-from">{{ r.label }}{% if r.recipient %} <span class="muted" style="font-weight:400">· <a href="/p/{{ r.recipient.slug }}">{{ r.recipient.display_name }}</a></span>{% endif %}</td>
+    <td class="num c-amt">
+      {% if r.detail %}<span>{{ r.detail }}</span>{% endif %}
+      {% if r.refs and r.entry.type == "confirmation" %}<span class="muted">{% for s in r.refs %}<a href="/e/{{ s }}">#{{ s }}</a>{{ ", " if not loop.last }}{% endfor %}</span>{% endif %}
+      {% if r.status == "confirmed" %}<span class="tag ok">confirmed</span>
+      {% elif r.status == "recorded" %}<span class="tag warn">recorded</span>
+      {% elif r.status == "voided" %}<span class="tag bad">voided</span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+<div class="row">
+  {% if newer %}<a class="btn small ghost" href="/ledger">Newest entries</a>{% endif %}
+  {% if older %}<a class="btn small ghost" href="/ledger?before={{ older }}">Older entries</a>{% endif %}
+</div>
+{% else %}
+<p class="muted">The ledger is empty.</p>
+{% endif %}
+{% endblock %}

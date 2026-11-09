@@ -2,7 +2,7 @@
 {% block title %}Entry #{{ e.seq }} · {{ brand() }}{% endblock %}
 {% block content %}
 <div class="stack" style="gap:10px">
-  <span class="eyebrow">Ledger entry · {{ e.type.replace("_", " ") }}</span>
+  <span class="eyebrow"><a href="/ledger">Ledger</a> · {{ e.type.replace("_", " ") }}</span>
   <h1>Entry #{{ e.seq }}</h1>
   {% if recipient %}<p style="font-size:1.15rem">
     {% if e.amount_value is not none %}<strong>{{ e.amount_value|money(e.currency) }}</strong> to {% else %}For {% endif %}
@@ -23,7 +23,7 @@
     <tr><th>Anchor</th><td>
       {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span>
         Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · <code>{{ anchor.git_path }}</code>{% endif %}
-      {% else %}<span class="tag warn">not anchored yet</span> Anchors go out every hour.{% endif %}
+      {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
     </td></tr>
   </table>
 </div>

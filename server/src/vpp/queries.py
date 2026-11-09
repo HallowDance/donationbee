@@ -126,3 +126,72 @@ def key_history(session: Session) -> dict:
 def format_money(value: int, currency: str) -> str:
     # Minor units -> display. Fine for 2-decimal currencies (EUR, USD, BGN...); extend if needed.
     return f"{value / 100:,.2f} {currency}"
+
+
+LABELS = {
+    "genesis": "Ledger created",
+    "payment": "Payment",
+    "reversal": "Refund",
+    "correction": "Correction",
+    "recipient_key": "Passkey added",
+    "confirmation": "Recipient confirmed",
+    "key_rotation": "Signing key changed",
+    "root_rotation": "Root keys changed",
+}
+
+
+@dataclass
+class LedgerRow:
+    entry: LedgerEntry
+    label: str
+    recipient: object | None = None  # Profile
+    detail: str = ""
+    status: str | None = None  # confirmed | recorded | voided (payments only)
+    refs: list[int] = field(default_factory=list)
+
+
+def ledger_rows(session: Session, before: int | None, limit: int = 50) -> list[LedgerRow]:
+    """Newest-first page of every entry, described in plain words."""
+    from .db.models import Profile
+
+    q = select(LedgerEntry).order_by(LedgerEntry.seq.desc()).limit(limit)
+    if before:
+        q = q.where(LedgerEntry.seq < before)
+    entries = list(session.scalars(q))
+    profiles = {p.id: p for p in session.scalars(select(Profile))}
+    confirmed: set[int] = set()
+    voided: set[int] = set()
+    for c in session.scalars(select(LedgerEntry).where(LedgerEntry.type == "confirmation")):
+        confirmed.update(json.loads(c.envelope)["body"]["ref_seqs"])
+    for c in session.scalars(select(LedgerEntry).where(LedgerEntry.type == "correction")):
+        voided.add(c.ref_seq)
+
+    rows = []
+    for e in entries:
+        body = json.loads(e.envelope)["body"]
+        row = LedgerRow(e, LABELS.get(e.type, e.type), profiles.get(e.recipient))
+        if e.type == "payment":
+            row.detail = format_money(e.amount_value, e.currency)
+            row.status = (
+                "voided" if e.seq in voided else "confirmed" if e.seq in confirmed else "recorded"
+            )
+        elif e.type == "reversal":
+            row.detail = f"{format_money(e.amount_value, e.currency)} of payment #{e.ref_seq}"
+            row.refs = [e.ref_seq]
+            ref = session.get(LedgerEntry, e.ref_seq)
+            row.recipient = profiles.get(ref.recipient) if ref else None
+        elif e.type == "correction":
+            row.detail = f"voids #{e.ref_seq} ({body['reason_code'].replace('_', ' ')})"
+            row.refs = [e.ref_seq]
+        elif e.type == "confirmation":
+            refs = body["ref_seqs"]
+            row.detail = f"{len(refs)} payment{'s' if len(refs) != 1 else ''}"
+            row.refs = refs
+        elif e.type == "recipient_key":
+            row.detail = f"listed on {body['domain']}"
+        elif e.type == "genesis":
+            row.detail = f"{body['root_threshold']} of {len(body['root_keys'])} root keys"
+        elif e.type == "key_rotation":
+            row.detail = body["reason"]
+        rows.append(row)
+    return rows

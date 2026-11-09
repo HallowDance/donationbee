@@ -8,8 +8,8 @@
     <h1>Proof the money <em>left the hive.</em></h1>
     <p class="lede">"We donated €5k." Cool, show me. With {{ brand() }}, anyone can. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.</p>
     <div class="row">
-      {% if hives %}<a class="btn" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
-      <a class="btn ghost" href="#check">Check it yourself</a>
+      <a class="btn" href="/ledger">See the ledger</a>
+      {% if hives %}<a class="btn ghost" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
     </div>
   </div>
   <div class="hero-art" aria-hidden="true">
