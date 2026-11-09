@@ -10,6 +10,7 @@ import pytest
 from sqlalchemy.orm import Session, sessionmaker
 
 playwright = pytest.importorskip("playwright.sync_api")
+expect = playwright.expect
 CHROMIUM = shutil.which("chromium") or shutil.which("google-chrome")
 pytestmark = pytest.mark.skipif(CHROMIUM is None, reason="no Chromium on PATH")
 
@@ -166,3 +167,97 @@ def test_passkey_register_publish_confirm_login_in_chromium(live_app):
 
         types = [e.type for e in s.query(LedgerEntry).order_by(LedgerEntry.seq)]
     assert types == ["genesis", "payment", "payment", "recipient_key", "confirmation"]
+
+
+def _page(p, problems):
+    browser = p.chromium.launch(executable_path=CHROMIUM, headless=True)
+    page = browser.new_context().new_page()
+    page.on("console", lambda m: m.type in ("error", "warning") and problems.append(m.text))
+    page.on("pageerror", lambda e: problems.append(str(e)))
+    return browser, page
+
+
+def test_tamper_playground(live_app):
+    base, _ = live_app
+    problems = []
+    with playwright.sync_playwright() as p:
+        browser, page = _page(p, problems)
+        page.goto(base + "/")
+        page.wait_for_selector(".pg-entry")
+        assert page.inner_text(".pg-witness-state") == "matches"
+        page.fill("#pg-amount-2", "2500")  # entry #3
+        page.wait_for_selector('.pg-entry[data-i="2"].pg-bad-hash')
+        # The next entry's link breaks once the changed hash finishes rolling.
+        page.wait_for_selector('.pg-entry[data-i="3"].pg-bad-link')
+        expect(page.locator(".pg-witness-state")).to_have_text("doesn't match")
+        page.click("text=Cover it up")
+        expect(page.locator(".pg-status")).to_contain_text("Caught")
+        assert page.locator(".pg-bad-hash, .pg-bad-link").count() == 0  # links match again...
+        expect(page.locator(".pg-witness-state")).to_have_text(
+            "doesn't match"
+        )  # ...not the witness
+        page.click("text=Reset")
+        expect(page.locator(".pg-witness-state")).to_have_text("matches")
+        browser.close()
+    assert problems == [], problems
+
+
+def test_ledger_checks_itself_in_the_browser_and_updates_live(live_app, key):
+    from vpp.ledger.entries import Money, Payment, StripePaymentEvidence
+    from vpp.ledger.store import append
+
+    base, factory = live_app
+    problems = []
+    with playwright.sync_playwright() as p:
+        browser, page = _page(p, problems)
+        page.goto(base + "/ledger")
+        page.click("text=Check it in your browser")
+        page.wait_for_selector('[data-step="checkpoint"][data-state="ok"]', timeout=20_000)
+        for step in ("download", "hashes", "links", "sigs", "tree"):
+            assert page.get_attribute(f'[data-step="{step}"]', "data-state") == "ok", step
+        assert page.locator("tr.row-ok").count() == 3
+
+        with factory() as s:  # a new payment arrives while the page is open
+            append(
+                s,
+                Payment(
+                    recipient="prof_c",
+                    amount=Money(value=1234, currency="EUR"),
+                    occurred_at="2026-11-09T12:00:00Z",
+                    evidence=StripePaymentEvidence(
+                        account="acct_1",
+                        payment_intent="pi_live",
+                        checkout_session="cs_live",
+                        livemode=False,
+                    ),
+                ),
+                key,
+            )
+            s.commit()
+        page.wait_for_selector('tr[data-seq="4"]', timeout=15_000)
+        expect(page.locator("[data-entry-count]")).to_have_text("4")
+        assert "12.34 EUR" in page.inner_text('tr[data-seq="4"]')
+        assert page.locator("tr.row-ok").count() == 0  # the old check no longer covers everything
+        browser.close()
+    assert problems == [], problems
+
+
+def test_pay_chips_and_live_preview(live_app):
+    base, _ = live_app
+    problems = []
+    with playwright.sync_playwright() as p:
+        browser, page = _page(p, problems)
+        page.goto(base + "/pay/charity")
+        page.click('[data-amount="10"]')
+        assert page.input_value("#amount") == "10"
+        assert page.inner_text("[data-p-amount]") == "10.00 EUR"
+        assert page.get_attribute('[data-amount="10"]', "aria-pressed") == "true"
+        assert page.inner_text("[data-p-from]") == "anonymous"
+        page.fill("#payer_name", "Ada")
+        page.fill("#note", "for the bees")
+        assert page.inner_text("[data-p-from]") == "Ada"
+        assert page.is_visible("[data-p-note]") and "for the bees" in page.inner_text(
+            "[data-p-note]"
+        )
+        browser.close()
+    assert problems == [], problems

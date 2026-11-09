@@ -244,7 +244,7 @@ def test_ledger_page_lists_every_entry(app_client):
     send(c, "charge.refunded", {"id": "ch_1", "object": "charge", "payment_intent": "pi_1"})
     page = c.get("/ledger").text
     for text in (
-        "3 entries",
+        "data-entry-count>3</span> entries",
         "Ledger created",
         "Payment",
         "Refund",

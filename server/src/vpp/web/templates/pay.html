@@ -14,10 +14,14 @@
   <strong>Test mode: no real money moves.</strong>
   <span>On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>, any future expiry date and any CVC.</span>
 </div>{% endif %}
-<form method="post" class="card bold" style="max-width:560px">
+<div class="pay-layout">
+<form method="post" class="card bold" data-pay-form>
   <div class="field">
     <label for="amount">Amount</label>
     <div class="amount-field"><input type="text" id="amount" name="amount" inputmode="decimal" placeholder="25.00" required></div>
+    <div class="chips" style="margin-top:10px">
+      {% for a in [5, 10, 25, 50] %}<button type="button" class="chip" data-amount="{{ a }}" aria-pressed="false">€{{ a }}</button>{% endfor %}
+    </div>
   </div>
   <div class="field">
     <label for="payer_name">Your name <span class="muted">(optional, shown publicly)</span></label>
@@ -31,4 +35,19 @@
     <span>I understand this payment will be published. If I give a name or note, they'll be shown too. I can ask for them to be removed later, but the record of the payment stays.</span></label>
   <div><button type="submit">Continue to Stripe</button></div>
 </form>
+<aside class="card preview" data-preview aria-label="Preview of your public ledger entry">
+  <span class="eyebrow">What the public ledger will show</span>
+  <div class="preview-entry">
+    <span class="seq">#next</span>
+    <div class="stack" style="gap:2px">
+      <strong>Payment · {{ profile.display_name }}</strong>
+      <span class="muted">from <span data-p-from>anonymous</span></span>
+      <span class="muted" data-p-note hidden>Note: "<span data-p-note-text></span>"</span>
+    </div>
+    <span class="preview-amount" data-p-amount>…</span>
+  </div>
+  <p class="muted" style="font-size:.9rem">It's signed, linked to the entry before it, and shown to everyone. Your name and note can be erased later. The payment itself stays.</p>
+</aside>
+</div>
+<script type="module" src="/static/js/pay.js"></script>
 {% endblock %}

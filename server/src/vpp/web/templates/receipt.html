@@ -10,7 +10,7 @@
   <p class="muted">Stripe is confirming the payment. This page refreshes on its own.</p>
 </div>
 {% else %}
-<div class="stack" style="gap:10px">
+<div class="stack" style="gap:10px" data-recorded="{{ e.seq }}">
   <span class="eyebrow">Entry #{{ e.seq }}</span>
   <h1>Payment recorded. Thank you!</h1>
   <p style="font-size:1.15rem"><strong>{{ e.amount_value|money(e.currency) }}</strong> to <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a> · <a href="/e/{{ e.seq }}">see the entry</a></p>
@@ -29,5 +29,6 @@
   <pre>vpp-verify --url {{ base }} --receipt vpp-receipt-{{ e.seq }}.json \
   --witness &lt;witness vkey&gt; --min-witnesses 1</pre>
 </div>
+<script type="module" src="/static/js/receipt.js"></script>
 {% endif %}
 {% endblock %}

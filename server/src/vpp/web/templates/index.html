@@ -35,6 +35,15 @@
   </ol>
 </section>
 
+<section id="playground" class="stack">
+  <h2>Try to cheat the ledger</h2>
+  <p class="prose muted">This is a tiny ledger, hashed with real SHA-256 right in your browser. Change an amount and see what anyone checking the chain would see.</p>
+  <div class="card bold playground" data-playground>
+    <noscript><p>The playground needs JavaScript. The short version: change any entry and its hash changes, which breaks the link from the next entry.</p></noscript>
+  </div>
+</section>
+<script type="module" src="/static/js/playground.js"></script>
+
 {% if hives %}
 <section class="stack">
   <h2>Busy hives</h2>
