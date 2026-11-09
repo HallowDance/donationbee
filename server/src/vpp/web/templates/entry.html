@@ -36,8 +36,8 @@
 
 <div id="check" class="card bold">
   <h3>Don't trust the bee</h3>
-  <pre>pip install vpp-verify
-vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
+  <p class="muted">The verifier isn't published yet. Once it is, this checks the whole ledger:</p>
+  <pre>vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
   --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
   <div class="row">

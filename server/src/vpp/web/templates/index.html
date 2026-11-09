@@ -61,8 +61,8 @@
 <section id="check" class="card bold">
   <h2>Don't trust the bee</h2>
   <p class="prose">The verifier is a separate program that shares no code with this site. It redoes every check itself, using copies kept by people other than us.</p>
-  <pre>pip install vpp-verify
-vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
+  <p class="notice bad" style="font-weight:500">The verifier isn't published yet. We'll release it as open source before the beta takes real payments. Until then, this is what running it will look like:</p>
+  <pre>vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
   --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
 </section>
