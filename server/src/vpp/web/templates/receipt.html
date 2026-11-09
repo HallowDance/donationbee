@@ -6,13 +6,13 @@
 {% if not e %}
 <div class="card waiting">
   {{ bee(120) }}
-  <h1>Buzzing your payment into the ledger…</h1>
+  <h1>Recording your payment…</h1>
   <p class="muted">Stripe is confirming the payment. This page refreshes on its own.</p>
 </div>
 {% else %}
 <div class="stack" style="gap:10px">
   <span class="eyebrow">Entry #{{ e.seq }}</span>
-  <h1>Payment recorded. Nice one.</h1>
+  <h1>Payment recorded. Thank you!</h1>
   <p style="font-size:1.15rem"><strong>{{ e.amount_value|money(e.currency) }}</strong> to <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a> · <a href="/e/{{ e.seq }}">see the entry</a></p>
 </div>
 <div class="card bold">
@@ -24,7 +24,7 @@
     </div>
   </div>
   {% if witnessed %}<p><span class="tag ok">witnessed</span> Independent witnesses cosigned a checkpoint that includes it.</p>
-  {% else %}<p><span class="tag warn">waiting for witnesses</span> Download it once witnessed for the strongest receipt. This page refreshes on its own.</p>{% endif %}
+  {% else %}<p><span class="tag warn">waiting for witnesses</span> Your receipt gets stronger once witnesses sign. This page updates when they do.</p>{% endif %}
   <div><a class="btn" href="/api/v1/receipts/{{ e.seq }}">Download receipt.json</a></div>
   <pre>vpp-verify --url {{ base }} --receipt vpp-receipt-{{ e.seq }}.json \
   --witness &lt;witness vkey&gt; --min-witnesses 1</pre>

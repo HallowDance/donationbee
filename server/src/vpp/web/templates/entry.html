@@ -7,7 +7,7 @@
   {% if recipient %}<p style="font-size:1.15rem">
     {% if e.amount_value is not none %}<strong>{{ e.amount_value|money(e.currency) }}</strong> to {% else %}For {% endif %}
     <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>{% if revealed.payer %} from <strong>{{ revealed.payer }}</strong>{% endif %}</p>{% endif %}
-  {% if revealed.note %}<p class="muted" style="font-style:italic">“{{ revealed.note }}”</p>{% endif %}
+  {% if revealed.note %}<p class="muted">Note: "{{ revealed.note }}"</p>{% endif %}
 </div>
 
 <div class="table-wrap">
@@ -18,7 +18,7 @@
     <tr><th>Signed by</th><td><code>{{ e.key_id }}</code> · <a href="/api/v1/keys">keys</a></td></tr>
     <tr><th>Witnesses</th><td>
       {% if witnessed %}<span class="tag ok">cosigned</span> Independent witnesses cosigned a checkpoint that includes this entry.
-      {% else %}<span class="tag warn">not yet witnessed</span> Witnesses cosign new checkpoints every minute or so.{% endif %}
+      {% else %}<span class="tag warn">not yet witnessed</span> Witnesses usually sign within a few minutes.{% endif %}
     </td></tr>
     <tr><th>Anchor</th><td>
       {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span>

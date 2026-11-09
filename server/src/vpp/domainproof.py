@@ -32,7 +32,7 @@ def _resolve(host: str) -> list[str]:
 def normalize_domain(domain: str) -> str:
     d = domain.strip().lower().rstrip(".")
     if not HOST_RE.match(d):
-        raise DomainProofError("enter a plain domain name like example.org")
+        raise DomainProofError("Enter a plain domain name, like example.org.")
     return d
 
 
@@ -47,12 +47,12 @@ def fetch(
     try:
         addrs = resolver(host)
     except OSError as e:
-        raise DomainProofError(f"{host} does not resolve") from e
+        raise DomainProofError(f"We couldn't find {host}. Check the spelling.") from e
     if not addrs:
-        raise DomainProofError(f"{host} does not resolve")
+        raise DomainProofError(f"We couldn't find {host}. Check the spelling.")
     for a in addrs:
         if not ipaddress.ip_address(a).is_global:
-            raise DomainProofError(f"{host} resolves to a non-public address")
+            raise DomainProofError(f"{host} points to a private address, so we can't check it.")
 
     own = client is None
     client = client or httpx.Client(timeout=5, follow_redirects=False)

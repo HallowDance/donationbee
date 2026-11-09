@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <title>{% block title %}{{ brand() }}{% endblock %}</title>
 <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/static/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,7 +28,7 @@
 <footer class="site-footer">
   <div class="wrap">
     <a class="logo" href="/">{{ bee(28) }}<span>{{ brand() }}</span></a>
-    <span>Every entry is chained, signed, witnessed and timestamped into Bitcoin. Don't trust us: run <code>vpp-verify</code>.</span>
+    <span>Every entry here is public. You can check all of it with <code>vpp-verify</code>, without trusting us.</span>
   </div>
 </footer>
 </body>

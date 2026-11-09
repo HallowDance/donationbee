@@ -74,7 +74,7 @@ def _new_challenge(session: Session, purpose: str, challenge: bytes, profile_id=
 def _take_challenge(session: Session, cid: str, purpose: str) -> WebauthnChallenge:
     ch = session.get(WebauthnChallenge, cid)
     if ch is None or ch.purpose != purpose or ch.expires_at < datetime.now(UTC):
-        raise PasskeyError("challenge expired; try again")
+        raise PasskeyError("That request timed out. Try again.")
     session.delete(ch)  # single use
     session.flush()  # without this, a get() in the same session still returns it
     return ch
@@ -126,7 +126,7 @@ def finish_registration(
 ) -> RecipientCredential:
     ch = _take_challenge(session, challenge_id, "register")
     if ch.profile_id != profile.id:
-        raise PasskeyError("challenge belongs to another profile")
+        raise PasskeyError("That request was for a different profile. Reload and try again.")
     try:
         v = verify_registration_response(
             credential=credential,
@@ -224,7 +224,7 @@ def finish_login(session: Session, challenge_id: str, credential: dict) -> Profi
     ch = _take_challenge(session, challenge_id, "login")
     cred = session.get(RecipientCredential, credential.get("id", ""))
     if cred is None:
-        raise PasskeyError("unknown passkey")
+        raise PasskeyError("This passkey isn't registered here.")
     _verify_assertion(cred, ch.challenge, credential)
     return session.get(Profile, cred.profile_id)
 
@@ -236,17 +236,17 @@ def confirmation_options(
     session: Session, profile: Profile, ref_seqs: list[int]
 ) -> tuple[str, str]:
     if not ref_seqs or len(ref_seqs) > 100 or len(set(ref_seqs)) != len(ref_seqs):
-        raise PasskeyError("choose between 1 and 100 payments")
+        raise PasskeyError("Select between 1 and 100 payments.")
     entries = [session.get(LedgerEntry, s) for s in ref_seqs]
     if any(e is None or e.type != "payment" or e.recipient != profile.id for e in entries):
-        raise PasskeyError("those are not all payments to this profile")
+        raise PasskeyError("Some of those payments aren't to this profile.")
     published = session.scalars(
         select(RecipientCredential).where(
             RecipientCredential.profile_id == profile.id, RecipientCredential.key_seq.is_not(None)
         )
     ).all()
     if not published:
-        raise PasskeyError("publish a passkey (domain proof) before confirming payments")
+        raise PasskeyError("Publish a passkey on your domain before confirming payments.")
     challenge = confirmation_challenge(key_state(session).origin, [e.hash for e in entries])
     opts = generate_authentication_options(
         rp_id=get_settings().rp_id,
@@ -265,10 +265,10 @@ def finish_confirmation(
 ) -> LedgerEntry:
     ch = _take_challenge(session, challenge_id, "confirm")
     if ch.profile_id != profile.id:
-        raise PasskeyError("challenge belongs to another profile")
+        raise PasskeyError("That request was for a different profile. Reload and try again.")
     cred = session.get(RecipientCredential, credential.get("id", ""))
     if cred is None or cred.profile_id != profile.id or cred.key_seq is None:
-        raise PasskeyError("this passkey is not a published key of this profile")
+        raise PasskeyError("This passkey isn't published for this profile yet.")
     _verify_assertion(cred, ch.challenge, credential)
     resp = credential["response"]
     return append(

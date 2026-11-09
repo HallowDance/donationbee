@@ -56,14 +56,14 @@
   <h2>3. Confirm payments you received</h2>
   {% if not published %}<p class="muted">Publish a passkey first.</p>
   {% elif not unconfirmed %}
-  <div class="row">{{ bee(64) }}<div class="stack" style="gap:4px"><strong>Everything is confirmed.</strong><span class="muted">Your badge is green. Sweet.</span></div></div>
+  <div class="row">{{ bee(64) }}<div class="stack" style="gap:4px"><strong>Everything is confirmed.</strong><span class="muted">Your badge is green.</span></div></div>
   {% else %}
   <div class="table-wrap">
   <table>
     <tr><th></th><th>Entry</th><th>When</th><th class="num">Amount</th></tr>
     {% for v in unconfirmed %}
     <tr><td><input type="checkbox" name="ref" value="{{ v.entry.seq }}" aria-label="Confirm entry {{ v.entry.seq }}" checked></td>
-      <td><a class="seq" href="/e/{{ v.entry.seq }}">#{{ v.entry.seq }}</a></td><td>{{ v.body.occurred_at[:10] }}</td>
+      <td><a class="seq" href="/e/{{ v.entry.seq }}">#{{ v.entry.seq }}</a></td><td class="c-when">{{ v.body.occurred_at[:10] }}</td>
       <td class="num"><strong>{{ v.net|money(v.entry.currency) }}</strong></td></tr>
     {% endfor %}
   </table>

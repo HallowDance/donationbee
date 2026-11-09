@@ -23,7 +23,7 @@ from .templating import templates
 router = APIRouter()
 DB = Annotated[Session, Depends(get_session)]
 
-PAYMENTS_OFF = "Payments aren't switched on in this beta yet. Check back soon!"
+PAYMENTS_OFF = "Payments are switched off in this beta. You can browse the demo hives."
 MIN_AMOUNT, MAX_AMOUNT = 100, 10_000_000  # minor units: 1.00 .. 100,000.00
 
 

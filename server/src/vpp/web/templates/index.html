@@ -4,9 +4,9 @@
 {% block content %}
 <section class="hero">
   <div class="stack">
-    <span class="eyebrow">Donations · pledges · giveaway payouts</span>
+    <span class="eyebrow">For donations, pledges and payouts</span>
     <h1>Proof the money <em>left the hive.</em></h1>
-    <p class="lede">"We donated €5k." Cool. {{ brand() }} lets anyone check it. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.</p>
+    <p class="lede">"We donated €5k." Cool, show me. With {{ brand() }}, anyone can. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.</p>
     <div class="row">
       {% if hives %}<a class="btn" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
       <a class="btn ghost" href="#check">Check it yourself</a>
@@ -14,7 +14,6 @@
   </div>
   <div class="hero-art" aria-hidden="true">
     {{ bee(260) }}
-    <span class="trail">bzz · signed · witnessed<br>anchored · confirmed</span>
   </div>
 </section>
 
@@ -27,11 +26,11 @@
     </li>
     <li class="card">
       <h3>Everyone sees the same ledger</h3>
-      <p class="muted">Each payment is chained and signed. Independent witnesses cosign every update, and it's timestamped into Bitcoin. You get a receipt to keep.</p>
+      <p class="muted">Each payment is signed and added to a public ledger. Outside witnesses check that nobody rewrites it, and you get a receipt to keep.</p>
     </li>
     <li class="card">
       <h3>The recipient signs for it</h3>
-      <p class="muted">They tap a passkey tied to their own website. A payment with that mark is <strong>confirmed</strong>, not just <strong>recorded</strong>.</p>
+      <p class="muted">They tap a passkey tied to their own website. Payments they've signed for show as confirmed. The rest show as recorded.</p>
     </li>
   </ol>
 </section>
@@ -61,7 +60,7 @@
 
 <section id="check" class="card bold">
   <h2>Don't trust the bee</h2>
-  <p class="prose">The verifier is a separate program that shares no code with this site. It recomputes every hash and signature, and it checks witnesses, anchors and recipient signatures against sources we don't control.</p>
+  <p class="prose">The verifier is a separate program that shares no code with this site. It redoes every check itself, using copies kept by people other than us.</p>
   <pre>pip install vpp-verify
 vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \

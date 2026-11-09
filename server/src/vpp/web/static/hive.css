@@ -29,20 +29,8 @@
   --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --radius: 14px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #15100a; --surface: #201911; --ink: #fff2d0; --muted: #c4b289; --hairline: #3a2f1e;
-    --honey: #ffc93c; --honey-deep: #ffb300; --honey-soft: #3b2e0f; --leaf: #74d68f;
-    --leaf-soft: #173322; --rust: #ff8a7a; --rust-soft: #3d1a16; --wing: #2d2418;
-    --blush: #e07a6b; --code-bg: #2a2116; --hex: #241c12; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #15100a; --surface: #201911; --ink: #fff2d0; --muted: #c4b289; --hairline: #3a2f1e;
-  --honey: #ffc93c; --honey-deep: #ffb300; --honey-soft: #3b2e0f; --leaf: #74d68f;
-  --leaf-soft: #173322; --rust: #ff8a7a; --rust-soft: #3d1a16; --wing: #2d2418;
-  --blush: #e07a6b; --code-bg: #2a2116; --hex: #241c12; color-scheme: dark;
+  /* One look for everyone: the honey-and-ink brand is a light design (no dark variant). */
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -54,8 +42,6 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0 56 16v32L28 64 0 48V16zM28 64v33M0 16-28 0M56 16 84 0' fill='none' stroke='%23d9c48a' stroke-opacity='.28' stroke-width='1.2'/%3E%3C/svg%3E");
   background-attachment: fixed;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background-image: none; } }
-:root[data-theme="dark"] body { background-image: none; }
 
 .wrap { max-width: 980px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
 main.wrap { padding-block: 36px 64px; display: flex; flex-direction: column; gap: 28px; }
@@ -132,6 +118,7 @@ th, td { text-align: left; padding: 13px 16px; border-bottom: 1.5px solid var(--
 tr:last-child td { border-bottom: 0; }
 th { font: 600 0.74rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); background: var(--code-bg); }
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.c-when { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .kv th { width: 9.5rem; background: transparent; font-size: 0.72rem; padding-top: 16px; }
 .seq { font: 600 0.85rem/1 var(--font-mono); text-decoration: none; background: var(--honey-soft); padding: 4px 7px; border-radius: 6px; }
 
@@ -169,12 +156,11 @@ input[type=text]:focus { outline: none; box-shadow: 0 0 0 4px var(--honey); }
 .hero .lede { font-size: 1.2rem; max-width: 34ch; }
 .hero-art { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .hero-art .bee { width: min(100%, 260px); height: auto; transform: rotate(-8deg); }
-.hero-art .trail { font: 600 0.8rem/1.4 var(--font-mono); color: var(--muted); transform: rotate(-4deg); text-align: center; }
 @media (prefers-reduced-motion: no-preference) {
   .hero-art .bee { animation: hover 3.2s ease-in-out infinite; }
   @keyframes hover { 0%, 100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(-5deg) translateY(-10px); } }
 }
-@media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-art { order: -1; } .hero-art .bee { width: 150px; } .hero-art .trail { display: none; } }
+@media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-art { order: -1; } .hero-art .bee { width: 150px; } }
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 18px; counter-reset: step; list-style: none; padding: 0; margin: 0; }
 .steps li { counter-increment: step; position: relative; padding-top: 52px; }
 .steps li::before {
@@ -183,7 +169,10 @@ input[type=text]:focus { outline: none; box-shadow: 0 0 0 4px var(--honey); }
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 .steps li h3 { margin-top: 12px; }
-.hives { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.hives { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.hive .profile-head { flex-wrap: nowrap; }
+.hive .profile-head .stack { min-width: 0; }
+.hive .avatar { width: 56px; height: 62px; font-size: 1.5rem; }
 .hive { text-decoration: none; }
 .hive:hover { border-color: var(--ink); }
 .limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px; padding: 0; margin: 0; list-style: none; }
@@ -198,3 +187,38 @@ input[type=text]:focus { outline: none; box-shadow: 0 0 0 4px var(--honey); }
 .site-footer .logo { color: var(--ink); font-size: 1.05rem; }
 details > summary { cursor: pointer; font-weight: 700; list-style-position: inside; }
 img.badge { height: 24px; width: auto; }
+
+/* Phones: one row of scrollable nav links, stacked payment rows, label-above-value details. */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .site-header .wrap { flex-wrap: wrap; gap: 2px 12px; min-height: 0; padding-block: 10px 6px; }
+  .site-nav { width: 100%; flex-wrap: nowrap; justify-content: flex-start; gap: 18px; overflow-x: auto; padding-bottom: 4px; }
+  .site-nav a { white-space: nowrap; font-size: 0.9rem; }
+  main.wrap { padding-block: 24px 48px; gap: 22px; }
+  .card { padding: 16px; }
+  .card.bold { box-shadow: 4px 4px 0 var(--ink); }
+  .avatar { width: 56px; height: 62px; font-size: 1.5rem; }
+
+  table.payments, table.payments tbody { display: block; }
+  table.payments tr:first-child { display: none; }
+  table.payments tr {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "seq from amt" "seq when amt"; gap: 2px 12px;
+    padding: 12px 14px; border-bottom: 1.5px solid var(--hairline);
+  }
+  table.payments tr:last-child { border-bottom: 0; }
+  table.payments td { padding: 0; border: 0; }
+  table.payments .c-seq { grid-area: seq; align-self: center; }
+  table.payments .c-from { grid-area: from; font-weight: 600; overflow-wrap: break-word; }
+  table.payments .c-when { grid-area: when; color: var(--muted); font-size: 0.85rem; }
+  table.payments .c-amt { grid-area: amt; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; white-space: normal; }
+  table.payments .c-amt br { display: none; }
+  table.payments .c-amt .muted { font-size: 0.8rem; text-align: right; max-width: 8.5rem; line-height: 1.3; }
+
+  table.kv, table.kv tbody, table.kv tr, table.kv th, table.kv td { display: block; width: auto; }
+  table.kv th { padding: 12px 16px 2px; border: 0; }
+  table.kv td { padding: 0 16px 12px; }
+  table.kv code { overflow-wrap: anywhere; }
+  table.kv .tag { white-space: normal; }
+  .amount-field input, .amount-field::before { font-size: 1.35rem; }
+}

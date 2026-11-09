@@ -96,7 +96,7 @@ def test_publish_requires_domain_listing(world, key):
 def test_confirm_requires_published_key(world):
     s, profile = world
     register(s, profile, SoftAuthenticator("proofs.test", SITE))
-    with pytest.raises(passkeys.PasskeyError, match="publish"):
+    with pytest.raises(passkeys.PasskeyError, match="Publish a passkey"):
         passkeys.confirmation_options(s, profile, [2])
 
 
@@ -131,7 +131,7 @@ def test_challenge_is_single_use(world, key):
     challenge = passkeys._b64url_decode(json.loads(opts)["challenge"])
     cred = register(s, profile, auth)
     assert passkeys.finish_login(s, cid, auth.get(challenge)).id == "prof_c"
-    with pytest.raises(passkeys.PasskeyError, match="expired"):
+    with pytest.raises(passkeys.PasskeyError, match="timed out"):
         passkeys.finish_login(s, cid, auth.get(challenge))
     assert cred
 
@@ -169,7 +169,7 @@ def test_operator_forged_confirmation_fails_verifier(world, key):
 
 @pytest.mark.parametrize("addr", ["127.0.0.1", "10.0.0.5", "169.254.169.254", "::1", "fd00::1"])
 def test_domain_fetch_blocks_private_addresses(addr):
-    with pytest.raises(domainproof.DomainProofError, match="non-public"):
+    with pytest.raises(domainproof.DomainProofError, match="private address"):
         domainproof.fetch("example.org", resolver=lambda h: [addr])
 
 
