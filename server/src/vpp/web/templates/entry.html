@@ -36,8 +36,9 @@
 
 <div id="check" class="card bold">
   <h3>Don't trust the bee</h3>
-  <p class="muted">The verifier isn't published yet. Once it is, this checks the whole ledger:</p>
-  <pre>vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
+  <p class="muted">The <a href="https://github.com/HallowDance/donationbee/tree/master/verifier">open-source verifier</a> checks the whole ledger:</p>
+  <pre>pip install donationbee-verify
+vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
   --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
   <div class="row">
