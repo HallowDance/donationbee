@@ -1,6 +1,6 @@
 {# Barnaby, the DonationBee mascot. Inline so his outlines follow the theme's ink colour. #}
 {% macro bee(size=56, mood="happy", cls="") -%}
-<svg class="bee {{ cls }}" width="{{ size }}" height="{{ (size * 0.84)|round|int }}" viewBox="0 0 120 100" role="img" aria-label="{{ brand() }} bee" focusable="false">
+<svg class="bee {{ cls }}" width="{{ size }}" height="{{ (size * 0.84)|round|int }}" viewBox="0 0 120 100" role="img" aria-label="Barnaby, the {{ brand() }} bee" focusable="false">
   <g stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M58 38 C 50 4, 22 6, 26 26 C 29 38, 46 38, 58 38 Z" fill="var(--wing)"/>
     <path d="M66 38 C 72 2, 104 4, 98 26 C 94 38, 78 38, 66 38 Z" fill="var(--wing)"/>

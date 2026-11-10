@@ -5,7 +5,8 @@ const bee = document.querySelector("[data-bee]");
 const bubble = document.querySelector("[data-bubble]");
 
 const FACTS = [
-  "Bzz! Change one byte of an entry and its hash changes completely.",
+  "Bzz! I'm Barnaby. Tap me again and I'll tell you how the ledger works.",
+  "Change one byte of an entry and its hash changes completely.",
   "Every entry carries the hash of the one before it. That's the chain.",
   "Witnesses only sign a ledger that extends the one they saw last. No secret rewrites.",
   "The recipient signs for payments with their own passkey. We can't do it for them.",
