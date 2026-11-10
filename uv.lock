@@ -424,7 +424,7 @@ wheels = [
 
 [[package]]
 name = "donationbee-verify"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "verifier" }
 dependencies = [
     { name = "cryptography" },

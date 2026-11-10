@@ -102,7 +102,7 @@
   <pre>pip install donationbee-verify
 vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
-  --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
+  --anchors-repo {{ anchors_url() or '&lt;anchors git url&gt;' }} --check-ots --check-domains</pre>
 </section>
 
 <section class="stack">

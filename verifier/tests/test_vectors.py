@@ -76,3 +76,80 @@ def test_check_domains():
 
     assert check_domains(state, serve([fp])) == ["prof_charity @ charity.test: key listed"]
     assert check_domains(state, serve([])) == ["prof_charity @ charity.test: KEY NOT LISTED"]
+
+
+def _fake_ots(responses):
+    """Stand in for the `ots` CLI: map the first distinguishing arg to (code, output)."""
+
+    def run(*args):
+        return responses["--no-bitcoin" if args[0] == "--no-bitcoin" else "verify"]
+
+    return run
+
+
+def _explorer(merkle_root):
+    import httpx
+
+    def handler(request):
+        if "/block-height/" in str(request.url):
+            return httpx.Response(200, text="00000000000000000001abc")
+        return httpx.Response(200, json={"merkle_root": merkle_root})
+
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+ROOT = "ab" * 32
+NO_NODE = (1, "Could not connect to local Bitcoin node: [Errno 111] Connection refused")
+CLAIM = (0, f"To verify manually, check that Bitcoin block 871234 has merkleroot {ROOT}")
+
+
+@pytest.mark.parametrize(
+    "merkle, expect",
+    [(ROOT, "ok (in Bitcoin block 871234, checked with mempool.space)"), ("cd" * 32, None)],
+)
+def test_ots_without_local_node_checks_public_explorer(tmp_path, monkeypatch, merkle, expect):
+    from vpp_verify import cli
+
+    target, proof = tmp_path / "13.checkpoint", tmp_path / "13.checkpoint.ots"
+    target.write_text("x")
+    proof.write_bytes(b"x")
+    monkeypatch.setattr(cli.shutil, "which", lambda name: "/usr/bin/ots")
+    monkeypatch.setattr(cli, "_ots", _fake_ots({"verify": NO_NODE, "--no-bitcoin": CLAIM}))
+    if expect:
+        assert cli._ots_verify(target, proof, explorer=_explorer(merkle)) == expect
+    else:
+        with pytest.raises(cli.Failure, match="doesn't match"):
+            cli._ots_verify(target, proof, explorer=_explorer(merkle))
+
+
+def test_ots_pending_and_node_success(tmp_path, monkeypatch):
+    from vpp_verify import cli
+
+    target, proof = tmp_path / "a", tmp_path / "a.ots"
+    target.write_text("x")
+    proof.write_bytes(b"x")
+    monkeypatch.setattr(cli.shutil, "which", lambda name: "/usr/bin/ots")
+    monkeypatch.setattr(
+        cli,
+        "_ots",
+        _fake_ots(
+            {"verify": (1, "Pending confirmation in Bitcoin blockchain"), "--no-bitcoin": CLAIM}
+        ),
+    )
+    assert cli._ots_verify(target, proof).startswith("pending")
+    monkeypatch.setattr(
+        cli,
+        "_ots",
+        _fake_ots(
+            {
+                "verify": (
+                    0,
+                    "Success! Bitcoin block 871234 attests existence as of 2026-11-10 UTC",
+                ),
+                "--no-bitcoin": CLAIM,
+            }
+        ),
+    )
+    assert cli._ots_verify(target, proof).startswith(
+        "ok (in Bitcoin, checked with your Bitcoin node)"
+    )

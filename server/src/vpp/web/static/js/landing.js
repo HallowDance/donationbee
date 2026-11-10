@@ -12,6 +12,7 @@ const FACTS = [
   "We never hold the money. It goes straight to the recipient's Stripe account.",
   "Names are stored as salted hashes, so they can be erased without breaking the chain.",
   "Payers get a receipt that proves their payment is in the ledger. Keep it!",
+  "Every hour, the ledger's fingerprint is timestamped into Bitcoin. Nobody can backdate it.",
   "Don't trust me, I'm just a bee. Run vpp-verify.",
 ];
 

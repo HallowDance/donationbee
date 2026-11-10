@@ -8,6 +8,7 @@ hosted anchors repo (--anchors-repo) and Bitcoin (--check-ots), and recipients' 
 import argparse
 import base64
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -102,21 +103,49 @@ def check_anchors(state: ChainState, repo: Path, check_ots: bool) -> list[str]:
     return lines
 
 
-def _ots_verify(target: Path, proof: Path) -> str:
+EXPLORER = "https://mempool.space/api"
+_CLAIM = re.compile(r"Bitcoin block (\d+) has merkleroot ([0-9a-f]{64})")
+
+
+def _ots(*args: str) -> tuple[int, str]:
+    r = subprocess.run(["ots", *args], capture_output=True, text=True)
+    return r.returncode, (r.stderr + r.stdout).strip()
+
+
+def _ots_verify(target: Path, proof: Path, explorer: httpx.Client | None = None) -> str:
+    """Check a proof against a local Bitcoin node if there is one; otherwise against a public
+    block explorer, which is independent of the ledger operator (and says so in the result)."""
     if not proof.exists():
         return "missing"
     if not shutil.which("ots"):
         return "skipped (ots not installed)"
-    r = subprocess.run(
-        ["ots", "verify", "-f", str(target), str(proof)], capture_output=True, text=True
-    )
-    out = (r.stderr or r.stdout).strip()
-    if r.returncode == 0:
-        return "ok (in Bitcoin)"
+    code, out = _ots("verify", "-f", str(target), str(proof))
+    if code == 0 and "Success" in out:
+        return "ok (in Bitcoin, checked with your Bitcoin node)"
     if "Pending confirmation" in out:
         return "pending (not yet in a Bitcoin block)"
-    # `ots verify` checks complete proofs against a local Bitcoin node.
-    raise Failure(f"OpenTimestamps verification failed for {target.name}: {out[:200]}")
+    if "Could not connect to local Bitcoin node" not in out:
+        raise Failure(f"OpenTimestamps verification failed for {target.name}: {out[:200]}")
+
+    # No local node: ask ots which block the proof claims, then check that block publicly.
+    _, out = _ots("--no-bitcoin", "verify", "-f", str(target), str(proof))
+    claims = _CLAIM.findall(out)
+    if not claims:
+        raise Failure(f"OpenTimestamps proof for {target.name} names no Bitcoin block: {out[:200]}")
+    own = explorer is None
+    explorer = explorer or httpx.Client(timeout=20)
+    try:
+        for height, merkleroot in claims:
+            block_hash = explorer.get(f"{EXPLORER}/block-height/{height}").text.strip()
+            block = explorer.get(f"{EXPLORER}/block/{block_hash}").json()
+            if block.get("merkle_root") == merkleroot:
+                return f"ok (in Bitcoin block {height}, checked with mempool.space)"
+    except (httpx.HTTPError, ValueError) as e:
+        return f"complete, but couldn't reach mempool.space to check it ({e.__class__.__name__})"
+    finally:
+        if own:
+            explorer.close()
+    raise Failure(f"{target.name}: Bitcoin block {claims[0][0]} doesn't match the proof")
 
 
 def check_domains(state: ChainState, client: httpx.Client) -> list[str]:

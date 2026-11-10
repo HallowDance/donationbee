@@ -43,6 +43,8 @@ class Settings(BaseSettings):
 
     anchors_repo_path: Path | None = None
     anchors_push: bool = True
+    # Where people can browse the anchors repo (linked from the ledger and entry pages).
+    anchors_public_url: str = ""
     ots_enabled: bool = True
 
 

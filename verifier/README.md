@@ -21,7 +21,9 @@ vpp-verify --url https://bee.theorycorner.com
 - **Witnesses** (`--witness <vkey> --min-witnesses k`). Independent witnesses must have cosigned
   the checkpoint you see, so you know you're seeing the same history as everyone else.
 - **Anchors** (`--anchors-repo <git url> --check-ots`). Checkpoints published in a git repo the
-  operator doesn't control, and their Bitcoin timestamps.
+  operator doesn't control, and their Bitcoin timestamps. With a local Bitcoin node it checks
+  the block itself; without one it checks the block on the public explorer mempool.space and says
+  so. Install `opentimestamps-client` for this.
 - **Domains** (`--check-domains`). Each recipient's website still lists the passkey they confirm
   with.
 - **Receipts** (`--receipt receipt.json`). Your payment is still in the ledger, unchanged. If it

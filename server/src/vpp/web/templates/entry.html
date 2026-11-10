@@ -22,7 +22,7 @@
     </td></tr>
     <tr><th>Anchor</th><td>
       {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span>
-        Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · <code>{{ anchor.git_path }}</code>{% endif %}
+        Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · {% if anchors_url() %}<a href="{{ anchors_url() }}/blob/main/{{ anchor.git_path }}"><code>{{ anchor.git_path }}</code></a>{% else %}<code>{{ anchor.git_path }}</code>{% endif %}{% endif %}
       {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
     </td></tr>
   </table>
@@ -40,7 +40,7 @@
   <pre>pip install donationbee-verify
 vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
-  --anchors-repo &lt;anchors git url&gt; --check-ots --check-domains</pre>
+  --anchors-repo {{ anchors_url() or '&lt;anchors git url&gt;' }} --check-ots --check-domains</pre>
   <div class="row">
     {% if e.type == "payment" %}<a class="btn small" href="/api/v1/receipts/{{ e.seq }}">Download receipt</a>{% endif %}
     <a class="btn small ghost" href="/api/v1/entries/{{ e.seq }}">Raw entry JSON</a>

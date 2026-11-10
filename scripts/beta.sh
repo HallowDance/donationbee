@@ -20,7 +20,12 @@ export VPP_ORIGIN="$HOST/log"
 export VPP_PUBLIC_BASE_URL="https://$HOST"
 export VPP_RP_ID="$HOST"
 export VPP_SIGNING_KEY_PATH="$B/online.key"
-export VPP_OTS_ENABLED=false
+# Hourly anchors: signed checkpoints pushed to a public, force-push-protected repo, timestamped into
+# Bitcoin via OpenTimestamps. The clone lives in .beta/anchors.
+export VPP_OTS_ENABLED=true
+export VPP_ANCHORS_REPO_PATH="$B/anchors"
+export VPP_ANCHORS_PUSH=true
+export VPP_ANCHORS_PUBLIC_URL=https://github.com/HallowDance/donationbee-anchors
 export VPP_BANNER="Beta: test mode only, no real money moves. Demo hives use example data, and the demo witness is run by us."
 # Stripe sandbox: the key comes from ./.env (read by the app); the webhook secret lives in .beta.
 [ -f "$B/stripe-webhook-secret" ] && export VPP_STRIPE_WEBHOOK_SECRET="$(cat "$B/stripe-webhook-secret")"
@@ -49,6 +54,10 @@ trap 'kill $PIDS 2>/dev/null || true' EXIT
 sleep 1 && uv run vpp witness-push
 # Keep asking the witness to cosign as new payments arrive (the README says: every minute).
 ( while sleep 60; do uv run vpp witness-push >/dev/null 2>&1; done ) &
+PIDS="$PIDS $!"
+# Anchor now and then every hour; each run also upgrades pending Bitcoin proofs that have confirmed.
+[ -d "$B/anchors/.git" ] || git clone -q git@github.com:HallowDance/donationbee-anchors.git "$B/anchors"
+( while true; do uv run vpp anchor >>"$B/anchor.log" 2>&1; uv run vpp ots-upgrade >>"$B/anchor.log" 2>&1; sleep 3600; done ) &
 PIDS="$PIDS $!"
 
 echo "Serving https://$HOST via 127.0.0.1:$PORT (point the tunnel there). Ctrl-C to stop."
