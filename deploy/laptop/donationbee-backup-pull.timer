@@ -1,0 +1,10 @@
+[Unit]
+Description=Pull DonationBee backups hourly while this machine is on
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

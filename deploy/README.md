@@ -18,6 +18,7 @@ PostgreSQL. Everything below runs as root unless noted.
 | `donationbee-witness.service` | The demo witness on 127.0.0.1:8091 |
 | `donationbee-witness-push.timer` | Asks the witnesses to cosign, every minute |
 | `donationbee-anchor.timer` | Pushes a checkpoint to the anchors repo and upgrades Bitcoin proofs, hourly |
+| `donationbee-backup.timer` | Backs up the database and state, nightly (see Backups) |
 
 Logs: `journalctl -u 'donationbee-*'`.
 
@@ -53,6 +54,20 @@ Logs: `journalctl -u 'donationbee-*'`.
 6. Install the units from `systemd/`, then
    `systemctl enable --now donationbee-witness donationbee-web donationbee-witness-push.timer donationbee-anchor.timer`.
 7. Install `nginx-bee.theorycorner.com.conf` and run certbot.
+
+## Backups
+
+`donationbee-backup.timer` runs `backup.sh` (installed as `/usr/local/lib/donationbee/backup.sh`)
+at 03:30 UTC. It writes a `pg_dump` of the database and a tarball of `/var/lib/donationbee` (keys,
+witness config and state, without the anchors clone) to `/var/backups/donationbee`, and keeps 14
+days. That directory is `donationbee:hallowdance`, mode 2750, so the admin account can read it.
+
+On the laptop, `laptop/donationbee-backup-pull.timer` (a systemd user unit) copies new files to
+`~/backups/donationbee` every hour it's on, and never deletes them.
+
+To restore: `createdb -O donationbee vpp_beta`, then
+`pg_restore --no-owner -d vpp_beta vpp_beta-<stamp>.dump` as `donationbee`, and unpack the state
+tarball into `/var/lib/donationbee`.
 
 ## Moving an existing ledger
 

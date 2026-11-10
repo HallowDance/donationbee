@@ -1,0 +1,10 @@
+# Copies new server backups to this machine. Install in ~/.config/systemd/user/ and run
+#   systemctl --user enable --now donationbee-backup-pull.timer
+# Never deletes: the laptop keeps backups after the server's 14 days are up.
+[Unit]
+Description=Pull DonationBee backups from the server
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/mkdir -p %h/backups/donationbee
+ExecStart=/usr/bin/rsync -a --chmod=D700,F600 -e "ssh -o BatchMode=yes -o ConnectTimeout=20" hallowdance@theorycorner.com:/var/backups/donationbee/ %h/backups/donationbee/
