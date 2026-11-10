@@ -9,8 +9,10 @@ import secrets
 import stripe
 from sqlalchemy.orm import Session
 
+from .. import i18n
 from ..config import get_settings
 from ..db.models import Profile
+from ..i18n import gettext as _
 from ..pii import store_commitment
 from .onboarding import refresh_status
 
@@ -49,11 +51,12 @@ def create_checkout(
     if note:
         metadata["vpp_note"] = store_commitment(session, note)
 
-    line_items = [_item(currency, amount, f"Payment to {profile.display_name}")]
+    # Line items and the Checkout page itself follow the site's language.
+    line_items = [_item(currency, amount, _("Payment to {name}").format(name=profile.display_name))]
     payment_intent_data: dict = {"metadata": metadata}
     if tip:
         line_items.append(
-            _item(currency, tip, "Optional tip for DonationBee (not part of the donation)")
+            _item(currency, tip, _("Optional tip for DonationBee (not part of the donation)"))
         )
         payment_intent_data["application_fee_amount"] = tip
 
@@ -61,6 +64,7 @@ def create_checkout(
     checkout = client.v1.checkout.sessions.create(
         {
             "mode": "payment",
+            "locale": i18n.current.get(),
             "line_items": line_items,
             "payment_intent_data": payment_intent_data,
             "metadata": metadata,

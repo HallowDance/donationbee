@@ -165,5 +165,5 @@ def test_csp_allows_only_self_scripts(client):
     sign_in_as(client)
     r = client.get("/recipient")
     assert "default-src 'self'" in r.headers["content-security-policy"]
-    assert '<script src="/static/passkey.js">' in r.text
+    assert '<script type="module" src="/static/passkey.js">' in r.text
     assert client.get("/static/passkey.js").status_code == 200

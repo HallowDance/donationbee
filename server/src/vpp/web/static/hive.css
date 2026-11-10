@@ -6,6 +6,12 @@
 @font-face { font-family: "Figtree"; src: url("/static/fonts/figtree.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 @font-face { font-family: "Figtree"; src: url("/static/fonts/figtree-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
 @font-face { font-family: "JetBrains Mono"; src: url("/static/fonts/jetbrains-mono.woff2") format("woff2"); font-weight: 400 600; font-display: swap; }
+/* Cyrillic (for the Bulgarian pages): the Latin fonts above have none, so these fill in under the
+   same family names, for Cyrillic code points only. Sofia Sans is by Lettersoup, a Bulgarian foundry. */
+@font-face { font-family: "Bricolage Grotesque"; src: url("/static/fonts/sofia-sans-semicondensed-cyrillic.woff2") format("woff2"); font-weight: 400 800; font-display: swap; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Figtree"; src: url("/static/fonts/sofia-sans-cyrillic.woff2") format("woff2"); font-weight: 400 700; font-display: swap; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Figtree"; src: url("/static/fonts/sofia-sans-cyrillic-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "JetBrains Mono"; src: url("/static/fonts/jetbrains-mono-cyrillic.woff2") format("woff2"); font-weight: 400 600; font-display: swap; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 
 :root {
   --bg: #fffbef;
@@ -74,6 +80,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .site-nav { display: flex; gap: 6px 18px; flex-wrap: wrap; justify-content: flex-end; }
 .site-nav a { color: #1b1408; font-weight: 600; text-decoration: none; font-size: 0.95rem; }
 .site-nav a:hover { text-decoration: underline; text-decoration-color: #1b1408; }
+.site-nav { margin-left: auto; }
+.lang-switch { color: #1b1408; font: 700 0.8rem/1 var(--font-mono); letter-spacing: 0.06em; text-decoration: none; border: 2px solid #1b1408; border-radius: 6px; padding: 5px 7px; background: #ffe27a; }
+.lang-switch:hover { background: #fff; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .site-banner { background: var(--ink); color: var(--bg); font: 600 0.9rem/1.4 var(--font-body); }
 .site-banner .wrap { padding-block: 8px; }
@@ -194,7 +204,8 @@ img.badge { height: 24px; width: auto; }
 @media (max-width: 640px) {
   body { font-size: 16px; }
   .site-header .wrap { flex-wrap: wrap; gap: 2px 12px; min-height: 0; padding-block: 10px 6px; }
-  .site-nav { width: 100%; flex-wrap: nowrap; justify-content: flex-start; gap: 18px; overflow-x: auto; padding-bottom: 4px; }
+  .site-nav { order: 3; margin-left: 0; width: 100%; flex-wrap: nowrap; justify-content: flex-start; gap: 18px; overflow-x: auto; padding-bottom: 4px; }
+  .lang-switch { order: 2; margin-left: auto; }
   .site-nav a { white-space: nowrap; font-size: 0.9rem; }
   main.wrap { padding-block: 24px 48px; gap: 22px; }
   .card { padding: 16px; }

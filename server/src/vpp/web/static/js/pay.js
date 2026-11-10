@@ -1,4 +1,6 @@
 // Pay page: one-tap amounts and a live preview of exactly what the public ledger will show.
+import { euros, t } from "./i18n.js";
+
 const form = document.querySelector("[data-pay-form]");
 if (form) {
   const amount = form.querySelector("#amount");
@@ -10,12 +12,12 @@ if (form) {
   const tipCents = () => Number(form.querySelector('input[name="tip"]:checked')?.value || 0);
   const fmt = (raw) => {
     const n = Number(String(raw).replace(",", "."));
-    return Number.isFinite(n) && n > 0 ? `${n.toFixed(2)} EUR` : "…";
+    return Number.isFinite(n) && n > 0 ? euros(n) : "…";
   };
 
   function update() {
     preview.querySelector("[data-p-amount]").textContent = fmt(amount.value);
-    preview.querySelector("[data-p-from]").textContent = name.value.trim() || "anonymous";
+    preview.querySelector("[data-p-from]").textContent = name.value.trim() || t("anonymous");
     const n = note.value.trim();
     preview.querySelector("[data-p-note]").hidden = !n;
     preview.querySelector("[data-p-note-text]").textContent = n;
@@ -23,9 +25,9 @@ if (form) {
     const tip = tipCents();
     const donation = Number(String(amount.value).replace(",", "."));
     preview.querySelector("[data-p-tip]").hidden = !tip;
-    preview.querySelector("[data-p-tip-amount]").textContent = `${(tip / 100).toFixed(2)} EUR`;
+    preview.querySelector("[data-p-tip-amount]").textContent = euros(tip / 100);
     preview.querySelector("[data-p-total]").textContent =
-      Number.isFinite(donation) && donation > 0 ? `${(donation + tip / 100).toFixed(2)} EUR` : "…";
+      Number.isFinite(donation) && donation > 0 ? euros(donation + tip / 100) : "…";
   }
 
   for (const c of chips) {

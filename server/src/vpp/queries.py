@@ -8,6 +8,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from .db.models import LedgerEntry
+from .i18n import N_, money, ngettext
+from .i18n import gettext as _
 from .ledger.note import vkey
 from .ledger.signing import key_id_for
 
@@ -128,15 +130,15 @@ def format_money(value: int, currency: str) -> str:
     return f"{value / 100:,.2f} {currency}"
 
 
-LABELS = {
-    "genesis": "Ledger created",
-    "payment": "Payment",
-    "reversal": "Refund",
-    "correction": "Correction",
-    "recipient_key": "Passkey added",
-    "confirmation": "Recipient confirmed",
-    "key_rotation": "Signing key changed",
-    "root_rotation": "Root keys changed",
+LABELS = {  # translated where they're shown
+    "genesis": N_("Ledger created"),
+    "payment": N_("Payment"),
+    "reversal": N_("Refund"),
+    "correction": N_("Correction"),
+    "recipient_key": N_("Passkey added"),
+    "confirmation": N_("Recipient confirmed"),
+    "key_rotation": N_("Signing key changed"),
+    "root_rotation": N_("Root keys changed"),
 }
 
 
@@ -151,7 +153,7 @@ class LedgerRow:
 
 
 def ledger_rows(session: Session, before: int | None, limit: int = 50) -> list[LedgerRow]:
-    """Newest-first page of every entry, described in plain words."""
+    """Newest-first page of every entry, described in plain words in the page's language."""
     from .db.models import Profile
 
     q = select(LedgerEntry).order_by(LedgerEntry.seq.desc()).limit(limit)
@@ -169,28 +171,35 @@ def ledger_rows(session: Session, before: int | None, limit: int = 50) -> list[L
     rows = []
     for e in entries:
         body = json.loads(e.envelope)["body"]
-        row = LedgerRow(e, LABELS.get(e.type, e.type), profiles.get(e.recipient))
+        label = LABELS.get(e.type)
+        row = LedgerRow(e, _(label) if label else e.type, profiles.get(e.recipient))
         if e.type == "payment":
-            row.detail = format_money(e.amount_value, e.currency)
+            row.detail = money(e.amount_value, e.currency)
             row.status = (
                 "voided" if e.seq in voided else "confirmed" if e.seq in confirmed else "recorded"
             )
         elif e.type == "reversal":
-            row.detail = f"{format_money(e.amount_value, e.currency)} of payment #{e.ref_seq}"
+            row.detail = _("{amount} of payment #{seq}").format(
+                amount=money(e.amount_value, e.currency), seq=e.ref_seq
+            )
             row.refs = [e.ref_seq]
             ref = session.get(LedgerEntry, e.ref_seq)
             row.recipient = profiles.get(ref.recipient) if ref else None
         elif e.type == "correction":
-            row.detail = f"voids #{e.ref_seq} ({body['reason_code'].replace('_', ' ')})"
+            row.detail = _("voids #{seq} ({reason})").format(
+                seq=e.ref_seq, reason=body["reason_code"].replace("_", " ")
+            )
             row.refs = [e.ref_seq]
         elif e.type == "confirmation":
             refs = body["ref_seqs"]
-            row.detail = f"{len(refs)} payment{'s' if len(refs) != 1 else ''}"
+            row.detail = ngettext("{n} payment", "{n} payments", len(refs)).format(n=len(refs))
             row.refs = refs
         elif e.type == "recipient_key":
-            row.detail = f"listed on {body['domain']}"
+            row.detail = _("listed on {domain}").format(domain=body["domain"])
         elif e.type == "genesis":
-            row.detail = f"{body['root_threshold']} of {len(body['root_keys'])} root keys"
+            row.detail = _("{k} of {n} root keys").format(
+                k=body["root_threshold"], n=len(body["root_keys"])
+            )
         elif e.type == "key_rotation":
             row.detail = body["reason"]
         rows.append(row)

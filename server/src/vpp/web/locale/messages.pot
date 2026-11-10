@@ -1,0 +1,1075 @@
+# Translations template for DonationBee.
+# Copyright (C) 2026 Ivo Iliev
+# This file is distributed under the same license as the DonationBee
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: DonationBee VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-10 17:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+msgid ""
+"\"The winner has been contacted\" is usually the end of the story. "
+"Whether anyone actually got the prize is anyone's guess."
+msgstr ""
+
+msgid "\"We donated €5,000\""
+msgstr ""
+
+#, python-format
+msgid ""
+"\"We donated €5k.\" Cool, show me. With %(brand)s, anyone can. Payments "
+"go straight to the recipient and land in a public ledger, and the "
+"recipient signs for what they got."
+msgstr ""
+
+msgid "#next"
+msgstr ""
+
+#, python-format
+msgid "%(amount)s confirmed"
+msgstr ""
+
+#, python-format
+msgid "%(amount)s confirmed by the recipient's own passkey"
+msgstr ""
+
+#, python-format
+msgid "%(amount)s recorded only"
+msgstr ""
+
+#, python-format
+msgid "%(amount)s to %(to)s"
+msgstr ""
+
+#, python-format
+msgid "%(brand)s badge"
+msgstr ""
+
+#, python-format
+msgid ""
+"%(brand)s is a personal project by me, Dr. Ivo Iliev, in Sofia, Bulgaria."
+" There's no company behind it, no investors and no team. Just me and one "
+"very patient bee."
+msgstr ""
+
+#, python-format
+msgid "%(brand)s is run by Ivo Iliev as a private individual in Sofia, Bulgaria."
+msgstr ""
+
+#, python-format
+msgid ""
+"%(brand)s takes nothing from your donation. A tip helps keep it running, "
+"and goes on top."
+msgstr ""
+
+#, python-format
+msgid "%(confirmed)s of %(total)s confirmed"
+msgstr ""
+
+#, python-format
+msgid "%(count)s cosignature"
+msgid_plural "%(count)s cosignatures"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1. Your passkeys"
+msgstr ""
+
+msgid "2. Prove your domain"
+msgstr ""
+
+msgid "3. Confirm payments you received"
+msgstr ""
+
+msgid ""
+"<a "
+"href=\"https://github.com/HallowDance/donationbee\">github.com/HallowDance/donationbee</a>."
+" Issues and pull requests are welcome."
+msgstr ""
+
+#, python-format
+msgid ""
+"<a href=\"mailto:%(email)s\">%(email)s</a>. Questions, bug reports, or if"
+" you'd like a profile during the beta."
+msgstr ""
+
+#, python-format
+msgid "<b>%(amount)s</b> recorded"
+msgstr ""
+
+#, python-format
+msgid "<b>%(count)s</b> hive"
+msgid_plural "<b>%(count)s</b> hives"
+msgstr[0] ""
+msgstr[1] ""
+
+#, python-format
+msgid "<b>%(count)s</b> ledger entry"
+msgid_plural "<b>%(count)s</b> ledger entries"
+msgstr[0] ""
+msgstr[1] ""
+
+#, python-format
+msgid "<b>%(count)s</b> payment"
+msgid_plural "<b>%(count)s</b> payments"
+msgstr[0] ""
+msgstr[1] ""
+
+#, python-format
+msgid "<span data-entry-count>%(count)s</span> entry"
+msgid_plural "<span data-entry-count>%(count)s</span> entries"
+msgstr[0] ""
+msgstr[1] ""
+
+#, python-format
+msgid ""
+"<strong>Free and open.</strong> %(brand)s takes 0%% of donations, and "
+"that won't change. The site, the ledger format and the verifier are open "
+"source under Apache-2.0."
+msgstr ""
+
+msgid ""
+"<strong>Paid for by tips.</strong> Donors can add an optional tip. Tips "
+"pay for the server and Stripe's fee on the tip itself. That's the whole "
+"business model."
+msgstr ""
+
+msgid ""
+"<strong>Proof as the norm.</strong> \"Show me\" should be a normal reply "
+"to any donation claim, and the answer should be a link. If someone else "
+"runs a better ledger in the same open format, that counts as a win too."
+msgstr ""
+
+msgid ""
+"A domain you control, like <code>yourcharity.org</code>. You'll put one "
+"small file on it to prove the profile is really yours."
+msgstr ""
+
+msgid "A payer and recipient who know each other look like strangers."
+msgstr ""
+
+msgid ""
+"A payment the recipient hasn't confirmed is our word that Stripe reported"
+" it."
+msgstr ""
+
+msgid "About me"
+msgstr ""
+
+msgid "Add a passkey"
+msgstr ""
+
+msgid "Add a passkey first."
+msgstr ""
+
+msgid "All entries (JSON)"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "Anchor"
+msgstr ""
+
+msgid "Anchored"
+msgstr ""
+
+msgid "Anchoring isn't switched on in this beta."
+msgstr ""
+
+msgid "Anchors go out every hour."
+msgstr ""
+
+msgid "Ask Barnaby the bee something"
+msgstr ""
+
+#, python-format
+msgid ""
+"Back on %(brand)s, add a passkey: your phone's or laptop's fingerprint or"
+" face unlock. That's how you sign in and sign for payments. No password "
+"to remember."
+msgstr ""
+
+msgid "Bank account"
+msgstr ""
+
+#, python-format
+msgid "Barnaby, the %(brand)s bee"
+msgstr ""
+
+msgid "Before you start"
+msgstr ""
+
+msgid ""
+"Beta: test mode only, no real money moves. Demo hives use example data, "
+"and the demo witness is run by us."
+msgstr ""
+
+msgid "Bitcoin confirms it within a few hours."
+msgstr ""
+
+msgid "Bitcoin pending"
+msgstr ""
+
+msgid "Busy hives"
+msgstr ""
+
+msgid "Check and publish"
+msgstr ""
+
+msgid "Check every signature"
+msgstr ""
+
+msgid "Check it in your browser"
+msgstr ""
+
+msgid "Check it yourself"
+msgstr ""
+
+msgid "Check that each entry links to the one before"
+msgstr ""
+
+msgid "Check the checkpoint's signature"
+msgstr ""
+
+msgid ""
+"Checkout runs on Stripe, and the money goes into the recipient's own "
+"account. We never touch it."
+msgstr ""
+
+msgid "Choose one of the tip options."
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid ""
+"Companies and creators say this all the time, and there's rarely anything"
+" behind it. Usually it's true. Sometimes it isn't, and from the outside "
+"you can't tell which."
+msgstr ""
+
+#, python-format
+msgid "Confirm entry %(seq)s"
+msgstr ""
+
+msgid "Confirm selected with passkey"
+msgstr ""
+
+msgid ""
+"Confirmations are signed by your passkey. We never hold it, and anyone "
+"can check the signatures."
+msgstr ""
+
+msgid "Continue to Stripe"
+msgstr ""
+
+msgid "Correction"
+msgstr ""
+
+#, python-format
+msgid "Covered by checkpoint %(size)s"
+msgstr ""
+
+msgid "Current state"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Do I need crypto?"
+msgstr ""
+
+#, python-format
+msgid "Domain for <code>%(fp)s…</code>"
+msgstr ""
+
+msgid "Don't take my word for it"
+msgstr ""
+
+msgid "Don't trust the bee"
+msgstr ""
+
+msgid ""
+"Donations here are ordinary card payments in euros, through Stripe. "
+"Nobody buys, sells, holds or sends bitcoin. There's no wallet, no coin "
+"and no token, and the money never goes near a blockchain."
+msgstr ""
+
+msgid "Download every entry and the signed checkpoint"
+msgstr ""
+
+msgid "Download receipt"
+msgstr ""
+
+msgid "Download receipt.json"
+msgstr ""
+
+#, python-format
+msgid ""
+"During the beta, profiles are by invitation. Write to <a "
+"href=\"mailto:%(email)s\">%(email)s</a> and you'll get a personal setup "
+"link."
+msgstr ""
+
+msgid ""
+"Each payment is signed and added to a public ledger. Outside witnesses "
+"check that nobody rewrites it, and you get a receipt to keep."
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Enter an amount between 1.00 and 100,000.00 EUR."
+msgstr ""
+
+msgid "Entry"
+msgstr ""
+
+#, python-format
+msgid "Entry #%(seq)s"
+msgstr ""
+
+msgid ""
+"Every entry here is public. You can check all of it with <code>vpp-"
+"verify</code>, without trusting us."
+msgstr ""
+
+msgid "Every entry, in order"
+msgstr ""
+
+msgid "Everyone sees the same ledger"
+msgstr ""
+
+#, python-format
+msgid ""
+"Everything %(brand)s has recorded, newest first. Each entry is signed and"
+" linked to the one before it, so none can be changed or removed without "
+"it showing."
+msgstr ""
+
+msgid "Everything is confirmed."
+msgstr ""
+
+msgid ""
+"First time? Use the setup link we sent you, and see <a "
+"href=\"/recipients\">what to have ready</a>."
+msgstr ""
+
+#, python-format
+msgid "For %(to)s"
+msgstr ""
+
+msgid ""
+"For Stripe's two-step verification. Keep the backup codes Stripe gives "
+"you somewhere safe, like a password manager."
+msgstr ""
+
+msgid "For charities, creators and anyone receiving payments"
+msgstr ""
+
+msgid "For donations, pledges and payouts"
+msgstr ""
+
+msgid "For recipients"
+msgstr ""
+
+msgid "For the winter drive"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "Get in touch"
+msgstr ""
+
+msgid "Giveaways that go quiet"
+msgstr ""
+
+msgid "Good to know"
+msgstr ""
+
+msgid "Hash"
+msgstr ""
+
+msgid "Have these ready"
+msgstr ""
+
+msgid "Hi, I'm Ivo. <em>I keep the hive.</em>"
+msgstr ""
+
+msgid "How it works"
+msgstr ""
+
+msgid "How the buzz works"
+msgstr ""
+
+msgid ""
+"I have a PhD in physics and work in fintech, so payments are my day job. "
+"Outside of it I'm a free and open-source software enthusiast. I like "
+"systems you can check for yourself instead of having to take someone's "
+"word for it."
+msgstr ""
+
+msgid ""
+"I understand this payment will be published. If I give a name or note, "
+"they'll be shown too. I can ask for them to be removed later, but the "
+"record of the payment stays."
+msgstr ""
+
+msgid "If the identity check fails"
+msgstr ""
+
+msgid "Independent witnesses cosigned a checkpoint that includes it."
+msgstr ""
+
+msgid "Independent witnesses cosigned a checkpoint that includes this entry."
+msgstr ""
+
+msgid ""
+"It's open source: read the code on <a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier\">GitHub</a>,"
+" or install it from <a href=\"https://pypi.org/project/donationbee-"
+"verify/\">PyPI</a>."
+msgstr ""
+
+msgid ""
+"It's signed, linked to the entry before it, and shown to everyone. Your "
+"name and note can be erased later. The payment itself stays."
+msgstr ""
+
+msgid "Keep your receipt"
+msgstr ""
+
+msgid "Leave empty to stay anonymous"
+msgstr ""
+
+msgid "Ledger"
+msgstr ""
+
+msgid "Ledger created"
+msgstr ""
+
+msgid ""
+"Legal name, date of birth and address, exactly as they appear on your ID."
+" Small typos are the most common reason the automatic identity check "
+"fails."
+msgstr ""
+
+msgid "Main"
+msgstr ""
+
+msgid "Money sent back outside Stripe is invisible to any ledger."
+msgstr ""
+
+msgid ""
+"Names and notes appear only as salted commitments (<code>c1:…</code>). "
+"The readable text above comes from a store that can be erased. Erasing it"
+" doesn't break the chain."
+msgstr ""
+
+msgid "Newer entries get cosigned within minutes."
+msgstr ""
+
+msgid "Newest entries"
+msgstr ""
+
+msgid "No passkeys yet."
+msgstr ""
+
+#, python-format
+msgid ""
+"No payment details, names or amounts go to Bitcoin or to OpenTimestamps, "
+"only the fingerprint. The checkpoints and their proofs are also kept in a"
+" public %(repo)s where rewriting history is switched off. The verifier "
+"checks each proof against Bitcoin by itself, using your own Bitcoin node "
+"or, if you don't run one, the public explorer mempool.space."
+msgstr ""
+
+msgid "No tip"
+msgstr ""
+
+#, python-format
+msgid ""
+"No. You're paid in euros into your Stripe account, like any card payment."
+" %(brand)s timestamps a fingerprint of the ledger in Bitcoin every hour "
+"so nobody can rewrite it later, but no bitcoin changes hands and you "
+"never touch it. <a href=\"/#bitcoin\">How that works</a>."
+msgstr ""
+
+#, python-format
+msgid "Note: \"%(note)s\""
+msgstr ""
+
+msgid "Note: \"<span data-p-note-text></span>\""
+msgstr ""
+
+#, python-format
+msgid ""
+"Nothing from us: %(brand)s takes no cut and has no monthly fee. Stripe "
+"charges its normal card fees. Donors can add an optional tip for "
+"%(brand)s on top of their donation. Stripe's fee is calculated on the "
+"whole payment, so a €2 tip adds about 3 cents to your Stripe fee."
+msgstr ""
+
+msgid "Nothing recorded yet."
+msgstr ""
+
+msgid "Older entries"
+msgstr ""
+
+msgid ""
+"On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>,"
+" any future expiry date and any CVC."
+msgstr ""
+
+msgid "One you can receive mail on. It becomes your Stripe login."
+msgstr ""
+
+msgid "Only confirm payments that actually reached your Stripe account."
+msgstr ""
+
+msgid ""
+"Open the link we send you. You create a Stripe login with two-step "
+"verification, and Stripe checks your identity and bank details. We never "
+"see your ID or bank details."
+msgstr ""
+
+msgid "Operator"
+msgstr ""
+
+msgid "Optional tip for DonationBee (not part of the donation)"
+msgstr ""
+
+msgid "Passkey added"
+msgstr ""
+
+#, python-format
+msgid "Pay %(name)s"
+msgstr ""
+
+msgid "Pay straight to the recipient"
+msgstr ""
+
+msgid "Payment"
+msgstr ""
+
+msgid "Payment recorded. Thank you!"
+msgstr ""
+
+#, python-brace-format
+msgid "Payment to {name}"
+msgstr ""
+
+#, python-format
+msgid "Payment · %(name)s"
+msgstr ""
+
+msgid "Payments are switched off in this beta. You can browse the demo hives."
+msgstr ""
+
+msgid ""
+"Payments land in your own Stripe account, not ours, so Stripe treats you "
+"as the business receiving them. EU anti-money-laundering rules require it"
+" to verify you. In exchange, we can never hold, delay or lose your money."
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Photo ID"
+msgstr ""
+
+msgid "Please confirm that this payment will be published."
+msgstr ""
+
+msgid "Preview of your public ledger entry"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Proof the money <em>left the hive.</em>"
+msgstr ""
+
+msgid "Prove your website"
+msgstr ""
+
+msgid "Public ledger"
+msgstr ""
+
+msgid "Public note <span class=\"muted\">(optional)</span>"
+msgstr ""
+
+msgid "Public profile"
+msgstr ""
+
+msgid "Publish a passkey first."
+msgstr ""
+
+msgid ""
+"Publish the small file we show you at <code>/.well-known/vpp.json</code> "
+"on your site. From then on, the payments you sign show as confirmed by "
+"your domain."
+msgstr ""
+
+msgid ""
+"Publish this file at <code>https://&lt;your-domain&gt;/.well-"
+"known/vpp.json</code>:"
+msgstr ""
+
+msgid "Quiet hive so far."
+msgstr ""
+
+msgid "Raw entry JSON"
+msgstr ""
+
+msgid "Read the code"
+msgstr ""
+
+msgid "Rebuild the Merkle tree and compare it to the checkpoint"
+msgstr ""
+
+msgid "Recipient area"
+msgstr ""
+
+msgid "Recipient confirmed"
+msgstr ""
+
+msgid "Recipient sign-in"
+msgstr ""
+
+msgid "Recompute every entry's hash"
+msgstr ""
+
+msgid "Recomputes every hash, link and signature on your own device."
+msgstr ""
+
+msgid "Recorded"
+msgstr ""
+
+#, python-format
+msgid "Recorded · %(count)s payment, after refunds"
+msgid_plural "Recorded · %(count)s payments, after refunds"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Recording your payment…"
+msgstr ""
+
+msgid "Refund"
+msgstr ""
+
+msgid "Root keys changed"
+msgstr ""
+
+msgid ""
+"Running the ledger means I'm the one who could cheat. So the site is "
+"built for you to catch me: witnesses, Bitcoin timestamps and a verifier "
+"that shares no code with this site. During the beta the only witness is "
+"one I run, so that part still has to earn your trust. Here's <a "
+"href=\"/#check\">how to check it yourself</a>, and <a "
+"href=\"/#limits\">what it can't prove</a>."
+msgstr ""
+
+msgid "See a live hive"
+msgstr ""
+
+msgid "See the ledger"
+msgstr ""
+
+msgid "Send a recorded payment"
+msgstr ""
+
+msgid "Set up Stripe"
+msgstr ""
+
+msgid ""
+"Setup takes about 15 minutes. Payments go straight into your own Stripe "
+"account, so Stripe needs to know who you are. Here's what to have ready, "
+"so nothing surprises you halfway through."
+msgstr ""
+
+msgid "Show off your hive"
+msgstr ""
+
+msgid "Sign in with a passkey"
+msgstr ""
+
+msgid ""
+"Sign in with the passkey you published for your organisation. No password"
+" to remember."
+msgstr ""
+
+msgid "Sign out"
+msgstr ""
+
+msgid "Signed by"
+msgstr ""
+
+msgid "Signed checkpoint"
+msgstr ""
+
+msgid "Signed envelope"
+msgstr ""
+
+msgid "Signing key changed"
+msgstr ""
+
+msgid ""
+"Sometimes. If the automatic check can't confirm you, Stripe asks for a "
+"photo of your ID and a selfie."
+msgstr ""
+
+msgid "Stripe is confirming the payment. This page refreshes on its own."
+msgstr ""
+
+msgid "Test mode: no real money moves."
+msgstr ""
+
+msgid ""
+"The <a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier"
+"\">open-source verifier</a> checks the whole ledger:"
+msgstr ""
+
+msgid "The IBAN where Stripe should pay out what you receive."
+msgstr ""
+
+msgid "The ledger"
+msgstr ""
+
+msgid "The ledger is empty."
+msgstr ""
+
+msgid "The ledger right now"
+msgstr ""
+
+#, python-format
+msgid ""
+"The money goes straight to %(name)s's own Stripe account, so we never "
+"hold it. Then the payment goes into the public ledger, and you get a "
+"receipt to keep."
+msgstr ""
+
+msgid "The operator and a recipient working together could invent one."
+msgstr ""
+
+msgid ""
+"The playground needs JavaScript. The short version: change any entry and "
+"its hash changes, which breaks the link from the next entry."
+msgstr ""
+
+msgid ""
+"The receipt is a file only you hold. It shows the ledger signed a "
+"checkpoint that includes your payment. If the payment is ever removed or "
+"changed, the receipt is proof the operator cheated."
+msgstr ""
+
+msgid "The recipient signs for it"
+msgstr ""
+
+msgid "The tech is fun"
+msgstr ""
+
+msgid ""
+"The verifier is a separate program that shares no code with this site. It"
+" redoes every check itself, using copies kept by people other than us."
+msgstr ""
+
+msgid ""
+"They tap a passkey tied to their own website. Payments they've signed for"
+" show as confirmed. The rest show as recorded."
+msgstr ""
+
+#, python-format
+msgid ""
+"This check runs code we serve, so it's a quick check. For one that "
+"doesn't trust us at all, run the open-source verifier: <code>pip install "
+"donationbee-verify</code>, then <code>vpp-verify --url %(base)s</code>."
+msgstr ""
+
+msgid ""
+"This is a tiny ledger, hashed with real SHA-256 right in your browser. "
+"Change an amount and see what anyone checking the chain would see."
+msgstr ""
+
+msgid "This recipient can't accept payments yet."
+msgstr ""
+
+#, python-format
+msgid "Tip for %(brand)s <span class=\"muted\">(optional)</span>"
+msgstr ""
+
+msgid ""
+"Transparency logs, witnesses and Bitcoin timestamps were built to keep "
+"security certificates and software releases honest. I wanted to see what "
+"they could do for donations."
+msgstr ""
+
+msgid "Tree root"
+msgstr ""
+
+msgid "Try to cheat the ledger"
+msgstr ""
+
+msgid "Turns green once you've confirmed every payment."
+msgstr ""
+
+msgid ""
+"Usually it's a typo in your name or date of birth. Use the same setup "
+"link to correct it. If Stripe then asks for a photo ID and selfie, that's"
+" normal and only happens once."
+msgstr ""
+
+msgid "We only borrow Bitcoin's clock. Once an hour:"
+msgstr ""
+
+msgid ""
+"We send that fingerprint, mixed with a random value, to <a "
+"href=\"https://opentimestamps.org\">OpenTimestamps</a>, a free public "
+"service. It bundles fingerprints from many people into a single Bitcoin "
+"transaction and pays the small fee itself. We pay nothing."
+msgstr ""
+
+msgid ""
+"We take the ledger's latest signed checkpoint and compute its "
+"fingerprint, a SHA-256 hash. It's 64 characters that say nothing about "
+"who paid whom."
+msgstr ""
+
+msgid "Welcome back to the hive"
+msgstr ""
+
+msgid "What"
+msgstr ""
+
+msgid "What becomes public"
+msgstr ""
+
+msgid "What even a good bee can't prove"
+msgstr ""
+
+msgid "What happens, step by step"
+msgstr ""
+
+msgid "What it costs"
+msgstr ""
+
+msgid "What the public ledger will show"
+msgstr ""
+
+msgid "When"
+msgstr ""
+
+msgid "Where Bitcoin comes in (and where it doesn't)"
+msgstr ""
+
+msgid "Where I want it to go"
+msgstr ""
+
+msgid "Who runs this"
+msgstr ""
+
+msgid "Why I built it"
+msgstr ""
+
+msgid "Why Stripe asks so much"
+msgstr ""
+
+msgid ""
+"Within a few hours that transaction is in a Bitcoin block. From then on "
+"anyone can prove the checkpoint existed by that time, and nobody, us "
+"included, can backdate the ledger or quietly swap in a different history."
+msgstr ""
+
+msgid "Witnesses"
+msgstr ""
+
+msgid "Witnesses usually sign within a few minutes."
+msgstr ""
+
+msgid "Write to me"
+msgstr ""
+
+#, python-format
+msgid ""
+"You'll pay <strong data-p-total></strong> in total: the donation above, "
+"plus a <span data-p-tip-amount></span> tip for %(brand)s. The tip isn't "
+"part of the donation and isn't recorded as one."
+msgstr ""
+
+msgid "Your badge is green."
+msgstr ""
+
+msgid "Your details"
+msgstr ""
+
+#, python-format
+msgid "Your identity domain is <strong>%(domain)s</strong>."
+msgstr ""
+
+msgid "Your name <span class=\"muted\">(optional, shown publicly)</span>"
+msgstr ""
+
+msgid ""
+"Your profile name, your domain, and the payments you received, with "
+"amounts and dates. Payers' names appear only if they choose to share "
+"them. Your ID and bank details stay with Stripe."
+msgstr ""
+
+msgid "Your receipt"
+msgstr ""
+
+msgid ""
+"Your receipt gets stronger once witnesses sign. This page updates when "
+"they do."
+msgstr ""
+
+msgid "Your website"
+msgstr ""
+
+msgid "anonymous"
+msgstr ""
+
+msgid "beta"
+msgstr ""
+
+msgid "confirmed"
+msgstr ""
+
+msgid "confirmed by recipients"
+msgstr ""
+
+msgid "cosigned"
+msgstr ""
+
+msgid "cut"
+msgstr ""
+
+#, python-format
+msgid "from %(payer)s"
+msgstr ""
+
+msgid "from <span data-p-from>anonymous</span>"
+msgstr ""
+
+msgid "git repo"
+msgstr ""
+
+#, python-format
+msgid "identity: %(domain)s"
+msgstr ""
+
+msgid "in Bitcoin"
+msgstr ""
+
+msgid "in git"
+msgstr ""
+
+msgid "keys"
+msgstr ""
+
+#, python-brace-format
+msgid "listed on {domain}"
+msgstr ""
+
+msgid "lists every published passkey."
+msgstr ""
+
+msgid "no domain proof yet"
+msgstr ""
+
+msgid "not anchored yet"
+msgstr ""
+
+msgid "not witnessed yet"
+msgstr ""
+
+msgid "not yet witnessed"
+msgstr ""
+
+#, python-format
+msgid "of %(total)s, %(refunded)s refunded"
+msgstr ""
+
+msgid "on this exact state"
+msgstr ""
+
+msgid "open source"
+msgstr ""
+
+msgid "pending domain proof"
+msgstr ""
+
+msgid "proof the money left the hive"
+msgstr ""
+
+msgid "public anchors repo"
+msgstr ""
+
+#, python-format
+msgid "published · entry <a href=\"/e/%(seq)s\">#%(seq)s</a>"
+msgstr ""
+
+msgid "recipient"
+msgstr ""
+
+msgid "recorded"
+msgstr ""
+
+msgid "see the entry"
+msgstr ""
+
+msgid "taken from donations"
+msgstr ""
+
+#, python-format
+msgid "up to #%(seq)s"
+msgstr ""
+
+msgid "voided"
+msgstr ""
+
+#, python-brace-format
+msgid "voids #{seq} ({reason})"
+msgstr ""
+
+msgid "waiting for witnesses"
+msgstr ""
+
+msgid "what Bitcoin does here"
+msgstr ""
+
+msgid "witnessed"
+msgstr ""
+
+#, python-format
+msgid "witnessed up to #%(seq)s"
+msgstr ""
+
+#, python-brace-format
+msgid "{amount} of payment #{seq}"
+msgstr ""
+
+#, python-brace-format
+msgid "{k} of {n} root keys"
+msgstr ""
+
+#, python-brace-format
+msgid "{n} payment"
+msgid_plural "{n} payments"
+msgstr[0] ""
+msgstr[1] ""
+

@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% from "_bee.html" import bee %}
-{% block title %}{{ brand() }} · proof the money left the hive{% endblock %}
+{% block title %}{{ brand() }} · {{ _("proof the money left the hive") }}{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="stack">
-    <span class="eyebrow">For donations, pledges and payouts</span>
-    <h1>Proof the money <em>left the hive.</em></h1>
-    <p class="lede">"We donated €5k." Cool, show me. With {{ brand() }}, anyone can. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.</p>
+    <span class="eyebrow">{{ _("For donations, pledges and payouts") }}</span>
+    <h1>{% trans %}Proof the money <em>left the hive.</em>{% endtrans %}</h1>
+    <p class="lede">{% trans brand=brand() %}"We donated €5k." Cool, show me. With {{ brand }}, anyone can. Payments go straight to the recipient and land in a public ledger, and the recipient signs for what they got.{% endtrans %}</p>
     <div class="row">
-      <a class="btn" href="/ledger">See the ledger</a>
-      {% if hives %}<a class="btn ghost" href="/p/{{ hives[0].profile.slug }}">See a live hive</a>{% endif %}
+      <a class="btn" href="/ledger">{{ _("See the ledger") }}</a>
+      {% if hives %}<a class="btn ghost" href="/p/{{ hives[0].profile.slug }}">{{ _("See a live hive") }}</a>{% endif %}
     </div>
   </div>
   <div class="hero-art">
@@ -19,23 +19,23 @@
       <path class="drop d2" d="M150 158l6 3.5v7l-6 3.5-6-3.5v-7z" fill="var(--honey)" stroke="var(--ink)" stroke-width="2"/>
       <path class="drop d3" d="M222 92l6 3.5v7l-6 3.5-6-3.5v-7z" fill="var(--honey)" stroke="var(--ink)" stroke-width="2"/>
     </svg>
-    <span class="sticker" aria-hidden="true"><b>0%</b>cut</span>
-    <button type="button" class="bee-button" data-bee aria-label="Ask Barnaby the bee something">{{ bee(240) }}</button>
+    <span class="sticker" aria-hidden="true"><b>0%</b>{{ _("cut") }}</span>
+    <button type="button" class="bee-button" data-bee aria-label="{{ _('Ask Barnaby the bee something') }}">{{ bee(240) }}</button>
     <p class="bubble" data-bubble role="status" aria-live="polite" hidden></p>
   </div>
 </section>
 
-<section class="ticker" aria-label="The ledger right now">
+<section class="ticker" aria-label="{{ _('The ledger right now') }}">
   <div class="ticker-track">
     {% for copy in [0, 1] %}
     <ul class="ticker-list"{% if copy %} aria-hidden="true"{% endif %}>
-      <li><b>{{ stats.recorded }}</b> recorded</li>
-      <li><b>{{ stats.payments }}</b> payment{{ '' if stats.payments == 1 else 's' }}</li>
-      <li><b>{{ stats.confirmed_pct }}%</b> confirmed by recipients</li>
-      <li><b>{{ stats.entries }}</b> ledger entries</li>
-      <li><b>{{ stats.hives }}</b> hive{{ '' if stats.hives == 1 else 's' }}</li>
-      <li><b>0%</b> taken from donations</li>
-      <li><b>100%</b> open source</li>
+      <li>{% trans amount=stats.recorded %}<b>{{ amount }}</b> recorded{% endtrans %}</li>
+      <li>{% trans count=stats.payments %}<b>{{ count }}</b> payment{% pluralize %}<b>{{ count }}</b> payments{% endtrans %}</li>
+      <li><b>{{ stats.confirmed_pct }}%</b> {{ _("confirmed by recipients") }}</li>
+      <li>{% trans count=stats.entries %}<b>{{ count }}</b> ledger entry{% pluralize %}<b>{{ count }}</b> ledger entries{% endtrans %}</li>
+      <li>{% trans count=stats.hives %}<b>{{ count }}</b> hive{% pluralize %}<b>{{ count }}</b> hives{% endtrans %}</li>
+      <li><b>0%</b> {{ _("taken from donations") }}</li>
+      <li><b>100%</b> {{ _("open source") }}</li>
     </ul>
     {% endfor %}
   </div>
@@ -45,28 +45,28 @@
 </section>
 
 <section id="how" class="stack">
-  <h2>How the buzz works</h2>
+  <h2>{{ _("How the buzz works") }}</h2>
   <ol class="steps">
     <li class="card">
-      <h3>Pay straight to the recipient</h3>
-      <p class="muted">Checkout runs on Stripe, and the money goes into the recipient's own account. We never touch it.</p>
+      <h3>{{ _("Pay straight to the recipient") }}</h3>
+      <p class="muted">{% trans %}Checkout runs on Stripe, and the money goes into the recipient's own account. We never touch it.{% endtrans %}</p>
     </li>
     <li class="card">
-      <h3>Everyone sees the same ledger</h3>
-      <p class="muted">Each payment is signed and added to a public ledger. Outside witnesses check that nobody rewrites it, and you get a receipt to keep.</p>
+      <h3>{{ _("Everyone sees the same ledger") }}</h3>
+      <p class="muted">{% trans %}Each payment is signed and added to a public ledger. Outside witnesses check that nobody rewrites it, and you get a receipt to keep.{% endtrans %}</p>
     </li>
     <li class="card">
-      <h3>The recipient signs for it</h3>
-      <p class="muted">They tap a passkey tied to their own website. Payments they've signed for show as confirmed. The rest show as recorded.</p>
+      <h3>{{ _("The recipient signs for it") }}</h3>
+      <p class="muted">{% trans %}They tap a passkey tied to their own website. Payments they've signed for show as confirmed. The rest show as recorded.{% endtrans %}</p>
     </li>
   </ol>
 </section>
 
 <section id="playground" class="stack">
-  <h2>Try to cheat the ledger</h2>
-  <p class="prose muted">This is a tiny ledger, hashed with real SHA-256 right in your browser. Change an amount and see what anyone checking the chain would see.</p>
+  <h2>{{ _("Try to cheat the ledger") }}</h2>
+  <p class="prose muted">{% trans %}This is a tiny ledger, hashed with real SHA-256 right in your browser. Change an amount and see what anyone checking the chain would see.{% endtrans %}</p>
   <div class="card bold playground" data-playground>
-    <noscript><p>The playground needs JavaScript. The short version: change any entry and its hash changes, which breaks the link from the next entry.</p></noscript>
+    <noscript><p>{% trans %}The playground needs JavaScript. The short version: change any entry and its hash changes, which breaks the link from the next entry.{% endtrans %}</p></noscript>
   </div>
 </section>
 <script type="module" src="/static/js/playground.js"></script>
@@ -74,7 +74,7 @@
 
 {% if hives %}
 <section class="stack">
-  <h2>Busy hives</h2>
+  <h2>{{ _("Busy hives") }}</h2>
   <div class="hives">
     {% for h in hives %}
     <a class="card hive" href="/p/{{ h.profile.slug }}">
@@ -82,13 +82,13 @@
         <span class="avatar" aria-hidden="true">{{ h.profile.display_name[:1] }}</span>
         <div class="stack" style="gap:4px">
           <h3>{{ h.profile.display_name }}</h3>
-          {% if h.profile.domain %}<span class="tag ok">{{ h.profile.domain }}</span>{% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
+          {% if h.profile.domain %}<span class="tag ok">{{ h.profile.domain }}</span>{% else %}<span class="tag warn">{{ _("no domain proof yet") }}</span>{% endif %}
         </div>
       </div>
       {% for cur, v in h.totals.net_by_currency.items() %}
-      <div><span class="total" style="font-size:1.9rem">{{ v|money(cur) }}</span> <span class="muted">recorded</span></div>
-      {% else %}<p class="muted">Nothing recorded yet.</p>{% endfor %}
-      {% for cur, v in h.totals.confirmed_by_currency.items() %}<span class="tag ok">{{ v|money(cur) }} confirmed</span>{% endfor %}
+      <div><span class="total" style="font-size:1.9rem">{{ v|money(cur) }}</span> <span class="muted">{{ _("recorded") }}</span></div>
+      {% else %}<p class="muted">{{ _("Nothing recorded yet.") }}</p>{% endfor %}
+      {% for cur, v in h.totals.confirmed_by_currency.items() %}<span class="tag ok">{% trans amount=v|money(cur) %}{{ amount }} confirmed{% endtrans %}</span>{% endfor %}
     </a>
     {% endfor %}
   </div>
@@ -96,9 +96,9 @@
 {% endif %}
 
 <section id="check" class="card bold">
-  <h2>Don't trust the bee</h2>
-  <p class="prose">The verifier is a separate program that shares no code with this site. It redoes every check itself, using copies kept by people other than us.</p>
-  <p class="muted">It's open source: read the code on <a href="https://github.com/HallowDance/donationbee/tree/master/verifier">GitHub</a>, or install it from <a href="https://pypi.org/project/donationbee-verify/">PyPI</a>.</p>
+  <h2>{{ _("Don't trust the bee") }}</h2>
+  <p class="prose">{% trans %}The verifier is a separate program that shares no code with this site. It redoes every check itself, using copies kept by people other than us.{% endtrans %}</p>
+  <p class="muted">{% trans %}It's open source: read the code on <a href="https://github.com/HallowDance/donationbee/tree/master/verifier">GitHub</a>, or install it from <a href="https://pypi.org/project/donationbee-verify/">PyPI</a>.{% endtrans %}</p>
   <pre>pip install donationbee-verify
 vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
@@ -106,24 +106,24 @@ vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
 </section>
 
 <section id="bitcoin" class="stack">
-  <h2>Where Bitcoin comes in (and where it doesn't)</h2>
-  <p class="prose">Donations here are ordinary card payments in euros, through Stripe. Nobody buys, sells, holds or sends bitcoin. There's no wallet, no coin and no token, and the money never goes near a blockchain.</p>
-  <p class="prose">We only borrow Bitcoin's clock. Once an hour:</p>
+  <h2>{{ _("Where Bitcoin comes in (and where it doesn't)") }}</h2>
+  <p class="prose">{% trans %}Donations here are ordinary card payments in euros, through Stripe. Nobody buys, sells, holds or sends bitcoin. There's no wallet, no coin and no token, and the money never goes near a blockchain.{% endtrans %}</p>
+  <p class="prose">{{ _("We only borrow Bitcoin's clock. Once an hour:") }}</p>
   <ol class="prose bitcoin-steps">
-    <li>We take the ledger's latest signed checkpoint and compute its fingerprint, a SHA-256 hash. It's 64 characters that say nothing about who paid whom.</li>
-    <li>We send that fingerprint, mixed with a random value, to <a href="https://opentimestamps.org">OpenTimestamps</a>, a free public service. It bundles fingerprints from many people into a single Bitcoin transaction and pays the small fee itself. We pay nothing.</li>
-    <li>Within a few hours that transaction is in a Bitcoin block. From then on anyone can prove the checkpoint existed by that time, and nobody, us included, can backdate the ledger or quietly swap in a different history.</li>
+    <li>{% trans %}We take the ledger's latest signed checkpoint and compute its fingerprint, a SHA-256 hash. It's 64 characters that say nothing about who paid whom.{% endtrans %}</li>
+    <li>{% trans %}We send that fingerprint, mixed with a random value, to <a href="https://opentimestamps.org">OpenTimestamps</a>, a free public service. It bundles fingerprints from many people into a single Bitcoin transaction and pays the small fee itself. We pay nothing.{% endtrans %}</li>
+    <li>{% trans %}Within a few hours that transaction is in a Bitcoin block. From then on anyone can prove the checkpoint existed by that time, and nobody, us included, can backdate the ledger or quietly swap in a different history.{% endtrans %}</li>
   </ol>
-  <p class="prose muted">No payment details, names or amounts go to Bitcoin or to OpenTimestamps, only the fingerprint. The checkpoints and their proofs are also kept in a public {% if anchors_url() %}<a href="{{ anchors_url() }}">git repo</a>{% else %}git repo{% endif %} where rewriting history is switched off. The verifier checks each proof against Bitcoin by itself, using your own Bitcoin node or, if you don't run one, the public explorer mempool.space.</p>
+  <p class="prose muted">{% set repo %}{% if anchors_url() %}<a href="{{ anchors_url() }}">{{ _("git repo") }}</a>{% else %}{{ _("git repo") }}{% endif %}{% endset %}{% trans repo=repo %}No payment details, names or amounts go to Bitcoin or to OpenTimestamps, only the fingerprint. The checkpoints and their proofs are also kept in a public {{ repo }} where rewriting history is switched off. The verifier checks each proof against Bitcoin by itself, using your own Bitcoin node or, if you don't run one, the public explorer mempool.space.{% endtrans %}</p>
 </section>
 
 <section id="limits" class="stack">
-  <h2>What even a good bee can't prove</h2>
+  <h2>{{ _("What even a good bee can't prove") }}</h2>
   <ul class="limits">
-    <li>A payment the recipient hasn't confirmed is our word that Stripe reported it.</li>
-    <li>A payer and recipient who know each other look like strangers.</li>
-    <li>The operator and a recipient working together could invent one.</li>
-    <li>Money sent back outside Stripe is invisible to any ledger.</li>
+    <li>{{ _("A payment the recipient hasn't confirmed is our word that Stripe reported it.") }}</li>
+    <li>{{ _("A payer and recipient who know each other look like strangers.") }}</li>
+    <li>{{ _("The operator and a recipient working together could invent one.") }}</li>
+    <li>{{ _("Money sent back outside Stripe is invisible to any ledger.") }}</li>
   </ul>
 </section>
 {% endblock %}

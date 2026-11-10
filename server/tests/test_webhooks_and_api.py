@@ -275,8 +275,13 @@ def test_recipient_guide_page(app_client):
 
 def test_about_page_and_footer_link(app_client):
     page = app_client.get("/about").text
-    for text in ("Dr. Ivo Iliev", "Sofia, Bulgaria", "mailto:bee@theorycorner.com",
-                 'href="/#limits"', "github.com/HallowDance/donationbee"):
+    for text in (
+        "Dr. Ivo Iliev",
+        "Sofia, Bulgaria",
+        "mailto:bee@theorycorner.com",
+        'href="/#limits"',
+        "github.com/HallowDance/donationbee",
+    ):
         assert text in page, text
     assert 'id="limits"' in app_client.get("/").text
     assert 'href="/about">Who runs this' in app_client.get("/ledger").text

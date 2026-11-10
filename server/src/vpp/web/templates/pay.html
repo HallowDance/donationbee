@@ -1,60 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Pay {{ profile.display_name }} · {{ brand() }}{% endblock %}
+{% block title %}{% trans name=profile.display_name %}Pay {{ name }}{% endtrans %} · {{ brand() }}{% endblock %}
 {% block content %}
 <div class="profile-head">
   <span class="avatar" aria-hidden="true">{{ profile.display_name[:1] }}</span>
   <div class="stack" style="gap:6px">
-    <span class="eyebrow">Send a recorded payment</span>
+    <span class="eyebrow">{{ _("Send a recorded payment") }}</span>
     <h1>{{ profile.display_name }}</h1>
   </div>
 </div>
-<p class="prose muted">The money goes straight to {{ profile.display_name }}'s own Stripe account, so we never hold it. Then the payment goes into the public ledger, and you get a receipt to keep.</p>
-{% if error %}<div class="notice bad" role="alert">{{ error }}</div>
+<p class="prose muted">{% trans name=profile.display_name %}The money goes straight to {{ name }}'s own Stripe account, so we never hold it. Then the payment goes into the public ledger, and you get a receipt to keep.{% endtrans %}</p>
+{% if error %}<div class="notice bad" role="alert">{{ _(error) }}</div>
 {% elif stripe_test_mode() %}<div class="card honey" style="max-width:560px">
-  <strong>Test mode: no real money moves.</strong>
-  <span>On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>, any future expiry date and any CVC.</span>
+  <strong>{{ _("Test mode: no real money moves.") }}</strong>
+  <span>{% trans %}On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>, any future expiry date and any CVC.{% endtrans %}</span>
 </div>{% endif %}
 <div class="pay-layout">
 <form method="post" class="card bold" data-pay-form>
   <div class="field">
-    <label for="amount">Amount</label>
-    <div class="amount-field"><input type="text" id="amount" name="amount" inputmode="decimal" placeholder="25.00" required></div>
+    <label for="amount">{{ _("Amount") }}</label>
+    <div class="amount-field"><input type="text" id="amount" name="amount" inputmode="decimal" placeholder="{{ '25,00' if lang() == 'bg' else '25.00' }}" required></div>
     <div class="chips" style="margin-top:10px">
-      {% for a in [5, 10, 25, 50] %}<button type="button" class="chip" data-amount="{{ a }}" aria-pressed="false">€{{ a }}</button>{% endfor %}
+      {% for a in [5, 10, 25, 50] %}<button type="button" class="chip" data-amount="{{ a }}" aria-pressed="false">{{ a ~ " €" if lang() == "bg" else "€" ~ a }}</button>{% endfor %}
     </div>
   </div>
   <div class="field">
-    <label for="payer_name">Your name <span class="muted">(optional, shown publicly)</span></label>
-    <input type="text" id="payer_name" name="payer_name" maxlength="100" placeholder="Leave empty to stay anonymous">
+    <label for="payer_name">{% trans %}Your name <span class="muted">(optional, shown publicly)</span>{% endtrans %}</label>
+    <input type="text" id="payer_name" name="payer_name" maxlength="100" placeholder="{{ _('Leave empty to stay anonymous') }}">
   </div>
   <div class="field">
-    <label for="note">Public note <span class="muted">(optional)</span></label>
-    <input type="text" id="note" name="note" maxlength="280" placeholder="For the winter drive">
+    <label for="note">{% trans %}Public note <span class="muted">(optional)</span>{% endtrans %}</label>
+    <input type="text" id="note" name="note" maxlength="280" placeholder="{{ _('For the winter drive') }}">
   </div>
   <fieldset class="field tip-field">
-    <legend>Tip for {{ brand() }} <span class="muted">(optional)</span></legend>
-    <p class="muted" style="font-size:.9rem">{{ brand() }} takes nothing from your donation. A tip helps keep it running, and goes on top.</p>
+    <legend>{% trans brand=brand() %}Tip for {{ brand }} <span class="muted">(optional)</span>{% endtrans %}</legend>
+    <p class="muted" style="font-size:.9rem">{% trans brand=brand() %}{{ brand }} takes nothing from your donation. A tip helps keep it running, and goes on top.{% endtrans %}</p>
     <div class="chips" role="radiogroup">
-      {% for t in tips %}<label class="chip tip-chip"><input type="radio" name="tip" value="{{ t }}" id="tip-{{ t }}"{% if t == 0 %} checked{% endif %}>{{ "No tip" if t == 0 else "€" ~ (t // 100) }}</label>{% endfor %}
+      {% for t in tips %}<label class="chip tip-chip"><input type="radio" name="tip" value="{{ t }}" id="tip-{{ t }}"{% if t == 0 %} checked{% endif %}>{{ _("No tip") if t == 0 else ((t // 100) ~ " €" if lang() == "bg" else "€" ~ (t // 100)) }}</label>{% endfor %}
     </div>
   </fieldset>
   <label class="check"><input type="checkbox" id="consent" name="consent" value="1" required>
-    <span>I understand this payment will be published. If I give a name or note, they'll be shown too. I can ask for them to be removed later, but the record of the payment stays.</span></label>
-  <div><button type="submit">Continue to Stripe</button></div>
+    <span>{% trans %}I understand this payment will be published. If I give a name or note, they'll be shown too. I can ask for them to be removed later, but the record of the payment stays.{% endtrans %}</span></label>
+  <div><button type="submit">{{ _("Continue to Stripe") }}</button></div>
 </form>
-<aside class="card preview" data-preview aria-label="Preview of your public ledger entry">
-  <span class="eyebrow">What the public ledger will show</span>
+<aside class="card preview" data-preview aria-label="{{ _('Preview of your public ledger entry') }}">
+  <span class="eyebrow">{{ _("What the public ledger will show") }}</span>
   <div class="preview-entry">
-    <span class="seq">#next</span>
+    <span class="seq">{{ _("#next") }}</span>
     <div class="stack" style="gap:2px">
-      <strong>Payment · {{ profile.display_name }}</strong>
-      <span class="muted">from <span data-p-from>anonymous</span></span>
-      <span class="muted" data-p-note hidden>Note: "<span data-p-note-text></span>"</span>
+      <strong>{% trans name=profile.display_name %}Payment · {{ name }}{% endtrans %}</strong>
+      <span class="muted">{% trans %}from <span data-p-from>anonymous</span>{% endtrans %}</span>
+      <span class="muted" data-p-note hidden>{% trans %}Note: "<span data-p-note-text></span>"{% endtrans %}</span>
     </div>
     <span class="preview-amount" data-p-amount>…</span>
   </div>
-  <p class="preview-total" data-p-tip hidden>You'll pay <strong data-p-total></strong> in total: the donation above, plus a <span data-p-tip-amount></span> tip for {{ brand() }}. The tip isn't part of the donation and isn't recorded as one.</p>
-  <p class="muted" style="font-size:.9rem">It's signed, linked to the entry before it, and shown to everyone. Your name and note can be erased later. The payment itself stays.</p>
+  <p class="preview-total" data-p-tip hidden>{% trans brand=brand() %}You'll pay <strong data-p-total></strong> in total: the donation above, plus a <span data-p-tip-amount></span> tip for {{ brand }}. The tip isn't part of the donation and isn't recorded as one.{% endtrans %}</p>
+  <p class="muted" style="font-size:.9rem">{{ _("It's signed, linked to the entry before it, and shown to everyone. Your name and note can be erased later. The payment itself stays.") }}</p>
 </aside>
 </div>
 <script type="module" src="/static/js/pay.js"></script>

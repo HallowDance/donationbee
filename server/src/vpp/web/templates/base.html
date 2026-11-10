@@ -1,5 +1,5 @@
 {% from "_bee.html" import bee %}<!doctype html>
-<html lang="en">
+<html lang="{{ lang() }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,30 +7,33 @@
 <title>{% block title %}{{ brand() }}{% endblock %}</title>
 <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/static/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+{% if lang() == "bg" %}<link rel="preload" href="/static/fonts/sofia-sans-semicondensed-cyrillic.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
 <link rel="stylesheet" href="/static/hive.css">
 {% block head %}{% endblock %}
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
-    <a class="logo" href="/">{{ bee(40) }}<span>{{ brand() }}</span><small>beta</small></a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/ledger">Ledger</a>
-      <a href="/#how">How it works</a>
-      <a href="/#check">Check it yourself</a>
-      <a href="/recipients">For recipients</a>
+    <a class="logo" href="/">{{ bee(40) }}<span>{{ brand() }}</span><small>{{ _("beta") }}</small></a>
+    <nav class="site-nav" aria-label="{{ _('Main') }}">
+      <a href="/ledger">{{ _("Ledger") }}</a>
+      <a href="/#how">{{ _("How it works") }}</a>
+      <a href="/#check">{{ _("Check it yourself") }}</a>
+      <a href="/recipients">{{ _("For recipients") }}</a>
     </nav>
+    {% if lang() == "bg" %}<a class="lang-switch" href="{{ lang_url(request, 'en') }}" hreflang="en" lang="en">EN<span class="visually-hidden"> · English</span></a>
+    {% else %}<a class="lang-switch" href="{{ lang_url(request, 'bg') }}" hreflang="bg" lang="bg">БГ<span class="visually-hidden"> · Български</span></a>{% endif %}
   </div>
 </header>
-{% if banner() %}<div class="site-banner" role="note"><div class="wrap">{{ banner() }}</div></div>{% endif %}
+{% if banner() %}<div class="site-banner" role="note"><div class="wrap">{{ _(banner()) }}</div></div>{% endif %}
 <main class="wrap">
 {% block content %}{% endblock %}
 </main>
 <footer class="site-footer">
   <div class="wrap">
     <a class="logo" href="/">{{ bee(28) }}<span>{{ brand() }}</span></a>
-    <span>Every entry here is public. You can check all of it with <code>vpp-verify</code>, without trusting us.</span>
-    <span class="footer-links"><a href="/about">Who runs this</a> · <a href="mailto:{{ contact_email() }}">{{ contact_email() }}</a></span>
+    <span>{% trans %}Every entry here is public. You can check all of it with <code>vpp-verify</code>, without trusting us.{% endtrans %}</span>
+    <span class="footer-links"><a href="/about">{{ _("Who runs this") }}</a> · <a href="mailto:{{ contact_email() }}">{{ contact_email() }}</a></span>
   </div>
 </footer>
 </body>

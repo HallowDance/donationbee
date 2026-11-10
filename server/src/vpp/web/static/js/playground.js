@@ -1,11 +1,12 @@
 // Tamper playground: a toy ledger hashed with real SHA-256. Change an amount and watch the chain
 // break; "cover it up" re-hashes everything, and the witness catches the new head anyway.
+import { t } from "./i18n.js";
 import { enc, concat, hex, sha256, rollText, reducedMotion } from "./lib.js";
 
 const root = document.querySelector("[data-playground]");
 
 const ENTRIES = [
-  { who: "Ledger opens", to: null, amount: null },
+  { who: t("Ledger opens"), to: null, amount: null },
   { who: "Ada", to: "Open Meadow", amount: 50 },
   { who: "Grace", to: "Open Meadow", amount: 25 },
   { who: "Indie Hacker Co.", to: "Open Meadow", amount: 250 },
@@ -47,16 +48,16 @@ async function init() {
   root.innerHTML = `
     <div class="pg-chain" role="list"></div>
     <div class="pg-witness">
-      <span class="eyebrow">Witness signed the tree root</span>
+      <span class="eyebrow">${t("Witness signed the tree root")}</span>
       <code class="pg-witness-hash">${short(signedRoot)}</code>
-      <span class="eyebrow">The chain now gives</span>
+      <span class="eyebrow">${t("The chain now gives")}</span>
       <code class="pg-current-root">${short(signedRoot)}</code>
-      <span class="pg-witness-state tag ok">matches</span>
+      <span class="pg-witness-state tag ok">${t("matches")}</span>
     </div>
     <p class="pg-status" role="status" aria-live="polite"></p>
     <div class="row">
-      <button type="button" class="small" data-cover>Cover it up</button>
-      <button type="button" class="small ghost" data-reset>Reset</button>
+      <button type="button" class="small" data-cover>${t("Cover it up")}</button>
+      <button type="button" class="small ghost" data-reset>${t("Reset")}</button>
     </div>`;
   const list = root.querySelector(".pg-chain");
   list.innerHTML = current.map((e, i) => `
@@ -64,17 +65,17 @@ async function init() {
       <div class="pg-link" aria-hidden="true"></div>
       <span class="seq">#${i + 1}</span>
       <strong class="pg-what">${e.to ? `${e.who} → ${e.to}` : e.who}</strong>
-      ${e.amount === null ? '<span class="muted pg-amount-static">genesis</span>' : `
+      ${e.amount === null ? `<span class="muted pg-amount-static">${t("genesis")}</span>` : `
         <label class="pg-amount"><span>€</span><input type="number" min="0" max="99999" step="1"
-          value="${e.amount}" inputmode="numeric" aria-label="Amount of entry ${i + 1}" id="pg-amount-${i}"></label>`}
-      <span class="pg-label">prev</span><code class="pg-prev">${short(stored[i].prev)}</code>
-      <span class="pg-label">hash</span><code class="pg-hash">${short(stored[i].hash)}</code>
+          value="${e.amount}" inputmode="numeric" aria-label="${t("Amount of entry {n}", { n: i + 1 })}" id="pg-amount-${i}"></label>`}
+      <span class="pg-label">${t("prev")}</span><code class="pg-prev">${short(stored[i].prev)}</code>
+      <span class="pg-label">${t("hash")}</span><code class="pg-hash">${short(stored[i].hash)}</code>
     </div>`).join("");
 
   const cards = [...list.children];
   const status = root.querySelector(".pg-status");
   const witnessState = root.querySelector(".pg-witness-state");
-  status.textContent = "Every entry's prev matches the hash before it. Try changing an amount.";
+  status.textContent = t("Every entry's prev matches the hash before it. Try changing an amount.");
 
   async function render(changedIndex = -1) {
     let firstBad = -1;
@@ -100,7 +101,7 @@ async function init() {
     root.querySelector(".pg-current-root").textContent = short(currentRoot);
     const headMatches = currentRoot === signedRoot;
     witnessState.className = `pg-witness-state tag ${headMatches ? "ok" : "bad"}`;
-    witnessState.textContent = headMatches ? "matches" : "doesn't match";
+    witnessState.textContent = headMatches ? t("matches") : t("doesn't match");
     return firstBad;
   }
 
@@ -111,11 +112,11 @@ async function init() {
     current[i].amount = Number(input.value || 0);
     const bad = await render(i);
     if (bad < 0) {
-      status.textContent = "Back to the original amount: every link matches again.";
+      status.textContent = t("Back to the original amount: every link matches again.");
     } else {
       status.textContent = i + 1 < current.length
-        ? `You changed #${i + 1}. Its hash changed, so the link from #${i + 2} is broken. Anyone checking the chain sees it.`
-        : `You changed #${i + 1}. Its hash changed, so the tree root no longer matches what the witness signed.`;
+        ? t("You changed #{n}. Its hash changed, so the link from #{next} is broken. Anyone checking the chain sees it.", { n: i + 1, next: i + 2 })
+        : t("You changed #{n}. Its hash changed, so the tree root no longer matches what the witness signed.", { n: i + 1 });
       if (!reducedMotion()) {
         cards[i].animate([{ transform: "translateX(0)" }, { transform: "translateX(-4px)" },
           { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 260 });
@@ -134,8 +135,8 @@ async function init() {
     await render();
     const same = (await rootOf(stored.map((x) => x.hash))) === signedRoot;
     status.textContent = same
-      ? "Nothing was changed, so there's nothing to cover up."
-      : "Every link matches again, but the tree root is no longer what the witness signed. Caught anyway.";
+      ? t("Nothing was changed, so there's nothing to cover up.")
+      : t("Every link matches again, but the tree root is no longer what the witness signed. Caught anyway.");
     if (!same && !reducedMotion()) {
       root.querySelector(".pg-witness").animate(
         [{ transform: "scale(1)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }],
@@ -151,7 +152,7 @@ async function init() {
       if (input) input.value = current[i].amount;
     });
     await render();
-    status.textContent = "Reset. Every entry's prev matches the hash before it.";
+    status.textContent = t("Reset. Every entry's prev matches the hash before it.");
   });
 
   await render();

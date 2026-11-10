@@ -135,6 +135,15 @@ uv run vpp ots-upgrade             # completes Bitcoin proofs a few hours after 
 The anchors repo should be public, hosted outside your control, with a protected branch that
 blocks force-pushes.
 
+### Translations
+
+The site is in English and Bulgarian. A visitor gets the language their browser asks for, and the
+БГ/EN switch in the header overrides that (`?lang=bg` makes a shareable link). Page text is
+gettext: templates use `{% trans %}` and `_()`, with the Bulgarian in
+`server/src/vpp/web/locale/bg/LC_MESSAGES/messages.po`. Script text lives in
+`server/src/vpp/web/static/js/i18n-bg.js`. After changing text, run `scripts/i18n.sh` to update
+and compile the catalog. `tests/test_i18n.py` fails if anything is untranslated or out of date.
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).

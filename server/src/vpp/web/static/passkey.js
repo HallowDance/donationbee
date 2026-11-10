@@ -1,4 +1,6 @@
 // Recipient passkey flows. Served from 'self' so the page CSP can forbid inline scripts.
+import { t } from "./js/i18n.js";
+
 const b64u = {
   decode: (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0)).buffer,
   encode: (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""),
@@ -46,10 +48,10 @@ async function run(fn) {
 }
 
 document.addEventListener("click", (ev) => {
-  const t = ev.target.closest("[data-action]");
-  if (!t) return;
+  const el = ev.target.closest("[data-action]");
+  if (!el) return;
   ev.preventDefault();
-  const action = t.dataset.action;
+  const action = el.dataset.action;
   if (action === "register") run(async () => {
     const { challenge_id, options } = await post("/api/recipient/register/options");
     const cred = await navigator.credentials.create({ publicKey: creationOptions(options) });
@@ -61,15 +63,15 @@ document.addEventListener("click", (ev) => {
     location.href = "/recipient";
   });
   if (action === "publish") run(async () => {
-    const domain = document.getElementById("domain-" + t.dataset.cred).value;
-    await post("/api/recipient/publish", { credential_id: t.dataset.cred, domain });
+    const domain = document.getElementById("domain-" + el.dataset.cred).value;
+    await post("/api/recipient/publish", { credential_id: el.dataset.cred, domain });
     location.reload();
   });
   if (action === "confirm") run(async () => {
     const ref_seqs = [...document.querySelectorAll("input[name=ref]:checked")].map((i) => Number(i.value));
-    if (!ref_seqs.length) throw new Error("Select at least one payment.");
+    if (!ref_seqs.length) throw new Error(t("Select at least one payment."));
     const { seq } = await assert("/api/recipient/confirm/options", "/api/recipient/confirm/verify", { ref_seqs });
-    status(`Confirmed in ledger entry #${seq}.`);
+    status(t("Confirmed in ledger entry #{seq}.", { seq }));
     setTimeout(() => location.reload(), 1200);
   });
 });

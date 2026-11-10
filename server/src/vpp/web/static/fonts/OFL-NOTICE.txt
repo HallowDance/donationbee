@@ -1,3 +1,5 @@
-Bricolage Grotesque, Figtree and JetBrains Mono are licensed under the SIL Open Font License 1.1
-(https://openfontlicense.org). Latin subsets, self-hosted from Google Fonts so the strict
-Content-Security-Policy (default-src 'self') can stay in place.
+Bricolage Grotesque, Figtree, JetBrains Mono, Sofia Sans and Sofia Sans Semi Condensed are
+licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). Latin subsets of the
+first three, and Cyrillic subsets of Sofia Sans, Sofia Sans Semi Condensed and JetBrains Mono for
+the Bulgarian pages, self-hosted from Google Fonts so the strict Content-Security-Policy
+(default-src 'self') can stay in place.

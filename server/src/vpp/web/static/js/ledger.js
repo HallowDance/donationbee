@@ -1,6 +1,7 @@
 // /ledger: live updates and "check it in your browser".
 // The in-browser check is a quick check only: this script is served by the operator, so the
 // independent check is vpp-verify, which shares no code with this site (see LEDGER_SPEC).
+import { t, tn } from "./i18n.js";
 import { beeLap, concat, countTo, enc, fromB64, fromHex, hex, reducedMotion, sha256, sleep } from "./lib.js";
 
 const table = document.querySelector("table.ledger");
@@ -42,7 +43,7 @@ async function refresh() {
     if (countEl && newCount) countTo(countEl, newCount);
   }
   const live = document.querySelector("[data-live-status]");
-  if (live) live.textContent = `${fresh.length} new entr${fresh.length === 1 ? "y" : "ies"} just arrived.`;
+  if (live) live.textContent = tn("{n} new entry just arrived.", "{n} new entries just arrived.", fresh.length);
   if (paid) beeLap();
   resetChecks(); // the earlier in-browser check no longer covers everything
 }
@@ -118,23 +119,23 @@ async function runCheck() {
     allEntries(),
     (await fetch("/api/v1/checkpoint", { cache: "no-store" })).text(),
   ]);
-  step("download", "ok", `Downloaded ${entries.length} entries and the signed checkpoint.`);
+  step("download", "ok", t("Downloaded {n} entries and the signed checkpoint.", { n: entries.length }));
 
   const canSig = await ed25519Supported();
   step("hashes", "running"); step("links", "running"); step("sigs", canSig ? "running" : "skip");
   let prev = new Uint8Array(32), key = null;
   const leaves = [], signerAt = [];
   for (const [i, e] of entries.entries()) {
-    if (e.seq !== i + 1) return fail("links", `Entry #${i + 1} is missing.`);
+    if (e.seq !== i + 1) return fail("links", t("Entry #{seq} is missing.", { seq: i + 1 }));
     const envelope = fromB64(e.envelope);
     const h = await sha256(concat(DOMAIN, fromHex(e.prev_hash), envelope));
-    if (hex(h) !== e.hash) return fail("hashes", `Entry #${e.seq}: its contents don't match its hash.`);
-    if (e.prev_hash !== hex(prev)) return fail("links", `Entry #${e.seq} doesn't link to #${e.seq - 1}.`);
+    if (hex(h) !== e.hash) return fail("hashes", t("Entry #{seq}: its contents don't match its hash.", { seq: e.seq }));
+    if (e.prev_hash !== hex(prev)) return fail("links", t("Entry #{seq} doesn't link to #{prev}.", { seq: e.seq, prev: e.seq - 1 }));
     const env = JSON.parse(new TextDecoder().decode(envelope));
     if (env.type === "genesis") key = fromHex(env.body.online_key);
     if (env.type === "key_rotation") key = fromHex(env.body.new_online_key); // signed by the new key
     if (canSig && !(await verifySig(key, h, fromHex(e.sig)))) {
-      return fail("sigs", `Entry #${e.seq}: the signature doesn't verify.`);
+      return fail("sigs", t("Entry #{seq}: the signature doesn't verify.", { seq: e.seq }));
     }
     signerAt.push(key);
     leaves.push(await sha256(concat(Uint8Array.of(0), h)));
@@ -142,18 +143,18 @@ async function runCheck() {
     table?.querySelector(`tr[data-seq="${e.seq}"]`)?.classList.add("row-ok");
     if (delay) await sleep(delay);
   }
-  step("hashes", "ok", `All ${entries.length} hashes recompute from the entries' contents.`);
-  step("links", "ok", "Every entry links to the one before it, with no gaps.");
-  if (canSig) step("sigs", "ok", "Every entry is signed by the key in charge at that point.");
-  else step("sigs", "skip", "This browser can't check Ed25519 signatures. vpp-verify can.");
+  step("hashes", "ok", t("All {n} hashes recompute from the entries' contents.", { n: entries.length }));
+  step("links", "ok", t("Every entry links to the one before it, with no gaps."));
+  if (canSig) step("sigs", "ok", t("Every entry is signed by the key in charge at that point."));
+  else step("sigs", "skip", t("This browser can't check Ed25519 signatures. vpp-verify can."));
 
   step("tree", "running");
   const [text, sigBlock] = [note.slice(0, note.lastIndexOf("\n\n") + 1), note.slice(note.lastIndexOf("\n\n") + 2)];
   const [, sizeStr, rootB64] = text.split("\n");
   const size = Number(sizeStr);
   const root = await merkleRoot(leaves.slice(0, size));
-  if (hex(root) !== hex(fromB64(rootB64))) return fail("tree", "The tree root doesn't match the signed checkpoint.");
-  step("tree", "ok", `The Merkle tree of the first ${size} entries matches the signed checkpoint.`);
+  if (hex(root) !== hex(fromB64(rootB64))) return fail("tree", t("The tree root doesn't match the signed checkpoint."));
+  step("tree", "ok", t("The Merkle tree of the first {n} entries matches the signed checkpoint.", { n: size }));
 
   step("checkpoint", canSig ? "running" : "skip");
   const lines = sigBlock.trim().split("\n");
@@ -161,19 +162,21 @@ async function runCheck() {
   const cosigs = lines.length - 1;
   if (canSig) {
     if (!(await verifySig(signerAt[size - 1], enc.encode(text), logSig))) {
-      return fail("checkpoint", "The checkpoint's signature doesn't verify.");
+      return fail("checkpoint", t("The checkpoint's signature doesn't verify."));
     }
-    step("checkpoint", "ok", `The checkpoint is signed by the ledger, and carries ${cosigs} witness cosignature${cosigs === 1 ? "" : "s"}.`);
+    step("checkpoint", "ok", tn(
+      "The checkpoint is signed by the ledger, and carries {n} witness cosignature.",
+      "The checkpoint is signed by the ledger, and carries {n} witness cosignatures.", cosigs));
   }
   button.disabled = false;
-  button.textContent = "Check again";
+  button.textContent = t("Check again");
   return true;
 }
 
 button?.addEventListener("click", () => {
   runCheck().catch((err) => {
     const box = panel.querySelector("[data-verify-error]");
-    box.textContent = `The check stopped: ${err.message}`;
+    box.textContent = t("The check stopped: {error}", { error: err.message });
     box.hidden = false;
     button.disabled = false;
   });

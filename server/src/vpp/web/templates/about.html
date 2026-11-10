@@ -1,64 +1,64 @@
 {% extends "base.html" %}
 {% from "_bee.html" import bee %}
-{% block title %}Who runs this · {{ brand() }}{% endblock %}
+{% block title %}{{ _("Who runs this") }} · {{ brand() }}{% endblock %}
 {% block content %}
 <section class="hero" style="padding-block:0">
   <div class="stack">
-    <span class="eyebrow">Who runs this</span>
-    <h1>Hi, I'm Ivo. <em>I keep the hive.</em></h1>
-    <p class="lede">{{ brand() }} is a personal project by me, Dr. Ivo Iliev, in Sofia, Bulgaria. There's no company behind it, no investors and no team. Just me and one very patient bee.</p>
+    <span class="eyebrow">{{ _("Who runs this") }}</span>
+    <h1>{% trans %}Hi, I'm Ivo. <em>I keep the hive.</em>{% endtrans %}</h1>
+    <p class="lede">{% trans brand=brand() %}{{ brand }} is a personal project by me, Dr. Ivo Iliev, in Sofia, Bulgaria. There's no company behind it, no investors and no team. Just me and one very patient bee.{% endtrans %}</p>
     <div class="row">
-      <a class="btn" href="mailto:{{ contact_email() }}">Write to me</a>
-      <a class="btn ghost" href="https://github.com/HallowDance/donationbee">Read the code</a>
+      <a class="btn" href="mailto:{{ contact_email() }}">{{ _("Write to me") }}</a>
+      <a class="btn ghost" href="https://github.com/HallowDance/donationbee">{{ _("Read the code") }}</a>
     </div>
   </div>
   <div class="hero-art" aria-hidden="true">{{ bee(200) }}</div>
 </section>
 
 <section class="stack">
-  <h2>About me</h2>
-  <p class="prose">I have a PhD in physics and work in fintech, so payments are my day job. Outside of it I'm a free and open-source software enthusiast. I like systems you can check for yourself instead of having to take someone's word for it.</p>
+  <h2>{{ _("About me") }}</h2>
+  <p class="prose">{{ _("I have a PhD in physics and work in fintech, so payments are my day job. Outside of it I'm a free and open-source software enthusiast. I like systems you can check for yourself instead of having to take someone's word for it.") }}</p>
 </section>
 
 <section class="stack">
-  <h2>Why I built it</h2>
+  <h2>{{ _("Why I built it") }}</h2>
   <div class="hives" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr))">
     <div class="card">
-      <h3>"We donated €5,000"</h3>
-      <p class="muted">Companies and creators say this all the time, and there's rarely anything behind it. Usually it's true. Sometimes it isn't, and from the outside you can't tell which.</p>
+      <h3>{{ _('"We donated €5,000"') }}</h3>
+      <p class="muted">{{ _("Companies and creators say this all the time, and there's rarely anything behind it. Usually it's true. Sometimes it isn't, and from the outside you can't tell which.") }}</p>
     </div>
     <div class="card">
-      <h3>Giveaways that go quiet</h3>
-      <p class="muted">"The winner has been contacted" is usually the end of the story. Whether anyone actually got the prize is anyone's guess.</p>
+      <h3>{{ _("Giveaways that go quiet") }}</h3>
+      <p class="muted">{{ _('"The winner has been contacted" is usually the end of the story. Whether anyone actually got the prize is anyone\'s guess.') }}</p>
     </div>
     <div class="card">
-      <h3>The tech is fun</h3>
-      <p class="muted">Transparency logs, witnesses and Bitcoin timestamps were built to keep security certificates and software releases honest. I wanted to see what they could do for donations.</p>
+      <h3>{{ _("The tech is fun") }}</h3>
+      <p class="muted">{{ _("Transparency logs, witnesses and Bitcoin timestamps were built to keep security certificates and software releases honest. I wanted to see what they could do for donations.") }}</p>
     </div>
   </div>
 </section>
 
 <section class="stack">
-  <h2>Where I want it to go</h2>
+  <h2>{{ _("Where I want it to go") }}</h2>
   <ul class="limits">
-    <li><strong>Proof as the norm.</strong> "Show me" should be a normal reply to any donation claim, and the answer should be a link. If someone else runs a better ledger in the same open format, that counts as a win too.</li>
-    <li><strong>Free and open.</strong> {{ brand() }} takes 0% of donations, and that won't change. The site, the ledger format and the verifier are open source under Apache-2.0.</li>
-    <li><strong>Paid for by tips.</strong> Donors can add an optional tip. Tips pay for the server and Stripe's fee on the tip itself. That's the whole business model.</li>
+    <li>{% trans %}<strong>Proof as the norm.</strong> "Show me" should be a normal reply to any donation claim, and the answer should be a link. If someone else runs a better ledger in the same open format, that counts as a win too.{% endtrans %}</li>
+    <li>{% trans brand=brand() %}<strong>Free and open.</strong> {{ brand }} takes 0% of donations, and that won't change. The site, the ledger format and the verifier are open source under Apache-2.0.{% endtrans %}</li>
+    <li>{% trans %}<strong>Paid for by tips.</strong> Donors can add an optional tip. Tips pay for the server and Stripe's fee on the tip itself. That's the whole business model.{% endtrans %}</li>
   </ul>
 </section>
 
 <section class="card bold">
-  <h2>Don't take my word for it</h2>
-  <p class="prose">Running the ledger means I'm the one who could cheat. So the site is built for you to catch me: witnesses, Bitcoin timestamps and a verifier that shares no code with this site. During the beta the only witness is one I run, so that part still has to earn your trust. Here's <a href="/#check">how to check it yourself</a>, and <a href="/#limits">what it can't prove</a>.</p>
+  <h2>{{ _("Don't take my word for it") }}</h2>
+  <p class="prose">{% trans %}Running the ledger means I'm the one who could cheat. So the site is built for you to catch me: witnesses, Bitcoin timestamps and a verifier that shares no code with this site. During the beta the only witness is one I run, so that part still has to earn your trust. Here's <a href="/#check">how to check it yourself</a>, and <a href="/#limits">what it can't prove</a>.{% endtrans %}</p>
 </section>
 
 <section class="stack">
-  <h2>Get in touch</h2>
+  <h2>{{ _("Get in touch") }}</h2>
   <div class="table-wrap">
     <table class="kv">
-      <tr><th>Email</th><td><a href="mailto:{{ contact_email() }}">{{ contact_email() }}</a>. Questions, bug reports, or if you'd like a profile during the beta.</td></tr>
-      <tr><th>Code</th><td><a href="https://github.com/HallowDance/donationbee">github.com/HallowDance/donationbee</a>. Issues and pull requests are welcome.</td></tr>
-      <tr><th>Operator</th><td>{{ brand() }} is run by Ivo Iliev as a private individual in Sofia, Bulgaria.</td></tr>
+      <tr><th>{{ _("Email") }}</th><td>{% trans email=contact_email() %}<a href="mailto:{{ email }}">{{ email }}</a>. Questions, bug reports, or if you'd like a profile during the beta.{% endtrans %}</td></tr>
+      <tr><th>{{ _("Code") }}</th><td>{% trans %}<a href="https://github.com/HallowDance/donationbee">github.com/HallowDance/donationbee</a>. Issues and pull requests are welcome.{% endtrans %}</td></tr>
+      <tr><th>{{ _("Operator") }}</th><td>{% trans brand=brand() %}{{ brand }} is run by Ivo Iliev as a private individual in Sofia, Bulgaria.{% endtrans %}</td></tr>
     </table>
   </div>
 </section>

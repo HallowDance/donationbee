@@ -1,49 +1,48 @@
 {% extends "base.html" %}
-{% block title %}Entry #{{ e.seq }} · {{ brand() }}{% endblock %}
+{% block title %}{% trans seq=e.seq %}Entry #{{ seq }}{% endtrans %} · {{ brand() }}{% endblock %}
 {% block content %}
 <div class="stack" style="gap:10px">
-  <span class="eyebrow"><a href="/ledger">Ledger</a> · {{ e.type.replace("_", " ") }}</span>
-  <h1>Entry #{{ e.seq }}</h1>
-  {% if recipient %}<p style="font-size:1.15rem">
-    {% if e.amount_value is not none %}<strong>{{ e.amount_value|money(e.currency) }}</strong> to {% else %}For {% endif %}
-    <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>{% if revealed.payer %} from <strong>{{ revealed.payer }}</strong>{% endif %}</p>{% endif %}
-  {% if revealed.note %}<p class="muted">Note: "{{ revealed.note }}"</p>{% endif %}
+  <span class="eyebrow"><a href="/ledger">{{ _("Ledger") }}</a> · {{ entry_label(e.type) }}</span>
+  <h1>{% trans seq=e.seq %}Entry #{{ seq }}{% endtrans %}</h1>
+  {% if recipient %}{% set to %}<a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>{% endset %}<p style="font-size:1.15rem">
+    {% if e.amount_value is not none %}{% set amount %}<strong>{{ e.amount_value|money(e.currency) }}</strong>{% endset %}{% trans amount=amount, to=to %}{{ amount }} to {{ to }}{% endtrans %}{% else %}{% trans to=to %}For {{ to }}{% endtrans %}{% endif %}{% if revealed.payer %} {% set payer %}<strong>{{ revealed.payer }}</strong>{% endset %}{% trans payer=payer %}from {{ payer }}{% endtrans %}{% endif %}</p>{% endif %}
+  {% if revealed.note %}<p class="muted">{% trans note=revealed.note %}Note: "{{ note }}"{% endtrans %}</p>{% endif %}
 </div>
 
 <div class="table-wrap">
   <table class="kv">
-    <tr><th>Recorded</th><td>{{ e.created_at|utc }}</td></tr>
-    <tr><th>Hash</th><td><code class="hash">{{ e.hash.hex() }}</code></td></tr>
-    <tr><th>Previous</th><td><code class="hash">{% if e.seq > 1 %}<a href="/e/{{ e.seq - 1 }}">{{ e.prev_hash.hex() }}</a>{% else %}{{ e.prev_hash.hex() }}{% endif %}</code></td></tr>
-    <tr><th>Signed by</th><td><code>{{ e.key_id }}</code> · <a href="/api/v1/keys">keys</a></td></tr>
-    <tr><th>Witnesses</th><td>
-      {% if witnessed %}<span class="tag ok">cosigned</span> Independent witnesses cosigned a checkpoint that includes this entry.
-      {% else %}<span class="tag warn">not yet witnessed</span> Witnesses usually sign within a few minutes.{% endif %}
+    <tr><th>{{ _("Recorded") }}</th><td>{{ e.created_at|utc }}</td></tr>
+    <tr><th>{{ _("Hash") }}</th><td><code class="hash">{{ e.hash.hex() }}</code></td></tr>
+    <tr><th>{{ _("Previous") }}</th><td><code class="hash">{% if e.seq > 1 %}<a href="/e/{{ e.seq - 1 }}">{{ e.prev_hash.hex() }}</a>{% else %}{{ e.prev_hash.hex() }}{% endif %}</code></td></tr>
+    <tr><th>{{ _("Signed by") }}</th><td><code>{{ e.key_id }}</code> · <a href="/api/v1/keys">{{ _("keys") }}</a></td></tr>
+    <tr><th>{{ _("Witnesses") }}</th><td>
+      {% if witnessed %}<span class="tag ok">{{ _("cosigned") }}</span> {{ _("Independent witnesses cosigned a checkpoint that includes this entry.") }}
+      {% else %}<span class="tag warn">{{ _("not yet witnessed") }}</span> {{ _("Witnesses usually sign within a few minutes.") }}{% endif %}
     </td></tr>
-    <tr><th>Anchor</th><td>
-      {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span>
-        Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · {% if anchors_url() %}<a href="{{ anchors_url() }}/blob/main/{{ anchor.git_path }}"><code>{{ anchor.git_path }}</code></a>{% else %}<code>{{ anchor.git_path }}</code>{% endif %}{% endif %} · <a href="/#bitcoin">what Bitcoin does here</a>
-      {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
+    <tr><th>{{ _("Anchor") }}</th><td>
+      {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ _("in Bitcoin") if anchor.ots_status == "complete" else (_("Bitcoin pending") if anchor.ots_status == "pending" else _("in git")) }}</span>
+        {% trans size=anchor.size %}Covered by checkpoint {{ size }}{% endtrans %}{% if anchor.git_path %} · {% if anchors_url() %}<a href="{{ anchors_url() }}/blob/main/{{ anchor.git_path }}"><code>{{ anchor.git_path }}</code></a>{% else %}<code>{{ anchor.git_path }}</code>{% endif %}{% endif %} · <a href="/#bitcoin">{{ _("what Bitcoin does here") }}</a>
+      {% else %}<span class="tag warn">{{ _("not anchored yet") }}</span> {{ _("Anchors go out every hour.") if anchoring_on() else _("Anchoring isn't switched on in this beta.") }}{% endif %}
     </td></tr>
   </table>
 </div>
 
 <details class="card">
-  <summary>Signed envelope</summary>
+  <summary>{{ _("Signed envelope") }}</summary>
   <pre>{{ envelope_pretty }}</pre>
-  <p class="muted">Names and notes appear only as salted commitments (<code>c1:…</code>). The readable text above comes from a store that can be erased. Erasing it doesn't break the chain.</p>
+  <p class="muted">{% trans %}Names and notes appear only as salted commitments (<code>c1:…</code>). The readable text above comes from a store that can be erased. Erasing it doesn't break the chain.{% endtrans %}</p>
 </details>
 
 <div id="check" class="card bold">
-  <h3>Don't trust the bee</h3>
-  <p class="muted">The <a href="https://github.com/HallowDance/donationbee/tree/master/verifier">open-source verifier</a> checks the whole ledger:</p>
+  <h3>{{ _("Don't trust the bee") }}</h3>
+  <p class="muted">{% trans %}The <a href="https://github.com/HallowDance/donationbee/tree/master/verifier">open-source verifier</a> checks the whole ledger:{% endtrans %}</p>
   <pre>pip install donationbee-verify
 vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --witness &lt;witness vkey&gt; --min-witnesses 1 \
   --anchors-repo {{ anchors_url() or '&lt;anchors git url&gt;' }} --check-ots --check-domains</pre>
   <div class="row">
-    {% if e.type == "payment" %}<a class="btn small" href="/api/v1/receipts/{{ e.seq }}">Download receipt</a>{% endif %}
-    <a class="btn small ghost" href="/api/v1/entries/{{ e.seq }}">Raw entry JSON</a>
+    {% if e.type == "payment" %}<a class="btn small" href="/api/v1/receipts/{{ e.seq }}">{{ _("Download receipt") }}</a>{% endif %}
+    <a class="btn small ghost" href="/api/v1/entries/{{ e.seq }}">{{ _("Raw entry JSON") }}</a>
   </div>
 </div>
 {% endblock %}

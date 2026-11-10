@@ -282,3 +282,40 @@ def test_landing_flair_works_and_never_scrolls_sideways(live_app, width):
         assert page.evaluate("document.documentElement.scrollWidth") == width
         browser.close()
     assert problems == [], problems
+
+
+def test_bulgarian_pages_in_chromium(live_app):
+    base, _ = live_app
+    problems = []
+    with playwright.sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=CHROMIUM, headless=True)
+        ctx = browser.new_context(viewport={"width": 390, "height": 900}, locale="bg-BG")
+        page = ctx.new_page()
+        page.on("console", lambda m: m.type in ("error", "warning") and problems.append(m.text))
+        page.on("pageerror", lambda e: problems.append(str(e)))
+
+        page.goto(base + "/")  # picked from the browser's language
+        assert page.get_attribute("html", "lang") == "bg"
+        page.wait_for_selector(".pg-entry")
+        assert "начало" in page.inner_text('.pg-entry[data-i="0"]')
+        assert "${" not in page.inner_text("body")  # every script string got filled in
+        page.click("[data-bee]")
+        expect(page.locator("[data-bubble]")).to_contain_text("Бзз!")
+        assert page.evaluate("document.documentElement.scrollWidth") == 390
+
+        page.goto(base + "/ledger")
+        page.click("text=Провери в браузъра си")
+        page.wait_for_selector('[data-step="checkpoint"][data-state="ok"]', timeout=20_000)
+        assert "Изтеглени са 3 записа" in page.inner_text('[data-step="download"]')
+
+        page.goto(base + "/pay/charity")
+        page.click('[data-amount="10"]')
+        assert page.inner_text("[data-p-amount]") == "10,00 €"
+        assert page.inner_text("[data-p-from]") == "анонимен"
+
+        page.click("a.lang-switch")  # back to English, remembered
+        assert page.get_attribute("html", "lang") == "en"
+        page.goto(base + "/")
+        assert page.get_attribute("html", "lang") == "en"
+        browser.close()
+    assert problems == [], problems

@@ -1,0 +1,1259 @@
+# Bulgarian translations for DonationBee.
+# Copyright (C) 2026 Ivo Iliev
+# This file is distributed under the same license as the DonationBee
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DonationBee VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-10 17:26+0200\n"
+"PO-Revision-Date: 2026-11-10 17:16+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: bg\n"
+"Language-Team: bg <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+msgid ""
+"\"The winner has been contacted\" is usually the end of the story. "
+"Whether anyone actually got the prize is anyone's guess."
+msgstr ""
+"„Победителят е уведомен“ обикновено е краят на историята. Дали някой "
+"изобщо е получил наградата, никой не знае."
+
+msgid "\"We donated €5,000\""
+msgstr "„Дарихме 5000 €“"
+
+#, python-format
+msgid ""
+"\"We donated €5k.\" Cool, show me. With %(brand)s, anyone can. Payments "
+"go straight to the recipient and land in a public ledger, and the "
+"recipient signs for what they got."
+msgstr ""
+"„Дарихме 5000 €.“ Чудесно, покажете. С %(brand)s всеки може. Плащанията "
+"отиват директно при получателя и се вписват в публичен регистър, а "
+"получателят се подписва за това, което е получил."
+
+msgid "#next"
+msgstr "#следващ"
+
+#, python-format
+msgid "%(amount)s confirmed"
+msgstr "%(amount)s потвърдени"
+
+#, python-format
+msgid "%(amount)s confirmed by the recipient's own passkey"
+msgstr "%(amount)s потвърдени с ключа за достъп на самия получател"
+
+#, python-format
+msgid "%(amount)s recorded only"
+msgstr "%(amount)s само записани"
+
+#, python-format
+msgid "%(amount)s to %(to)s"
+msgstr "%(amount)s за %(to)s"
+
+#, python-format
+msgid "%(brand)s badge"
+msgstr "Значка на %(brand)s"
+
+#, python-format
+msgid ""
+"%(brand)s is a personal project by me, Dr. Ivo Iliev, in Sofia, Bulgaria."
+" There's no company behind it, no investors and no team. Just me and one "
+"very patient bee."
+msgstr ""
+"%(brand)s е мой личен проект. Аз съм д-р Иво Илиев от София, България. "
+"Зад него няма компания, инвеститори или екип. Само аз и една много "
+"търпелива пчела."
+
+#, python-format
+msgid "%(brand)s is run by Ivo Iliev as a private individual in Sofia, Bulgaria."
+msgstr "%(brand)s се управлява от Иво Илиев като физическо лице в София, България."
+
+#, python-format
+msgid ""
+"%(brand)s takes nothing from your donation. A tip helps keep it running, "
+"and goes on top."
+msgstr ""
+"%(brand)s не взима нищо от дарението ви. Бакшишът помага проектът да "
+"продължи и се добавя отгоре."
+
+#, python-format
+msgid "%(confirmed)s of %(total)s confirmed"
+msgstr "%(confirmed)s от %(total)s потвърдени"
+
+#, python-format
+msgid "%(count)s cosignature"
+msgid_plural "%(count)s cosignatures"
+msgstr[0] "%(count)s съподпис"
+msgstr[1] "%(count)s съподписа"
+
+msgid "1. Your passkeys"
+msgstr "1. Вашите ключове за достъп"
+
+msgid "2. Prove your domain"
+msgstr "2. Докажете домейна си"
+
+msgid "3. Confirm payments you received"
+msgstr "3. Потвърдете получените плащания"
+
+msgid ""
+"<a "
+"href=\"https://github.com/HallowDance/donationbee\">github.com/HallowDance/donationbee</a>."
+" Issues and pull requests are welcome."
+msgstr ""
+"<a "
+"href=\"https://github.com/HallowDance/donationbee\">github.com/HallowDance/donationbee</a>."
+" Issues и pull requests са добре дошли."
+
+#, python-format
+msgid ""
+"<a href=\"mailto:%(email)s\">%(email)s</a>. Questions, bug reports, or if"
+" you'd like a profile during the beta."
+msgstr ""
+"<a href=\"mailto:%(email)s\">%(email)s</a>. Въпроси, сигнали за грешки "
+"или ако искате профил по време на бета версията."
+
+#, python-format
+msgid "<b>%(amount)s</b> recorded"
+msgstr "<b>%(amount)s</b> записани"
+
+#, python-format
+msgid "<b>%(count)s</b> hive"
+msgid_plural "<b>%(count)s</b> hives"
+msgstr[0] "<b>%(count)s</b> кошер"
+msgstr[1] "<b>%(count)s</b> кошера"
+
+#, python-format
+msgid "<b>%(count)s</b> ledger entry"
+msgid_plural "<b>%(count)s</b> ledger entries"
+msgstr[0] "<b>%(count)s</b> запис в регистъра"
+msgstr[1] "<b>%(count)s</b> записа в регистъра"
+
+#, python-format
+msgid "<b>%(count)s</b> payment"
+msgid_plural "<b>%(count)s</b> payments"
+msgstr[0] "<b>%(count)s</b> плащане"
+msgstr[1] "<b>%(count)s</b> плащания"
+
+#, python-format
+msgid "<span data-entry-count>%(count)s</span> entry"
+msgid_plural "<span data-entry-count>%(count)s</span> entries"
+msgstr[0] "<span data-entry-count>%(count)s</span> запис"
+msgstr[1] "<span data-entry-count>%(count)s</span> записа"
+
+#, python-format
+msgid ""
+"<strong>Free and open.</strong> %(brand)s takes 0%% of donations, and "
+"that won't change. The site, the ledger format and the verifier are open "
+"source under Apache-2.0."
+msgstr ""
+"<strong>Безплатно и отворено.</strong> %(brand)s взима 0%% от даренията и"
+" това няма да се промени. Сайтът, форматът на регистъра и програмата за "
+"проверка са с отворен код под лиценз Apache-2.0."
+
+msgid ""
+"<strong>Paid for by tips.</strong> Donors can add an optional tip. Tips "
+"pay for the server and Stripe's fee on the tip itself. That's the whole "
+"business model."
+msgstr ""
+"<strong>Издръжка от бакшиши.</strong> Дарителите могат да добавят "
+"незадължителен бакшиш. Бакшишите покриват сървъра и таксата на Stripe "
+"върху самия бакшиш. Това е целият бизнес модел."
+
+msgid ""
+"<strong>Proof as the norm.</strong> \"Show me\" should be a normal reply "
+"to any donation claim, and the answer should be a link. If someone else "
+"runs a better ledger in the same open format, that counts as a win too."
+msgstr ""
+"<strong>Доказателството като норма.</strong> „Покажете“ трябва да е "
+"нормален отговор на всяко твърдение за дарение, а отговорът да е линк. "
+"Ако някой друг поддържа по-добър регистър в същия отворен формат, това "
+"също е победа."
+
+msgid ""
+"A domain you control, like <code>yourcharity.org</code>. You'll put one "
+"small file on it to prove the profile is really yours."
+msgstr ""
+"Домейн, който контролирате, например <code>yourcharity.org</code>. Ще "
+"качите на него един малък файл, за да докажете, че профилът наистина е "
+"ваш."
+
+msgid "A payer and recipient who know each other look like strangers."
+msgstr "Платец и получател, които се познават, изглеждат като непознати."
+
+msgid ""
+"A payment the recipient hasn't confirmed is our word that Stripe reported"
+" it."
+msgstr ""
+"Плащане, което получателят не е потвърдил, се основава само на нашата "
+"дума, че Stripe го е отчел."
+
+msgid "About me"
+msgstr "За мен"
+
+msgid "Add a passkey"
+msgstr "Добавете ключ за достъп"
+
+msgid "Add a passkey first."
+msgstr "Първо добавете ключ за достъп."
+
+msgid "All entries (JSON)"
+msgstr "Всички записи (JSON)"
+
+msgid "Amount"
+msgstr "Сума"
+
+msgid "Anchor"
+msgstr "Котва"
+
+msgid "Anchored"
+msgstr "Закотвено"
+
+msgid "Anchoring isn't switched on in this beta."
+msgstr "В тази бета версия закотвянето не е включено."
+
+msgid "Anchors go out every hour."
+msgstr "Котвите се публикуват всеки час."
+
+msgid "Ask Barnaby the bee something"
+msgstr "Попитай пчелата Барнаби нещо"
+
+#, python-format
+msgid ""
+"Back on %(brand)s, add a passkey: your phone's or laptop's fingerprint or"
+" face unlock. That's how you sign in and sign for payments. No password "
+"to remember."
+msgstr ""
+"Обратно в %(brand)s добавете ключ за достъп: пръстов отпечатък или лицево"
+" разпознаване на телефона или лаптопа ви. С него влизате и потвърждавате "
+"плащания. Без парола за помнене."
+
+msgid "Bank account"
+msgstr "Банкова сметка"
+
+#, python-format
+msgid "Barnaby, the %(brand)s bee"
+msgstr "Барнаби, пчелата на %(brand)s"
+
+msgid "Before you start"
+msgstr "Преди да започнете"
+
+msgid ""
+"Beta: test mode only, no real money moves. Demo hives use example data, "
+"and the demo witness is run by us."
+msgstr ""
+"Бета версия: само тестов режим, без истински пари. Демо кошерите "
+"използват примерни данни, а демо свидетелят се управлява от нас."
+
+msgid "Bitcoin confirms it within a few hours."
+msgstr "Bitcoin го потвърждава до няколко часа."
+
+msgid "Bitcoin pending"
+msgstr "чака Bitcoin"
+
+msgid "Busy hives"
+msgstr "Оживени кошери"
+
+msgid "Check and publish"
+msgstr "Провери и публикувай"
+
+msgid "Check every signature"
+msgstr "Проверка на всеки подпис"
+
+msgid "Check it in your browser"
+msgstr "Провери в браузъра си"
+
+msgid "Check it yourself"
+msgstr "Проверете сами"
+
+msgid "Check that each entry links to the one before"
+msgstr "Проверка, че всеки запис сочи към предишния"
+
+msgid "Check the checkpoint's signature"
+msgstr "Проверка на подписа на контролната точка"
+
+msgid ""
+"Checkout runs on Stripe, and the money goes into the recipient's own "
+"account. We never touch it."
+msgstr ""
+"Плащането минава през Stripe и парите отиват в собствената сметка на "
+"получателя. Ние никога не ги докосваме."
+
+msgid "Choose one of the tip options."
+msgstr "Изберете един от вариантите за бакшиш."
+
+msgid "Code"
+msgstr "Код"
+
+msgid ""
+"Companies and creators say this all the time, and there's rarely anything"
+" behind it. Usually it's true. Sometimes it isn't, and from the outside "
+"you can't tell which."
+msgstr ""
+"Компании и създатели на съдържание го казват постоянно, а зад думите "
+"рядко има нещо. Обикновено е вярно. Понякога не е, и отвън не може да се "
+"разбере кое от двете."
+
+#, python-format
+msgid "Confirm entry %(seq)s"
+msgstr "Потвърди запис %(seq)s"
+
+msgid "Confirm selected with passkey"
+msgstr "Потвърди избраните с ключ за достъп"
+
+msgid ""
+"Confirmations are signed by your passkey. We never hold it, and anyone "
+"can check the signatures."
+msgstr ""
+"Потвържденията се подписват с вашия ключ за достъп. Ние никога не го "
+"държим, а всеки може да провери подписите."
+
+msgid "Continue to Stripe"
+msgstr "Продължи към Stripe"
+
+msgid "Correction"
+msgstr "Корекция"
+
+#, python-format
+msgid "Covered by checkpoint %(size)s"
+msgstr "Покрит от контролна точка %(size)s"
+
+msgid "Current state"
+msgstr "Текущо състояние"
+
+msgid "Details"
+msgstr "Детайли"
+
+msgid "Do I need crypto?"
+msgstr "Трябват ли ми криптовалути?"
+
+#, python-format
+msgid "Domain for <code>%(fp)s…</code>"
+msgstr "Домейн за <code>%(fp)s…</code>"
+
+msgid "Don't take my word for it"
+msgstr "Не ми вярвайте на думата"
+
+msgid "Don't trust the bee"
+msgstr "Не вярвайте на пчелата"
+
+msgid ""
+"Donations here are ordinary card payments in euros, through Stripe. "
+"Nobody buys, sells, holds or sends bitcoin. There's no wallet, no coin "
+"and no token, and the money never goes near a blockchain."
+msgstr ""
+"Даренията тук са обикновени картови плащания в евро чрез Stripe. Никой не"
+" купува, продава, държи или изпраща биткойн. Няма портфейл, монета или "
+"токен, а парите не минават и близо до блокчейн."
+
+msgid "Download every entry and the signed checkpoint"
+msgstr "Изтегляне на всички записи и подписаната контролна точка"
+
+msgid "Download receipt"
+msgstr "Изтегли разписка"
+
+msgid "Download receipt.json"
+msgstr "Изтегли receipt.json"
+
+#, python-format
+msgid ""
+"During the beta, profiles are by invitation. Write to <a "
+"href=\"mailto:%(email)s\">%(email)s</a> and you'll get a personal setup "
+"link."
+msgstr ""
+"По време на бета версията профилите са с покана. Пишете на <a "
+"href=\"mailto:%(email)s\">%(email)s</a> и ще получите личен линк за "
+"регистрация."
+
+msgid ""
+"Each payment is signed and added to a public ledger. Outside witnesses "
+"check that nobody rewrites it, and you get a receipt to keep."
+msgstr ""
+"Всяко плащане се подписва и добавя в публичен регистър. Външни свидетели "
+"следят никой да не го пренаписва, а вие получавате разписка, която да "
+"пазите."
+
+msgid "Email"
+msgstr "Имейл"
+
+msgid "Enter an amount between 1.00 and 100,000.00 EUR."
+msgstr "Въведете сума между 1,00 и 100 000,00 €."
+
+msgid "Entry"
+msgstr "Запис"
+
+#, python-format
+msgid "Entry #%(seq)s"
+msgstr "Запис #%(seq)s"
+
+msgid ""
+"Every entry here is public. You can check all of it with <code>vpp-"
+"verify</code>, without trusting us."
+msgstr ""
+"Всеки запис тук е публичен. Можете да проверите всичко с <code>vpp-"
+"verify</code>, без да ни се доверявате."
+
+msgid "Every entry, in order"
+msgstr "Всеки запис, поред"
+
+msgid "Everyone sees the same ledger"
+msgstr "Всички виждат един и същ регистър"
+
+#, python-format
+msgid ""
+"Everything %(brand)s has recorded, newest first. Each entry is signed and"
+" linked to the one before it, so none can be changed or removed without "
+"it showing."
+msgstr ""
+"Всичко, което %(brand)s е записал, от най-новото. Всеки запис е подписан "
+"и свързан с предишния, така че никой не може да бъде променен или изтрит,"
+" без това да личи."
+
+msgid "Everything is confirmed."
+msgstr "Всичко е потвърдено."
+
+msgid ""
+"First time? Use the setup link we sent you, and see <a "
+"href=\"/recipients\">what to have ready</a>."
+msgstr ""
+"За първи път? Използвайте линка за регистрация, който ви изпратихме, и "
+"вижте <a href=\"/recipients\">какво да имате подготвено</a>."
+
+#, python-format
+msgid "For %(to)s"
+msgstr "За %(to)s"
+
+msgid ""
+"For Stripe's two-step verification. Keep the backup codes Stripe gives "
+"you somewhere safe, like a password manager."
+msgstr ""
+"За двуфакторното потвърждение на Stripe. Пазете резервните кодове, които "
+"Stripe ви дава, на сигурно място, например в мениджър на пароли."
+
+msgid "For charities, creators and anyone receiving payments"
+msgstr ""
+"За благотворителни организации, създатели на съдържание и всеки, който "
+"получава плащания"
+
+msgid "For donations, pledges and payouts"
+msgstr "За дарения, обещания и изплащания"
+
+msgid "For recipients"
+msgstr "За получатели"
+
+msgid "For the winter drive"
+msgstr "За зимната кампания"
+
+msgid "From"
+msgstr "От"
+
+msgid "Get in touch"
+msgstr "Свържете се с мен"
+
+msgid "Giveaways that go quiet"
+msgstr "Томболи, след които настава тишина"
+
+msgid "Good to know"
+msgstr "Добре е да знаете"
+
+msgid "Hash"
+msgstr "Хеш"
+
+msgid "Have these ready"
+msgstr "Подгответе предварително"
+
+msgid "Hi, I'm Ivo. <em>I keep the hive.</em>"
+msgstr "Здравейте, аз съм Иво. <em>Аз пазя кошера.</em>"
+
+msgid "How it works"
+msgstr "Как работи"
+
+msgid "How the buzz works"
+msgstr "Как работи кошерът"
+
+msgid ""
+"I have a PhD in physics and work in fintech, so payments are my day job. "
+"Outside of it I'm a free and open-source software enthusiast. I like "
+"systems you can check for yourself instead of having to take someone's "
+"word for it."
+msgstr ""
+"Имам докторска степен по физика и работя във финтех, така че плащанията "
+"са ежедневието ми. Извън работата съм ентусиаст на свободния софтуер с "
+"отворен код. Харесвам системи, които можеш да провериш сам, вместо да "
+"вярваш някому на думата."
+
+msgid ""
+"I understand this payment will be published. If I give a name or note, "
+"they'll be shown too. I can ask for them to be removed later, but the "
+"record of the payment stays."
+msgstr ""
+"Разбирам, че това плащане ще бъде публикувано. Ако посоча име или "
+"бележка, и те ще се виждат. Мога по-късно да поискам да бъдат премахнати,"
+" но записът за плащането остава."
+
+msgid "If the identity check fails"
+msgstr "Ако проверката на самоличността не мине"
+
+msgid "Independent witnesses cosigned a checkpoint that includes it."
+msgstr "Независими свидетели съподписаха контролна точка, която го включва."
+
+msgid "Independent witnesses cosigned a checkpoint that includes this entry."
+msgstr ""
+"Независими свидетели съподписаха контролна точка, която включва този "
+"запис."
+
+msgid ""
+"It's open source: read the code on <a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier\">GitHub</a>,"
+" or install it from <a href=\"https://pypi.org/project/donationbee-"
+"verify/\">PyPI</a>."
+msgstr ""
+"С отворен код е: вижте кода в <a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier\">GitHub</a>"
+" или го инсталирайте от <a href=\"https://pypi.org/project/donationbee-"
+"verify/\">PyPI</a>."
+
+msgid ""
+"It's signed, linked to the entry before it, and shown to everyone. Your "
+"name and note can be erased later. The payment itself stays."
+msgstr ""
+"Подписан е, свързан с предишния запис и се вижда от всички. Името и "
+"бележката ви могат да бъдат изтрити по-късно. Самото плащане остава."
+
+msgid "Keep your receipt"
+msgstr "Запазете разписката си"
+
+msgid "Leave empty to stay anonymous"
+msgstr "Оставете празно, за да останете анонимни"
+
+msgid "Ledger"
+msgstr "Регистър"
+
+msgid "Ledger created"
+msgstr "Регистърът е създаден"
+
+msgid ""
+"Legal name, date of birth and address, exactly as they appear on your ID."
+" Small typos are the most common reason the automatic identity check "
+"fails."
+msgstr ""
+"Име, дата на раждане и адрес точно както са в личната ви карта. Дребните "
+"печатни грешки са най-честата причина автоматичната проверка да не мине."
+
+msgid "Main"
+msgstr "Основно меню"
+
+msgid "Money sent back outside Stripe is invisible to any ledger."
+msgstr "Пари, върнати извън Stripe, са невидими за всеки регистър."
+
+msgid ""
+"Names and notes appear only as salted commitments (<code>c1:…</code>). "
+"The readable text above comes from a store that can be erased. Erasing it"
+" doesn't break the chain."
+msgstr ""
+"Имената и бележките се появяват само като осолени хешове "
+"(<code>c1:…</code>). Четимият текст по-горе идва от хранилище, което може"
+" да бъде изтрито. Изтриването му не разваля веригата."
+
+msgid "Newer entries get cosigned within minutes."
+msgstr "По-новите записи се съподписват до минути."
+
+msgid "Newest entries"
+msgstr "Най-нови записи"
+
+msgid "No passkeys yet."
+msgstr "Все още няма ключове за достъп."
+
+#, python-format
+msgid ""
+"No payment details, names or amounts go to Bitcoin or to OpenTimestamps, "
+"only the fingerprint. The checkpoints and their proofs are also kept in a"
+" public %(repo)s where rewriting history is switched off. The verifier "
+"checks each proof against Bitcoin by itself, using your own Bitcoin node "
+"or, if you don't run one, the public explorer mempool.space."
+msgstr ""
+"Към Bitcoin и OpenTimestamps не отиват данни за плащания, имена или суми,"
+" а само отпечатъкът. Контролните точки и доказателствата им се пазят и в "
+"публично %(repo)s, в което пренаписването на историята е изключено. "
+"Програмата за проверка сверява всяко доказателство с Bitcoin сама, чрез "
+"ваш собствен Bitcoin възел или, ако нямате такъв, чрез публичния "
+"експлорър mempool.space."
+
+msgid "No tip"
+msgstr "Без бакшиш"
+
+#, python-format
+msgid ""
+"No. You're paid in euros into your Stripe account, like any card payment."
+" %(brand)s timestamps a fingerprint of the ledger in Bitcoin every hour "
+"so nobody can rewrite it later, but no bitcoin changes hands and you "
+"never touch it. <a href=\"/#bitcoin\">How that works</a>."
+msgstr ""
+"Не. Получавате евро в сметката си в Stripe, като при всяко картово "
+"плащане. %(brand)s отбелязва отпечатък на регистъра в Bitcoin всеки час, "
+"за да не може никой да го пренапише по-късно, но не се разменя никакъв "
+"биткойн и вие никога не го докосвате. <a href=\"/#bitcoin\">Как работи "
+"това</a>."
+
+#, python-format
+msgid "Note: \"%(note)s\""
+msgstr "Бележка: „%(note)s“"
+
+msgid "Note: \"<span data-p-note-text></span>\""
+msgstr "Бележка: „<span data-p-note-text></span>“"
+
+#, python-format
+msgid ""
+"Nothing from us: %(brand)s takes no cut and has no monthly fee. Stripe "
+"charges its normal card fees. Donors can add an optional tip for "
+"%(brand)s on top of their donation. Stripe's fee is calculated on the "
+"whole payment, so a €2 tip adds about 3 cents to your Stripe fee."
+msgstr ""
+"Нищо за нас: %(brand)s не взима комисиона и няма месечна такса. Stripe "
+"начислява обичайните си такси за карти. Дарителите могат да добавят "
+"незадължителен бакшиш за %(brand)s към дарението си. Таксата на Stripe се"
+" изчислява върху цялото плащане, така че бакшиш от 2 € добавя около 3 "
+"цента към таксата ви в Stripe."
+
+msgid "Nothing recorded yet."
+msgstr "Още нищо не е записано."
+
+msgid "Older entries"
+msgstr "По-стари записи"
+
+msgid ""
+"On the Stripe page, choose Card and use <code>4242 4242 4242 4242</code>,"
+" any future expiry date and any CVC."
+msgstr ""
+"На страницата на Stripe изберете „Карта“ и използвайте <code>4242 4242 "
+"4242 4242</code>, произволна бъдеща дата на валидност и произволен CVC."
+
+msgid "One you can receive mail on. It becomes your Stripe login."
+msgstr ""
+"Такъв, на който получавате поща. Той става потребителското ви име в "
+"Stripe."
+
+msgid "Only confirm payments that actually reached your Stripe account."
+msgstr ""
+"Потвърждавайте само плащания, които наистина са постъпили в сметката ви в"
+" Stripe."
+
+msgid ""
+"Open the link we send you. You create a Stripe login with two-step "
+"verification, and Stripe checks your identity and bank details. We never "
+"see your ID or bank details."
+msgstr ""
+"Отворете линка, който ви изпращаме. Създавате профил в Stripe с "
+"двуфакторно потвърждение, а Stripe проверява самоличността и банковите ви"
+" данни. Ние никога не виждаме личната ви карта или банковите ви данни."
+
+msgid "Operator"
+msgstr "Оператор"
+
+msgid "Optional tip for DonationBee (not part of the donation)"
+msgstr "Незадължителен бакшиш за DonationBee (не е част от дарението)"
+
+msgid "Passkey added"
+msgstr "Добавен ключ за достъп"
+
+#, python-format
+msgid "Pay %(name)s"
+msgstr "Плащане към %(name)s"
+
+msgid "Pay straight to the recipient"
+msgstr "Плащане директно към получателя"
+
+msgid "Payment"
+msgstr "Плащане"
+
+msgid "Payment recorded. Thank you!"
+msgstr "Плащането е записано. Благодарим!"
+
+#, python-brace-format
+msgid "Payment to {name}"
+msgstr "Плащане към {name}"
+
+#, python-format
+msgid "Payment · %(name)s"
+msgstr "Плащане · %(name)s"
+
+msgid "Payments are switched off in this beta. You can browse the demo hives."
+msgstr ""
+"Плащанията са изключени в тази бета версия. Можете да разгледате демо "
+"кошерите."
+
+msgid ""
+"Payments land in your own Stripe account, not ours, so Stripe treats you "
+"as the business receiving them. EU anti-money-laundering rules require it"
+" to verify you. In exchange, we can never hold, delay or lose your money."
+msgstr ""
+"Плащанията постъпват в собствената ви сметка в Stripe, не в нашата, "
+"затова Stripe ви третира като бизнеса, който ги получава. Правилата на ЕС"
+" срещу изпирането на пари го задължават да ви провери. В замяна ние "
+"никога не можем да задържим, забавим или изгубим парите ви."
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Photo ID"
+msgstr "Документ със снимка"
+
+msgid "Please confirm that this payment will be published."
+msgstr "Моля, потвърдете, че това плащане ще бъде публикувано."
+
+msgid "Preview of your public ledger entry"
+msgstr "Преглед на публичния ви запис в регистъра"
+
+msgid "Previous"
+msgstr "Предишен"
+
+msgid "Proof the money <em>left the hive.</em>"
+msgstr "Доказателство, че парите <em>са излетели от кошера.</em>"
+
+msgid "Prove your website"
+msgstr "Докажете уебсайта си"
+
+msgid "Public ledger"
+msgstr "Публичен регистър"
+
+msgid "Public note <span class=\"muted\">(optional)</span>"
+msgstr "Публична бележка <span class=\"muted\">(по желание)</span>"
+
+msgid "Public profile"
+msgstr "Публичен профил"
+
+msgid "Publish a passkey first."
+msgstr "Първо публикувайте ключ за достъп."
+
+msgid ""
+"Publish the small file we show you at <code>/.well-known/vpp.json</code> "
+"on your site. From then on, the payments you sign show as confirmed by "
+"your domain."
+msgstr ""
+"Публикувайте малкия файл, който ви показваме, на адрес <code>/.well-"
+"known/vpp.json</code> в сайта си. Оттогава нататък плащанията, които "
+"подписвате, се показват като потвърдени от вашия домейн."
+
+msgid ""
+"Publish this file at <code>https://&lt;your-domain&gt;/.well-"
+"known/vpp.json</code>:"
+msgstr ""
+"Публикувайте този файл на <code>https://&lt;вашият-домейн&gt;/.well-"
+"known/vpp.json</code>:"
+
+msgid "Quiet hive so far."
+msgstr "Засега кошерът е тих."
+
+msgid "Raw entry JSON"
+msgstr "Суров JSON на записа"
+
+msgid "Read the code"
+msgstr "Вижте кода"
+
+msgid "Rebuild the Merkle tree and compare it to the checkpoint"
+msgstr "Възстановяване на дървото на Меркъл и сравнение с контролната точка"
+
+msgid "Recipient area"
+msgstr "Зона за получатели"
+
+msgid "Recipient confirmed"
+msgstr "Получателят потвърди"
+
+msgid "Recipient sign-in"
+msgstr "Вход за получатели"
+
+msgid "Recompute every entry's hash"
+msgstr "Преизчисляване на хеша на всеки запис"
+
+msgid "Recomputes every hash, link and signature on your own device."
+msgstr "Преизчислява всеки хеш, връзка и подпис на вашето устройство."
+
+msgid "Recorded"
+msgstr "Записано"
+
+#, python-format
+msgid "Recorded · %(count)s payment, after refunds"
+msgid_plural "Recorded · %(count)s payments, after refunds"
+msgstr[0] "Записано · %(count)s плащане, след възстановявания"
+msgstr[1] "Записано · %(count)s плащания, след възстановявания"
+
+msgid "Recording your payment…"
+msgstr "Записваме плащането ви…"
+
+msgid "Refund"
+msgstr "Възстановена сума"
+
+msgid "Root keys changed"
+msgstr "Сменени главни ключове"
+
+msgid ""
+"Running the ledger means I'm the one who could cheat. So the site is "
+"built for you to catch me: witnesses, Bitcoin timestamps and a verifier "
+"that shares no code with this site. During the beta the only witness is "
+"one I run, so that part still has to earn your trust. Here's <a "
+"href=\"/#check\">how to check it yourself</a>, and <a "
+"href=\"/#limits\">what it can't prove</a>."
+msgstr ""
+"Тъй като аз поддържам регистъра, аз съм този, който би могъл да мами. "
+"Затова сайтът е направен така, че да можете да ме хванете: свидетели, "
+"времеви печати в Bitcoin и програма за проверка, която няма общ код с "
+"този сайт. По време на бета версията единственият свидетел е мой, така че"
+" тази част тепърва трябва да спечели доверието ви. Ето <a "
+"href=\"/#check\">как да проверите сами</a> и <a href=\"/#limits\">какво "
+"не може да се докаже</a>."
+
+msgid "See a live hive"
+msgstr "Вижте жив кошер"
+
+msgid "See the ledger"
+msgstr "Вижте регистъра"
+
+msgid "Send a recorded payment"
+msgstr "Изпратете записано плащане"
+
+msgid "Set up Stripe"
+msgstr "Настройте Stripe"
+
+msgid ""
+"Setup takes about 15 minutes. Payments go straight into your own Stripe "
+"account, so Stripe needs to know who you are. Here's what to have ready, "
+"so nothing surprises you halfway through."
+msgstr ""
+"Регистрацията отнема около 15 минути. Плащанията отиват директно в "
+"собствената ви сметка в Stripe, затова Stripe трябва да знае кои сте. Ето"
+" какво да имате подготвено, за да няма изненади по средата."
+
+msgid "Show off your hive"
+msgstr "Покажете кошера си"
+
+msgid "Sign in with a passkey"
+msgstr "Вход с ключ за достъп"
+
+msgid ""
+"Sign in with the passkey you published for your organisation. No password"
+" to remember."
+msgstr ""
+"Влезте с ключа за достъп, който сте публикували за организацията си. Без "
+"парола за помнене."
+
+msgid "Sign out"
+msgstr "Изход"
+
+msgid "Signed by"
+msgstr "Подписан от"
+
+msgid "Signed checkpoint"
+msgstr "Подписана контролна точка"
+
+msgid "Signed envelope"
+msgstr "Подписан плик"
+
+msgid "Signing key changed"
+msgstr "Сменен ключ за подписване"
+
+msgid ""
+"Sometimes. If the automatic check can't confirm you, Stripe asks for a "
+"photo of your ID and a selfie."
+msgstr ""
+"Понякога. Ако автоматичната проверка не може да ви потвърди, Stripe иска "
+"снимка на документа ви и селфи."
+
+msgid "Stripe is confirming the payment. This page refreshes on its own."
+msgstr "Stripe потвърждава плащането. Страницата се опреснява сама."
+
+msgid "Test mode: no real money moves."
+msgstr "Тестов режим: не се движат истински пари."
+
+msgid ""
+"The <a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier"
+"\">open-source verifier</a> checks the whole ledger:"
+msgstr ""
+"<a "
+"href=\"https://github.com/HallowDance/donationbee/tree/master/verifier\">Програмата"
+" за проверка с отворен код</a> проверява целия регистър:"
+
+msgid "The IBAN where Stripe should pay out what you receive."
+msgstr "IBAN, по който Stripe да ви изплаща полученото."
+
+msgid "The ledger"
+msgstr "Регистърът"
+
+msgid "The ledger is empty."
+msgstr "Регистърът е празен."
+
+msgid "The ledger right now"
+msgstr "Регистърът в момента"
+
+#, python-format
+msgid ""
+"The money goes straight to %(name)s's own Stripe account, so we never "
+"hold it. Then the payment goes into the public ledger, and you get a "
+"receipt to keep."
+msgstr ""
+"Парите отиват директно в собствената сметка в Stripe на %(name)s, така че"
+" ние никога не ги държим. След това плащането влиза в публичния регистър,"
+" а вие получавате разписка, която да пазите."
+
+msgid "The operator and a recipient working together could invent one."
+msgstr ""
+"Операторът и получател, които действат заедно, биха могли да измислят "
+"плащане."
+
+msgid ""
+"The playground needs JavaScript. The short version: change any entry and "
+"its hash changes, which breaks the link from the next entry."
+msgstr ""
+"Площадката изисква JavaScript. Накратко: промените ли който и да е запис,"
+" хешът му се променя и това разваля връзката от следващия запис."
+
+msgid ""
+"The receipt is a file only you hold. It shows the ledger signed a "
+"checkpoint that includes your payment. If the payment is ever removed or "
+"changed, the receipt is proof the operator cheated."
+msgstr ""
+"Разписката е файл, който държите само вие. Тя показва, че регистърът е "
+"подписал контролна точка, включваща плащането ви. Ако плащането някога "
+"бъде премахнато или променено, разписката доказва, че операторът е мамил."
+
+msgid "The recipient signs for it"
+msgstr "Получателят се подписва"
+
+msgid "The tech is fun"
+msgstr "Технологията е забавна"
+
+msgid ""
+"The verifier is a separate program that shares no code with this site. It"
+" redoes every check itself, using copies kept by people other than us."
+msgstr ""
+"Програмата за проверка е отделна програма, която няма общ код с този "
+"сайт. Тя повтаря всяка проверка сама, като използва копия, пазени от хора"
+" извън нас."
+
+msgid ""
+"They tap a passkey tied to their own website. Payments they've signed for"
+" show as confirmed. The rest show as recorded."
+msgstr ""
+"Получателят докосва ключ за достъп, обвързан с неговия собствен уебсайт. "
+"Плащанията, за които се е подписал, се показват като потвърдени. "
+"Останалите се показват като записани."
+
+#, python-format
+msgid ""
+"This check runs code we serve, so it's a quick check. For one that "
+"doesn't trust us at all, run the open-source verifier: <code>pip install "
+"donationbee-verify</code>, then <code>vpp-verify --url %(base)s</code>."
+msgstr ""
+"Тази проверка изпълнява код, който ние сервираме, така че е бърза "
+"проверка. За такава, която изобщо не ни се доверява, пуснете програмата "
+"за проверка с отворен код: <code>pip install donationbee-verify</code>, "
+"след това <code>vpp-verify --url %(base)s</code>."
+
+msgid ""
+"This is a tiny ledger, hashed with real SHA-256 right in your browser. "
+"Change an amount and see what anyone checking the chain would see."
+msgstr ""
+"Това е мъничък регистър, хеширан с истински SHA-256 направо в браузъра "
+"ви. Променете сума и вижте какво би видял всеки, който проверява "
+"веригата."
+
+msgid "This recipient can't accept payments yet."
+msgstr "Този получател все още не може да приема плащания."
+
+#, python-format
+msgid "Tip for %(brand)s <span class=\"muted\">(optional)</span>"
+msgstr "Бакшиш за %(brand)s <span class=\"muted\">(по желание)</span>"
+
+msgid ""
+"Transparency logs, witnesses and Bitcoin timestamps were built to keep "
+"security certificates and software releases honest. I wanted to see what "
+"they could do for donations."
+msgstr ""
+"Регистрите за прозрачност, свидетелите и времевите печати в Bitcoin са "
+"създадени, за да държат честни сертификатите за сигурност и софтуерните "
+"издания. Исках да видя какво могат да направят за даренията."
+
+msgid "Tree root"
+msgstr "Корен на дървото"
+
+msgid "Try to cheat the ledger"
+msgstr "Опитайте да измамите регистъра"
+
+msgid "Turns green once you've confirmed every payment."
+msgstr "Става зелена, щом потвърдите всяко плащане."
+
+msgid ""
+"Usually it's a typo in your name or date of birth. Use the same setup "
+"link to correct it. If Stripe then asks for a photo ID and selfie, that's"
+" normal and only happens once."
+msgstr ""
+"Обикновено е печатна грешка в името или датата на раждане. Използвайте "
+"същия линк за регистрация, за да я поправите. Ако след това Stripe поиска"
+" снимка на документ и селфи, това е нормално и се случва само веднъж."
+
+msgid "We only borrow Bitcoin's clock. Once an hour:"
+msgstr "Ние само заемаме часовника на Bitcoin. Веднъж на час:"
+
+msgid ""
+"We send that fingerprint, mixed with a random value, to <a "
+"href=\"https://opentimestamps.org\">OpenTimestamps</a>, a free public "
+"service. It bundles fingerprints from many people into a single Bitcoin "
+"transaction and pays the small fee itself. We pay nothing."
+msgstr ""
+"Изпращаме този отпечатък, смесен със случайна стойност, до <a "
+"href=\"https://opentimestamps.org\">OpenTimestamps</a>, безплатна "
+"публична услуга. Тя събира отпечатъци от много хора в една-единствена "
+"Bitcoin транзакция и сама плаща малката такса. Ние не плащаме нищо."
+
+msgid ""
+"We take the ledger's latest signed checkpoint and compute its "
+"fingerprint, a SHA-256 hash. It's 64 characters that say nothing about "
+"who paid whom."
+msgstr ""
+"Взимаме последната подписана контролна точка на регистъра и изчисляваме "
+"отпечатъка ѝ, един SHA-256 хеш. Това са 64 знака, които не казват нищо за"
+" това кой на кого е платил."
+
+msgid "Welcome back to the hive"
+msgstr "Добре дошли обратно в кошера"
+
+msgid "What"
+msgstr "Какво"
+
+msgid "What becomes public"
+msgstr "Какво става публично"
+
+msgid "What even a good bee can't prove"
+msgstr "Какво не може да докаже дори добрата пчела"
+
+msgid "What happens, step by step"
+msgstr "Какво се случва, стъпка по стъпка"
+
+msgid "What it costs"
+msgstr "Колко струва"
+
+msgid "What the public ledger will show"
+msgstr "Какво ще покаже публичният регистър"
+
+msgid "When"
+msgstr "Кога"
+
+msgid "Where Bitcoin comes in (and where it doesn't)"
+msgstr "Къде идва Bitcoin (и къде не)"
+
+msgid "Where I want it to go"
+msgstr "Накъде искам да върви"
+
+msgid "Who runs this"
+msgstr "Кой стои зад това"
+
+msgid "Why I built it"
+msgstr "Защо го направих"
+
+msgid "Why Stripe asks so much"
+msgstr "Защо Stripe пита толкова много"
+
+msgid ""
+"Within a few hours that transaction is in a Bitcoin block. From then on "
+"anyone can prove the checkpoint existed by that time, and nobody, us "
+"included, can backdate the ledger or quietly swap in a different history."
+msgstr ""
+"До няколко часа тази транзакция е в Bitcoin блок. Оттам нататък всеки "
+"може да докаже, че контролната точка е съществувала към този момент, и "
+"никой, включително ние, не може да промени регистъра със задна дата или "
+"тихомълком да подмени историята му."
+
+msgid "Witnesses"
+msgstr "Свидетели"
+
+msgid "Witnesses usually sign within a few minutes."
+msgstr "Свидетелите обикновено подписват до няколко минути."
+
+msgid "Write to me"
+msgstr "Пишете ми"
+
+#, python-format
+msgid ""
+"You'll pay <strong data-p-total></strong> in total: the donation above, "
+"plus a <span data-p-tip-amount></span> tip for %(brand)s. The tip isn't "
+"part of the donation and isn't recorded as one."
+msgstr ""
+"Общо ще платите <strong data-p-total></strong>: дарението по-горе плюс "
+"бакшиш от <span data-p-tip-amount></span> за %(brand)s. Бакшишът не е "
+"част от дарението и не се записва като такова."
+
+msgid "Your badge is green."
+msgstr "Значката ви е зелена."
+
+msgid "Your details"
+msgstr "Вашите данни"
+
+#, python-format
+msgid "Your identity domain is <strong>%(domain)s</strong>."
+msgstr "Домейнът на самоличността ви е <strong>%(domain)s</strong>."
+
+msgid "Your name <span class=\"muted\">(optional, shown publicly)</span>"
+msgstr "Вашето име <span class=\"muted\">(по желание, вижда се публично)</span>"
+
+msgid ""
+"Your profile name, your domain, and the payments you received, with "
+"amounts and dates. Payers' names appear only if they choose to share "
+"them. Your ID and bank details stay with Stripe."
+msgstr ""
+"Името на профила ви, домейнът ви и получените плащания със суми и дати. "
+"Имената на платците се появяват само ако те решат да ги споделят. Личната"
+" ви карта и банковите ви данни остават в Stripe."
+
+msgid "Your receipt"
+msgstr "Вашата разписка"
+
+msgid ""
+"Your receipt gets stronger once witnesses sign. This page updates when "
+"they do."
+msgstr ""
+"Разписката ви става по-силна, щом свидетелите се подпишат. Страницата се "
+"обновява, когато това стане."
+
+msgid "Your website"
+msgstr "Вашият уебсайт"
+
+msgid "anonymous"
+msgstr "анонимен"
+
+msgid "beta"
+msgstr "бета"
+
+msgid "confirmed"
+msgstr "потвърдено"
+
+msgid "confirmed by recipients"
+msgstr "потвърдени от получателите"
+
+msgid "cosigned"
+msgstr "съподписан"
+
+msgid "cut"
+msgstr "комисиона"
+
+#, python-format
+msgid "from %(payer)s"
+msgstr "от %(payer)s"
+
+msgid "from <span data-p-from>anonymous</span>"
+msgstr "от <span data-p-from>анонимен</span>"
+
+msgid "git repo"
+msgstr "git хранилище"
+
+#, python-format
+msgid "identity: %(domain)s"
+msgstr "самоличност: %(domain)s"
+
+msgid "in Bitcoin"
+msgstr "в Bitcoin"
+
+msgid "in git"
+msgstr "в git"
+
+msgid "keys"
+msgstr "ключове"
+
+#, python-brace-format
+msgid "listed on {domain}"
+msgstr "публикуван в {domain}"
+
+msgid "lists every published passkey."
+msgstr "съдържа всеки публикуван ключ за достъп."
+
+msgid "no domain proof yet"
+msgstr "още без доказан домейн"
+
+msgid "not anchored yet"
+msgstr "още не е закотвено"
+
+msgid "not witnessed yet"
+msgstr "още не е засвидетелствано"
+
+msgid "not yet witnessed"
+msgstr "още не е засвидетелстван"
+
+#, python-format
+msgid "of %(total)s, %(refunded)s refunded"
+msgstr "от %(total)s, %(refunded)s възстановени"
+
+msgid "on this exact state"
+msgstr "точно за това състояние"
+
+msgid "open source"
+msgstr "отворен код"
+
+msgid "pending domain proof"
+msgstr "чака доказателство за домейна"
+
+msgid "proof the money left the hive"
+msgstr "доказателство, че парите са излетели от кошера"
+
+msgid "public anchors repo"
+msgstr "публично хранилище с котви"
+
+#, python-format
+msgid "published · entry <a href=\"/e/%(seq)s\">#%(seq)s</a>"
+msgstr "публикуван · запис <a href=\"/e/%(seq)s\">#%(seq)s</a>"
+
+msgid "recipient"
+msgstr "получател"
+
+msgid "recorded"
+msgstr "записано"
+
+msgid "see the entry"
+msgstr "вижте записа"
+
+msgid "taken from donations"
+msgstr "взети от даренията"
+
+#, python-format
+msgid "up to #%(seq)s"
+msgstr "до #%(seq)s"
+
+msgid "voided"
+msgstr "анулирано"
+
+#, python-brace-format
+msgid "voids #{seq} ({reason})"
+msgstr "анулира #{seq} ({reason})"
+
+msgid "waiting for witnesses"
+msgstr "чака свидетели"
+
+msgid "what Bitcoin does here"
+msgstr "какво прави Bitcoin тук"
+
+msgid "witnessed"
+msgstr "засвидетелствано"
+
+#, python-format
+msgid "witnessed up to #%(seq)s"
+msgstr "засвидетелствано до #%(seq)s"
+
+#, python-brace-format
+msgid "{amount} of payment #{seq}"
+msgstr "{amount} от плащане #{seq}"
+
+#, python-brace-format
+msgid "{k} of {n} root keys"
+msgstr "{k} от {n} главни ключа"
+
+#, python-brace-format
+msgid "{n} payment"
+msgid_plural "{n} payments"
+msgstr[0] "{n} плащане"
+msgstr[1] "{n} плащания"
+

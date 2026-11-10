@@ -7,8 +7,8 @@
   <div class="stack" style="gap:8px">
     <h1>{{ profile.display_name }}</h1>
     <div class="row">
-      {% if profile.domain %}<span class="tag ok">identity: {{ profile.domain }}</span>
-      {% else %}<span class="tag warn">no domain proof yet</span>{% endif %}
+      {% if profile.domain %}<span class="tag ok">{% trans domain=profile.domain %}identity: {{ domain }}{% endtrans %}</span>
+      {% else %}<span class="tag warn">{{ _("no domain proof yet") }}</span>{% endif %}
     </div>
   </div>
 </div>
@@ -17,34 +17,34 @@
   {% for cur, v in totals.net_by_currency.items() %}
   {% set confirmed = totals.confirmed_by_currency.get(cur, 0) %}
   <div class="stack" style="gap:6px">
-    <span class="eyebrow">Recorded · {{ totals.count }} payment{{ '' if totals.count == 1 else 's' }}, after refunds</span>
+    <span class="eyebrow">{% trans count=totals.count %}Recorded · {{ count }} payment, after refunds{% pluralize %}Recorded · {{ count }} payments, after refunds{% endtrans %}</span>
     <span class="total">{{ v|money(cur) }}</span>
   </div>
-  <div class="meter" role="img" aria-label="{{ confirmed|money(cur) }} of {{ v|money(cur) }} confirmed"><span style="width: {{ (100 * confirmed / v)|round(1) if v else 0 }}%"></span></div>
+  <div class="meter" role="img" aria-label="{% trans confirmed=confirmed|money(cur), total=v|money(cur) %}{{ confirmed }} of {{ total }} confirmed{% endtrans %}"><span style="width: {{ (100 * confirmed / v)|round(1) if v else 0 }}%"></span></div>
   <div class="legend">
-    <span><i style="background:var(--leaf)"></i>{{ confirmed|money(cur) }} confirmed by the recipient's own passkey</span>
-    <span><i style="background:var(--honey-soft)"></i>{{ (v - confirmed)|money(cur) }} recorded only</span>
+    <span><i style="background:var(--leaf)"></i>{% trans amount=confirmed|money(cur) %}{{ amount }} confirmed by the recipient's own passkey{% endtrans %}</span>
+    <span><i style="background:var(--honey-soft)"></i>{% trans amount=(v - confirmed)|money(cur) %}{{ amount }} recorded only{% endtrans %}</span>
   </div>
   {% else %}
-  <div class="row">{{ bee(64, "sleepy") }}<div class="stack" style="gap:4px"><strong>Quiet hive so far.</strong><span class="muted">Nothing recorded yet.</span></div></div>
+  <div class="row">{{ bee(64, "sleepy") }}<div class="stack" style="gap:4px"><strong>{{ _("Quiet hive so far.") }}</strong><span class="muted">{{ _("Nothing recorded yet.") }}</span></div></div>
   {% endfor %}
-  {% if profile.card_payments_status == "active" %}<div><a class="btn" href="/pay/{{ profile.slug }}">Send a recorded payment</a></div>{% endif %}
+  {% if profile.card_payments_status == "active" %}<div><a class="btn" href="/pay/{{ profile.slug }}">{{ _("Send a recorded payment") }}</a></div>{% endif %}
 </div>
 
 {% if totals.payments %}
 <div class="table-wrap">
 <table class="payments">
-  <tr><th>Entry</th><th>When</th><th>From</th><th class="num">Amount</th></tr>
+  <tr><th>{{ _("Entry") }}</th><th>{{ _("When") }}</th><th>{{ _("From") }}</th><th class="num">{{ _("Amount") }}</th></tr>
   {% for v in totals.payments %}
   <tr>
     <td class="c-seq"><a class="seq" href="/e/{{ v.entry.seq }}">#{{ v.entry.seq }}</a></td>
     <td class="c-when">{{ v.body.occurred_at[:10] }}</td>
-    <td class="c-from">{{ payers[v.entry.seq] or "anonymous" }}</td>
+    <td class="c-from">{{ payers[v.entry.seq] or _("anonymous") }}</td>
     <td class="num c-amt">
-      {% if v.voided %}<s>{{ v.entry.amount_value|money(v.entry.currency) }}</s> <span class="tag bad">voided</span>
+      {% if v.voided %}<s>{{ v.entry.amount_value|money(v.entry.currency) }}</s> <span class="tag bad">{{ _("voided") }}</span>
       {% else %}<strong>{{ v.net|money(v.entry.currency) }}</strong>
-        {% if v.confirmed_by %} <span class="tag ok">confirmed</span>{% else %} <span class="tag warn">recorded</span>{% endif %}
-        {% if v.reversed %}<br><span class="muted">of {{ v.entry.amount_value|money(v.entry.currency) }}, {{ v.reversed|money(v.entry.currency) }} refunded</span>{% endif %}
+        {% if v.confirmed_by %} <span class="tag ok">{{ _("confirmed") }}</span>{% else %} <span class="tag warn">{{ _("recorded") }}</span>{% endif %}
+        {% if v.reversed %}<br><span class="muted">{% trans total=v.entry.amount_value|money(v.entry.currency), refunded=v.reversed|money(v.entry.currency) %}of {{ total }}, {{ refunded }} refunded{% endtrans %}</span>{% endif %}
       {% endif %}
     </td>
   </tr>
@@ -54,8 +54,8 @@
 {% endif %}
 
 <div class="card honey">
-  <h3>Show off your hive</h3>
-  <div class="row"><img class="badge" src="/badge/{{ profile.slug }}.svg" alt="{{ brand() }} badge"><span class="muted">Turns green once you've confirmed every payment.</span></div>
+  <h3>{{ _("Show off your hive") }}</h3>
+  <div class="row"><img class="badge" src="/badge/{{ profile.slug }}.svg" alt="{% trans brand=brand() %}{{ brand }} badge{% endtrans %}"><span class="muted">{{ _("Turns green once you've confirmed every payment.") }}</span></div>
   <pre>&lt;a href="{{ base }}/p/{{ profile.slug }}"&gt;&lt;img src="{{ base }}/badge/{{ profile.slug }}.svg" alt="{{ brand() }}"&gt;&lt;/a&gt;</pre>
 </div>
 {% endblock %}

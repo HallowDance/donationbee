@@ -1,4 +1,5 @@
 // Landing page: tap the bee for a loop-the-loop and a fact about how the ledger works.
+import { t } from "./i18n.js";
 import { reducedMotion } from "./lib.js";
 
 const bee = document.querySelector("[data-bee]");
@@ -21,7 +22,7 @@ if (bee && bubble) {
   let i = 0;
   let hideTimer;
   bee.addEventListener("click", () => {
-    bubble.textContent = FACTS[i % FACTS.length];
+    bubble.textContent = t(FACTS[i % FACTS.length]);
     i += 1;
     bubble.hidden = false;
     bubble.classList.remove("pop");

@@ -1,54 +1,53 @@
 {% extends "base.html" %}
-{% block title %}The ledger · {{ brand() }}<script type="module" src="/static/js/ledger.js"></script>
-{% endblock %}
+{% block title %}{{ _("The ledger") }} · {{ brand() }}{% endblock %}
 {% block content %}
 <div class="stack" style="gap:10px">
-  <span class="eyebrow">Public ledger</span>
-  <h1>Every entry, in order</h1>
-  <p class="prose muted">Everything {{ brand() }} has recorded, newest first. Each entry is signed and linked to the one before it, so none can be changed or removed without it showing.</p>
+  <span class="eyebrow">{{ _("Public ledger") }}</span>
+  <h1>{{ _("Every entry, in order") }}</h1>
+  <p class="prose muted">{% trans brand=brand() %}Everything {{ brand }} has recorded, newest first. Each entry is signed and linked to the one before it, so none can be changed or removed without it showing.{% endtrans %}</p>
 </div>
 
 {% if cp %}
 <div class="card bold" data-state>
   <div class="row" style="justify-content:space-between;align-items:flex-start">
     <div class="stack" style="gap:6px">
-      <span class="eyebrow">Current state</span>
-      <span class="total"><span data-entry-count>{{ cp.size }}</span> entries</span>
+      <span class="eyebrow">{{ _("Current state") }}</span>
+      <span class="total">{% trans count=cp.size %}<span data-entry-count>{{ count }}</span> entry{% pluralize %}<span data-entry-count>{{ count }}</span> entries{% endtrans %}</span>
     </div>
     <div class="row">
-      <a class="btn small ghost" href="/api/v1/checkpoint">Signed checkpoint</a>
-      <a class="btn small ghost" href="/api/v1/entries">All entries (JSON)</a>
+      <a class="btn small ghost" href="/api/v1/checkpoint">{{ _("Signed checkpoint") }}</a>
+      <a class="btn small ghost" href="/api/v1/entries">{{ _("All entries (JSON)") }}</a>
     </div>
   </div>
   <div class="table-wrap" data-tree>
     <table class="kv">
-      <tr><th>Tree root</th><td><code class="hash">{{ cp.root.hex() }}</code></td></tr>
-      <tr><th>Witnesses</th><td>
-        {% if cosigs %}<span class="tag ok">{{ cosigs }} cosignature{{ '' if cosigs == 1 else 's' }}</span> on this exact state
-        {% elif witnessed %}<span class="tag warn">witnessed up to #{{ witnessed }}</span> Newer entries get cosigned within minutes.
-        {% else %}<span class="tag warn">not witnessed yet</span>{% endif %}
+      <tr><th>{{ _("Tree root") }}</th><td><code class="hash">{{ cp.root.hex() }}</code></td></tr>
+      <tr><th>{{ _("Witnesses") }}</th><td>
+        {% if cosigs %}<span class="tag ok">{% trans count=cosigs %}{{ count }} cosignature{% pluralize %}{{ count }} cosignatures{% endtrans %}</span> {{ _("on this exact state") }}
+        {% elif witnessed %}<span class="tag warn">{% trans seq=witnessed %}witnessed up to #{{ seq }}{% endtrans %}</span> {{ _("Newer entries get cosigned within minutes.") }}
+        {% else %}<span class="tag warn">{{ _("not witnessed yet") }}</span>{% endif %}
       </td></tr>
-      <tr><th>Anchored</th><td>
-        {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span> up to #{{ anchor.size }}{% if anchors_url() %} · <a href="{{ anchors_url() }}">public anchors repo</a>{% endif %} · <a href="/#bitcoin">what Bitcoin does here</a>{% if anchor.ots_status == "pending" %} <span class="muted">Bitcoin confirms it within a few hours.</span>{% endif %}
-        {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
+      <tr><th>{{ _("Anchored") }}</th><td>
+        {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ _("in Bitcoin") if anchor.ots_status == "complete" else (_("Bitcoin pending") if anchor.ots_status == "pending" else _("in git")) }}</span> {% trans seq=anchor.size %}up to #{{ seq }}{% endtrans %}{% if anchors_url() %} · <a href="{{ anchors_url() }}">{{ _("public anchors repo") }}</a>{% endif %} · <a href="/#bitcoin">{{ _("what Bitcoin does here") }}</a>{% if anchor.ots_status == "pending" %} <span class="muted">{{ _("Bitcoin confirms it within a few hours.") }}</span>{% endif %}
+        {% else %}<span class="tag warn">{{ _("not anchored yet") }}</span> {{ _("Anchors go out every hour.") if anchoring_on() else _("Anchoring isn't switched on in this beta.") }}{% endif %}
       </td></tr>
     </table>
   </div>
   <div class="row">
-    <button type="button" data-verify-start>Check it in your browser</button>
-    <span class="muted" style="font-size:.92rem">Recomputes every hash, link and signature on your own device.</span>
+    <button type="button" data-verify-start>{{ _("Check it in your browser") }}</button>
+    <span class="muted" style="font-size:.92rem">{{ _("Recomputes every hash, link and signature on your own device.") }}</span>
   </div>
   <div class="verify-panel" data-verify hidden>
     <ol class="v-steps">
-      <li data-step="download"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Download every entry and the signed checkpoint</span></li>
-      <li data-step="hashes"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Recompute every entry's hash</span></li>
-      <li data-step="links"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Check that each entry links to the one before</span></li>
-      <li data-step="sigs"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Check every signature</span></li>
-      <li data-step="tree"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Rebuild the Merkle tree and compare it to the checkpoint</span></li>
-      <li data-step="checkpoint"><span class="v-dot" aria-hidden="true"></span><span class="v-text">Check the checkpoint's signature</span></li>
+      <li data-step="download"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Download every entry and the signed checkpoint") }}</span></li>
+      <li data-step="hashes"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Recompute every entry's hash") }}</span></li>
+      <li data-step="links"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Check that each entry links to the one before") }}</span></li>
+      <li data-step="sigs"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Check every signature") }}</span></li>
+      <li data-step="tree"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Rebuild the Merkle tree and compare it to the checkpoint") }}</span></li>
+      <li data-step="checkpoint"><span class="v-dot" aria-hidden="true"></span><span class="v-text">{{ _("Check the checkpoint's signature") }}</span></li>
     </ol>
     <p class="notice bad" data-verify-error role="alert" hidden></p>
-    <p class="muted" style="font-size:.9rem">This check runs code we serve, so it's a quick check. For one that doesn't trust us at all, run the open-source verifier: <code>pip install donationbee-verify</code>, then <code>vpp-verify --url {{ base }}</code>.</p>
+    <p class="muted" style="font-size:.9rem">{% trans base=base %}This check runs code we serve, so it's a quick check. For one that doesn't trust us at all, run the open-source verifier: <code>pip install donationbee-verify</code>, then <code>vpp-verify --url {{ base }}</code>.{% endtrans %}</p>
   </div>
 </div>
 <p class="muted live-status" data-live-status role="status" aria-live="polite"></p>
@@ -57,7 +56,7 @@
 {% if rows %}
 <div class="table-wrap">
 <table class="payments ledger">
-  <tr><th>Entry</th><th>When</th><th>What</th><th class="num">Details</th></tr>
+  <tr><th>{{ _("Entry") }}</th><th>{{ _("When") }}</th><th>{{ _("What") }}</th><th class="num">{{ _("Details") }}</th></tr>
   {% for r in rows %}
   <tr data-seq="{{ r.entry.seq }}" data-type="{{ r.entry.type }}">
     <td class="c-seq"><a class="seq" href="/e/{{ r.entry.seq }}">#{{ r.entry.seq }}</a></td>
@@ -66,20 +65,20 @@
     <td class="num c-amt">
       {% if r.detail %}<span>{{ r.detail }}</span>{% endif %}
       {% if r.refs and r.entry.type == "confirmation" %}<span class="muted">{% for s in r.refs %}<a href="/e/{{ s }}">#{{ s }}</a>{{ ", " if not loop.last }}{% endfor %}</span>{% endif %}
-      {% if r.status == "confirmed" %}<span class="tag ok">confirmed</span>
-      {% elif r.status == "recorded" %}<span class="tag warn">recorded</span>
-      {% elif r.status == "voided" %}<span class="tag bad">voided</span>{% endif %}
+      {% if r.status == "confirmed" %}<span class="tag ok">{{ _("confirmed") }}</span>
+      {% elif r.status == "recorded" %}<span class="tag warn">{{ _("recorded") }}</span>
+      {% elif r.status == "voided" %}<span class="tag bad">{{ _("voided") }}</span>{% endif %}
     </td>
   </tr>
   {% endfor %}
 </table>
 </div>
 <div class="row">
-  {% if newer %}<a class="btn small ghost" href="/ledger">Newest entries</a>{% endif %}
-  {% if older %}<a class="btn small ghost" href="/ledger?before={{ older }}">Older entries</a>{% endif %}
+  {% if newer %}<a class="btn small ghost" href="/ledger">{{ _("Newest entries") }}</a>{% endif %}
+  {% if older %}<a class="btn small ghost" href="/ledger?before={{ older }}">{{ _("Older entries") }}</a>{% endif %}
 </div>
 {% else %}
-<p class="muted">The ledger is empty.</p>
+<p class="muted">{{ _("The ledger is empty.") }}</p>
 {% endif %}
 <script type="module" src="/static/js/ledger.js"></script>
 {% endblock %}

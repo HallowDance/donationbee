@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 {% from "_bee.html" import bee %}
-{% block title %}Your receipt · {{ brand() }}{% endblock %}
+{% block title %}{{ _("Your receipt") }} · {{ brand() }}{% endblock %}
 {% block head %}{% if not e or not witnessed %}<meta http-equiv="refresh" content="5">{% endif %}{% endblock %}
 {% block content %}
 {% if not e %}
 <div class="card waiting">
   {{ bee(120) }}
-  <h1>Recording your payment…</h1>
-  <p class="muted">Stripe is confirming the payment. This page refreshes on its own.</p>
+  <h1>{{ _("Recording your payment…") }}</h1>
+  <p class="muted">{{ _("Stripe is confirming the payment. This page refreshes on its own.") }}</p>
 </div>
 {% else %}
 <div class="stack" style="gap:10px" data-recorded="{{ e.seq }}">
-  <span class="eyebrow">Entry #{{ e.seq }}</span>
-  <h1>Payment recorded. Thank you!</h1>
-  <p style="font-size:1.15rem"><strong>{{ e.amount_value|money(e.currency) }}</strong> to <a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a> · <a href="/e/{{ e.seq }}">see the entry</a></p>
+  <span class="eyebrow">{% trans seq=e.seq %}Entry #{{ seq }}{% endtrans %}</span>
+  <h1>{{ _("Payment recorded. Thank you!") }}</h1>
+  {% set amount %}<strong>{{ e.amount_value|money(e.currency) }}</strong>{% endset %}{% set to %}<a href="/p/{{ recipient.slug }}">{{ recipient.display_name }}</a>{% endset %}<p style="font-size:1.15rem">{% trans amount=amount, to=to %}{{ amount }} to {{ to }}{% endtrans %} · <a href="/e/{{ e.seq }}">{{ _("see the entry") }}</a></p>
 </div>
 <div class="card bold">
   <div class="row" style="align-items:flex-start;flex-wrap:nowrap">
     {{ bee(72) }}
     <div class="stack">
-      <h2>Keep your receipt</h2>
-      <p class="prose">The receipt is a file only you hold. It shows the ledger signed a checkpoint that includes your payment. If the payment is ever removed or changed, the receipt is proof the operator cheated.</p>
+      <h2>{{ _("Keep your receipt") }}</h2>
+      <p class="prose">{% trans %}The receipt is a file only you hold. It shows the ledger signed a checkpoint that includes your payment. If the payment is ever removed or changed, the receipt is proof the operator cheated.{% endtrans %}</p>
     </div>
   </div>
-  {% if witnessed %}<p><span class="tag ok">witnessed</span> Independent witnesses cosigned a checkpoint that includes it.</p>
-  {% else %}<p><span class="tag warn">waiting for witnesses</span> Your receipt gets stronger once witnesses sign. This page updates when they do.</p>{% endif %}
-  <div><a class="btn" href="/api/v1/receipts/{{ e.seq }}">Download receipt.json</a></div>
+  {% if witnessed %}<p><span class="tag ok">{{ _("witnessed") }}</span> {{ _("Independent witnesses cosigned a checkpoint that includes it.") }}</p>
+  {% else %}<p><span class="tag warn">{{ _("waiting for witnesses") }}</span> {{ _("Your receipt gets stronger once witnesses sign. This page updates when they do.") }}</p>{% endif %}
+  <div><a class="btn" href="/api/v1/receipts/{{ e.seq }}">{{ _("Download receipt.json") }}</a></div>
   <pre>vpp-verify --url {{ base }} --receipt vpp-receipt-{{ e.seq }}.json \
   --witness &lt;witness vkey&gt; --min-witnesses 1</pre>
 </div>

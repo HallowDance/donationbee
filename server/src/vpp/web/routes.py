@@ -7,10 +7,11 @@ from fastapi.responses import RedirectResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from .. import badge, pii
+from .. import badge, i18n, pii
 from ..config import get_settings
 from ..db import get_session
 from ..db.models import Anchor, Checkpoint, Cosignature, LedgerEntry, Profile
+from ..i18n import N_
 from ..ledger.store import head
 from ..queries import format_money, ledger_rows, profile_totals
 from ..receipts import seq_for_session
@@ -24,7 +25,7 @@ from .templating import templates
 router = APIRouter()
 DB = Annotated[Session, Depends(get_session)]
 
-PAYMENTS_OFF = "Payments are switched off in this beta. You can browse the demo hives."
+PAYMENTS_OFF = N_("Payments are switched off in this beta. You can browse the demo hives.")
 PAGE = 50
 MIN_AMOUNT, MAX_AMOUNT = 100, 10_000_000  # minor units: 1.00 .. 100,000.00
 
@@ -47,7 +48,7 @@ def index(request: Request, db: DB):
     confirmed = sum(h["totals"].confirmed_by_currency.get("EUR", 0) for h in hives)
     last = head(db)
     stats = {
-        "recorded": format_money(recorded, "EUR"),
+        "recorded": i18n.money(recorded, "EUR"),
         "confirmed_pct": round(100 * confirmed / recorded) if recorded else 0,
         "payments": sum(h["totals"].count for h in hives),
         "entries": last.seq if last else 0,
@@ -189,12 +190,12 @@ def pay_submit(
 
     cents = _parse_amount(amount)
     if cents is None:
-        return fail("Enter an amount between 1.00 and 100,000.00 EUR.")
+        return fail(N_("Enter an amount between 1.00 and 100,000.00 EUR."))
     tip_cents = int(tip) if tip.isdigit() else -1
     if tip_cents not in TIP_CHOICES:
-        return fail("Choose one of the tip options.")
+        return fail(N_("Choose one of the tip options."))
     if not consent:
-        return fail("Please confirm that this payment will be published.")
+        return fail(N_("Please confirm that this payment will be published."))
     if not get_settings().stripe_secret_key:
         return fail(PAYMENTS_OFF)
     try:
@@ -208,8 +209,8 @@ def pay_submit(
             note=note.strip()[:280] or None,
             tip=tip_cents,
         )
-    except NotReady as e:
-        return fail(str(e))
+    except NotReady:
+        return fail(N_("This recipient can't accept payments yet."))
     return RedirectResponse(url, status_code=303)
 
 
