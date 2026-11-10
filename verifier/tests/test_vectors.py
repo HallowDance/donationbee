@@ -99,22 +99,37 @@ def _explorer(merkle_root):
 
 
 ROOT = "ab" * 32
-NO_NODE = (1, "Could not connect to local Bitcoin node: [Errno 111] Connection refused")
-CLAIM = (0, f"To verify manually, check that Bitcoin block 871234 has merkleroot {ROOT}")
+# Real output of opentimestamps-client 0.8.0 with no node configured, and an older wording.
+NO_NODE_MESSAGES = [
+    "Could not connect to Bitcoin node: Cookie file unusable ([Errno 2] No such file or "
+    "directory: '/home/u/.bitcoin/.cookie') and rpcpassword not specified in the "
+    "configuration file: '/home/u/.bitcoin/bitcoin.conf'",
+    "Could not connect to local Bitcoin node: [Errno 111] Connection refused",
+]
+CLAIM = (
+    1,
+    "Not checking Bitcoin attestation; Bitcoin disabled\n"
+    f"To verify manually, check that Bitcoin block 871234 has merkleroot {ROOT}",
+)
 
 
+@pytest.mark.parametrize("no_node", NO_NODE_MESSAGES)
 @pytest.mark.parametrize(
     "merkle, expect",
     [(ROOT, "ok (in Bitcoin block 871234, checked with mempool.space)"), ("cd" * 32, None)],
 )
-def test_ots_without_local_node_checks_public_explorer(tmp_path, monkeypatch, merkle, expect):
+def test_ots_without_local_node_checks_public_explorer(
+    tmp_path, monkeypatch, merkle, expect, no_node
+):
     from vpp_verify import cli
 
     target, proof = tmp_path / "13.checkpoint", tmp_path / "13.checkpoint.ots"
     target.write_text("x")
     proof.write_bytes(b"x")
     monkeypatch.setattr(cli.shutil, "which", lambda name: "/usr/bin/ots")
-    monkeypatch.setattr(cli, "_ots", _fake_ots({"verify": NO_NODE, "--no-bitcoin": CLAIM}))
+    monkeypatch.setattr(
+        cli, "_ots", _fake_ots({"verify": (1, no_node), "--no-bitcoin": CLAIM})
+    )
     if expect:
         assert cli._ots_verify(target, proof, explorer=_explorer(merkle)) == expect
     else:

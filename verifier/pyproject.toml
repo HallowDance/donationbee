@@ -1,6 +1,6 @@
 [project]
 name = "donationbee-verify"
-version = "0.1.1"
+version = "0.1.2"
 description = "Independent verifier for DonationBee payment ledgers: checks every hash, signature, witness and anchor itself"
 readme = "README.md"
 license = "Apache-2.0"

@@ -105,6 +105,8 @@ def check_anchors(state: ChainState, repo: Path, check_ots: bool) -> list[str]:
 
 EXPLORER = "https://mempool.space/api"
 _CLAIM = re.compile(r"Bitcoin block (\d+) has merkleroot ([0-9a-f]{64})")
+# ots 0.8 says "Could not connect to Bitcoin node: ..."; older releases said "local Bitcoin node".
+_NO_NODE = re.compile(r"Could not connect to (local )?Bitcoin node")
 
 
 def _ots(*args: str) -> tuple[int, str]:
@@ -124,7 +126,7 @@ def _ots_verify(target: Path, proof: Path, explorer: httpx.Client | None = None)
         return "ok (in Bitcoin, checked with your Bitcoin node)"
     if "Pending confirmation" in out:
         return "pending (not yet in a Bitcoin block)"
-    if "Could not connect to local Bitcoin node" not in out:
+    if not _NO_NODE.search(out):
         raise Failure(f"OpenTimestamps verification failed for {target.name}: {out[:200]}")
 
     # No local node: ask ots which block the proof claims, then check that block publicly.
