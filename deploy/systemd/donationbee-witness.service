@@ -1,0 +1,20 @@
+# The demo witness. The banner says we run it; real witnesses must be run by other people.
+[Unit]
+Description=DonationBee demo witness
+After=network.target
+
+[Service]
+User=donationbee
+Group=donationbee
+ExecStart=/opt/donationbee/.venv/bin/vpp-witness serve \
+    --config /var/lib/donationbee/witness.json --host 127.0.0.1 --port 8091
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/donationbee
+
+[Install]
+WantedBy=multi-user.target

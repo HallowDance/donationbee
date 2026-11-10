@@ -1,0 +1,21 @@
+# Pushes the latest signed checkpoint to the public anchors repo with an OpenTimestamps proof,
+# then upgrades earlier proofs that Bitcoin has confirmed. Pushing uses the deploy key in
+# /var/lib/donationbee/.ssh.
+[Unit]
+Description=DonationBee: anchor the latest checkpoint and upgrade Bitcoin proofs
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=donationbee
+Group=donationbee
+EnvironmentFile=/etc/donationbee/env
+# "-": a failed anchor is logged, and proofs still get upgraded.
+ExecStart=-/opt/donationbee/.venv/bin/vpp anchor
+ExecStart=/opt/donationbee/.venv/bin/vpp ots-upgrade
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/donationbee

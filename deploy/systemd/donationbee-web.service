@@ -1,0 +1,25 @@
+# The DonationBee web app. Code in /opt/donationbee, state in /var/lib/donationbee,
+# settings and secrets in /etc/donationbee/env (see ../donationbee.env.example).
+[Unit]
+Description=DonationBee web app
+After=network.target postgresql.service donationbee-witness.service
+Requires=postgresql.service
+
+[Service]
+User=donationbee
+Group=donationbee
+WorkingDirectory=/opt/donationbee/server
+EnvironmentFile=/etc/donationbee/env
+ExecStartPre=/opt/donationbee/.venv/bin/alembic upgrade head
+ExecStart=/opt/donationbee/.venv/bin/uvicorn vpp.app:app --host 127.0.0.1 --port 8092 \
+    --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/donationbee
+
+[Install]
+WantedBy=multi-user.target
