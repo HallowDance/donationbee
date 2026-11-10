@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DonationBee VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-10 17:26+0200\n"
+"POT-Creation-Date: 2026-11-10 18:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,9 +311,6 @@ msgid "Download every entry and the signed checkpoint"
 msgstr ""
 
 msgid "Download receipt"
-msgstr ""
-
-msgid "Download receipt.json"
 msgstr ""
 
 #, python-format

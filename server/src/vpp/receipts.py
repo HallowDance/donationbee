@@ -2,6 +2,8 @@
 includes it, and the inclusion proof. Held by the payer, checkable without trusting us."""
 
 import base64
+import re
+from datetime import UTC
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -36,6 +38,14 @@ def build_receipt(session: Session, seq: int) -> dict | None:
         ],
         "witness_cosignatures": best.n if best else 0,
     }
+
+
+def receipt_filename(entry: LedgerEntry, brand: str) -> str:
+    """e.g. donationbee-receipt-14-2026-11-10-2b42b5f9.json. The entry hash makes it unique
+    across ledgers too (a fresh ledger restarts at #1), so downloads never overwrite each other."""
+    prefix = re.sub(r"[^a-z0-9]+", "-", brand.lower()).strip("-") or "vpp"
+    day = entry.created_at.astimezone(UTC).date().isoformat()
+    return f"{prefix}-receipt-{entry.seq}-{day}-{entry.hash.hex()[:8]}.json"
 
 
 def seq_for_session(session: Session, checkout_session: str) -> int | None:

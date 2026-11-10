@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from .. import i18n
 from ..config import get_settings
 from ..queries import LABELS
+from ..receipts import receipt_filename
 
 templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 # {% trans %} blocks and _() follow the request's language (see vpp.i18n); "trimmed" folds the
@@ -31,6 +32,7 @@ templates.env.globals["entry_label"] = lambda t: i18n.gettext(LABELS[t]) if t in
 # DB timestamps come back in the server's local zone; always show UTC, as the envelope does.
 templates.env.filters["utc"] = lambda dt: dt.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
 templates.env.globals["brand"] = lambda: get_settings().brand_name
+templates.env.globals["receipt_filename"] = lambda e: receipt_filename(e, get_settings().brand_name)
 templates.env.globals["banner"] = lambda: get_settings().banner
 templates.env.globals["contact_email"] = lambda: get_settings().contact_email
 templates.env.globals["anchors_url"] = lambda: get_settings().anchors_public_url

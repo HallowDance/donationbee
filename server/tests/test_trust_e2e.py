@@ -2,6 +2,7 @@
 receipts, and a log that tries to equivocate (show a fork). Nothing here trusts the server."""
 
 import json
+import re
 import subprocess
 import threading
 from http.server import ThreadingHTTPServer
@@ -118,8 +119,14 @@ def test_witnessed_ledger_verifies_and_fork_is_caught(make_engine, key, witness,
     )
 
     # The payer of entry 2 keeps a witnessed receipt.
-    receipt = tmp_path / "receipt.json"
-    receipt.write_text(c.get("/api/v1/receipts/2").text)
+    r = c.get("/api/v1/receipts/2")
+    # Named so many receipts (even from different ledgers) never overwrite each other.
+    name = re.fullmatch(
+        r'attachment; filename="(donationbee-receipt-2-\d{4}-\d{2}-\d{2}-[0-9a-f]{8}\.json)"',
+        r.headers["content-disposition"],
+    ).group(1)
+    receipt = tmp_path / name
+    receipt.write_text(r.text)
     assert json.loads(receipt.read_text())["witness_cosignatures"] == 1
 
     # Later the log grows; the witness follows via a consistency proof.

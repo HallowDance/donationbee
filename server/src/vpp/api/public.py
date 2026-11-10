@@ -12,12 +12,13 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from ..config import get_settings
 from ..db import get_session
 from ..db.models import Anchor, LedgerEntry, Profile
 from ..ledger.store import consistency_proof, entries_after, head, inclusion_proof, to_entry
 from ..ledger.wire import to_wire
 from ..queries import key_history, profile_totals
-from ..receipts import build_receipt, seq_for_session
+from ..receipts import build_receipt, receipt_filename, seq_for_session
 from ..witnessing import cosigned_note
 
 router = APIRouter(prefix="/api/v1")
@@ -89,10 +90,11 @@ def get_receipt(db: DB, seq: int) -> Response:
         raise HTTPException(404)
     import json
 
+    name = receipt_filename(db.get(LedgerEntry, seq), get_settings().brand_name)
     return Response(
         json.dumps(receipt, indent=2),
         media_type="application/json",
-        headers={"Content-Disposition": f'attachment; filename="vpp-receipt-{seq}.json"'},
+        headers={"Content-Disposition": f'attachment; filename="{name}"'},
     )
 
 

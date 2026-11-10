@@ -25,8 +25,8 @@
   </div>
   {% if witnessed %}<p><span class="tag ok">{{ _("witnessed") }}</span> {{ _("Independent witnesses cosigned a checkpoint that includes it.") }}</p>
   {% else %}<p><span class="tag warn">{{ _("waiting for witnesses") }}</span> {{ _("Your receipt gets stronger once witnesses sign. This page updates when they do.") }}</p>{% endif %}
-  <div><a class="btn" href="/api/v1/receipts/{{ e.seq }}">{{ _("Download receipt.json") }}</a></div>
-  <pre>vpp-verify --url {{ base }} --receipt vpp-receipt-{{ e.seq }}.json \
+  <div><a class="btn" href="/api/v1/receipts/{{ e.seq }}">{{ _("Download receipt") }}</a></div>
+  <pre>vpp-verify --url {{ base }} --receipt {{ receipt_filename(e) }} \
   --witness &lt;witness vkey&gt; --min-witnesses 1</pre>
 </div>
 <script type="module" src="/static/js/receipt.js"></script>
