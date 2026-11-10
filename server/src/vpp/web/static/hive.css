@@ -177,6 +177,8 @@ input[type=text]:focus { outline: none; box-shadow: 0 0 0 4px var(--honey); }
 .hive:hover { border-color: var(--ink); }
 .limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px; padding: 0; margin: 0; list-style: none; }
 .limits li { border-left: 4px solid var(--honey-deep); padding: 2px 0 2px 12px; color: var(--muted); }
+.bitcoin-steps { margin: 0; padding-left: 1.4em; }
+.bitcoin-steps li + li { margin-top: 8px; }
 
 /* Empty / waiting states with the mascot */
 .waiting { align-items: center; text-align: center; padding-block: 36px; }

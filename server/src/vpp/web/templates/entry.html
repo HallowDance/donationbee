@@ -22,7 +22,7 @@
     </td></tr>
     <tr><th>Anchor</th><td>
       {% if anchor %}<span class="tag {{ 'ok' if anchor.ots_status == 'complete' else 'warn' }}">{{ "in Bitcoin" if anchor.ots_status == "complete" else ("Bitcoin pending" if anchor.ots_status == "pending" else "in git") }}</span>
-        Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · {% if anchors_url() %}<a href="{{ anchors_url() }}/blob/main/{{ anchor.git_path }}"><code>{{ anchor.git_path }}</code></a>{% else %}<code>{{ anchor.git_path }}</code>{% endif %}{% endif %}
+        Covered by checkpoint {{ anchor.size }}{% if anchor.git_path %} · {% if anchors_url() %}<a href="{{ anchors_url() }}/blob/main/{{ anchor.git_path }}"><code>{{ anchor.git_path }}</code></a>{% else %}<code>{{ anchor.git_path }}</code>{% endif %}{% endif %} · <a href="/#bitcoin">what Bitcoin does here</a>
       {% else %}<span class="tag warn">not anchored yet</span> {{ "Anchors go out every hour." if anchoring_on() else "Anchoring isn't switched on in this beta." }}{% endif %}
     </td></tr>
   </table>

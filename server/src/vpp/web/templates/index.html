@@ -105,6 +105,18 @@ vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   --anchors-repo {{ anchors_url() or '&lt;anchors git url&gt;' }} --check-ots --check-domains</pre>
 </section>
 
+<section id="bitcoin" class="stack">
+  <h2>Where Bitcoin comes in (and where it doesn't)</h2>
+  <p class="prose">Donations here are ordinary card payments in euros, through Stripe. Nobody buys, sells, holds or sends bitcoin. There's no wallet, no coin and no token, and the money never goes near a blockchain.</p>
+  <p class="prose">We only borrow Bitcoin's clock. Once an hour:</p>
+  <ol class="prose bitcoin-steps">
+    <li>We take the ledger's latest signed checkpoint and compute its fingerprint, a SHA-256 hash. It's 64 characters that say nothing about who paid whom.</li>
+    <li>We send that fingerprint, mixed with a random value, to <a href="https://opentimestamps.org">OpenTimestamps</a>, a free public service. It bundles fingerprints from many people into a single Bitcoin transaction and pays the small fee itself. We pay nothing.</li>
+    <li>Within a few hours that transaction is in a Bitcoin block. From then on anyone can prove the checkpoint existed by that time, and nobody, us included, can backdate the ledger or quietly swap in a different history.</li>
+  </ol>
+  <p class="prose muted">No payment details, names or amounts go to Bitcoin or to OpenTimestamps, only the fingerprint. The checkpoints and their proofs are also kept in a public {% if anchors_url() %}<a href="{{ anchors_url() }}">git repo</a>{% else %}git repo{% endif %} where rewriting history is switched off. The verifier checks each proof against Bitcoin by itself, using your own Bitcoin node or, if you don't run one, the public explorer mempool.space.</p>
+</section>
+
 <section class="stack">
   <h2>What even a good bee can't prove</h2>
   <ul class="limits">
