@@ -117,7 +117,7 @@ vpp-verify --url {{ base }} --pin-genesis &lt;hash&gt; \
   <p class="prose muted">No payment details, names or amounts go to Bitcoin or to OpenTimestamps, only the fingerprint. The checkpoints and their proofs are also kept in a public {% if anchors_url() %}<a href="{{ anchors_url() }}">git repo</a>{% else %}git repo{% endif %} where rewriting history is switched off. The verifier checks each proof against Bitcoin by itself, using your own Bitcoin node or, if you don't run one, the public explorer mempool.space.</p>
 </section>
 
-<section class="stack">
+<section id="limits" class="stack">
   <h2>What even a good bee can't prove</h2>
   <ul class="limits">
     <li>A payment the recipient hasn't confirmed is our word that Stripe reported it.</li>

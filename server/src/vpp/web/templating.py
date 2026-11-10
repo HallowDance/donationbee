@@ -14,6 +14,7 @@ templates.env.filters["money"] = lambda v, cur: format_money(v, cur)
 templates.env.filters["utc"] = lambda dt: dt.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
 templates.env.globals["brand"] = lambda: get_settings().brand_name
 templates.env.globals["banner"] = lambda: get_settings().banner
+templates.env.globals["contact_email"] = lambda: get_settings().contact_email
 templates.env.globals["anchors_url"] = lambda: get_settings().anchors_public_url
 templates.env.globals["stripe_test_mode"] = lambda: not get_settings().stripe_livemode
 # Only promise hourly anchors when anchoring is actually configured.

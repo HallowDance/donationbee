@@ -65,6 +65,11 @@ def recipients_guide(request: Request):
     return templates.TemplateResponse(request, "recipients.html", {})
 
 
+@router.get("/about")
+def about(request: Request):
+    return templates.TemplateResponse(request, "about.html", {})
+
+
 @router.get("/ledger")
 def ledger_page(request: Request, db: DB, before: int | None = None):
     rows = ledger_rows(db, before, limit=PAGE)
